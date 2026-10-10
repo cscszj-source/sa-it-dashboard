@@ -229,7 +229,7 @@ function renderTable(data) {
     var sc = statusMap[r[3]] || "badge-confirm";
     var pc = priMap[r[2]] || "pri-p3";
     var progressText = r[8] && r[8].length > 80 ? r[8].substring(0,80)+"..." : (r[8]||"-");
-    html += '<tr><td>'+(i+1)+'</td><td><span class="domain-tag">'+r[0]+'</span></td><td class="req-desc">'+r[1]+'</td><td><span class="pri '+pc+'">'+r[2]+'</span></td><td><span class="badge '+sc+'">'+r[3]+'</span></td><td>'+r[5]+'</td><td>'+r[4]+'</td><td>'+r[6]+'</td><td>'+r[7]+'</td><td class="progress-cell" title="'+r[8]+'">'+progressText+'</td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><span class="domain-tag">'+r[0]+'</span></td><td class="req-desc">'+r[1]+'</td><td><span class="pri '+pc+'">'+r[2]+'</span></td><td><span class="badge '+sc+'">'+r[3]+'</span></td><td>'+r[4]+'</td><td>'+r[5]+'</td><td>'+r[6]+'</td><td>'+r[7]+'</td><td class="progress-cell" title="'+r[8]+'">'+progressText+'</td></tr>';
   }
   tbody.innerHTML = html;
 }
