@@ -93,51 +93,52 @@ tbody tr:hover { background: #f8f9ff; }
 <body>
 <div class="header">
   <div>
-    <h1>南非IT需求进度看板 <span class="edit-indicator">编辑模式</span></h1>
-    <p>数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-10 16:42</span></p>
+    <h1><span data-i18n="title">南非IT需求进度看板</span> <span class="edit-indicator" data-i18n="editMode">编辑模式</span></h1>
+    <p><span data-i18n="dataSource">数据来源</span>: <span data-i18n="sourceName">南非需求跟进表</span> | <span data-i18n="syncTimeLabel">同步时间</span>: <span id="syncTime">2026-10-10 17:08</span></p>
   </div>
   <div class="header-actions">
-    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()">编辑</button>
-    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none">保存</button>
-    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none">同步到飞书</button>
-    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none">取消</button>
+    <button class="btn btn-primary" id="langBtn" onclick="toggleLanguage()">EN</button>
+    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()" data-i18n="edit">编辑</button>
+    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none" data-i18n="save">保存</button>
+    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none" data-i18n="syncToFeishu">同步到飞书</button>
+    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none" data-i18n="cancel">取消</button>
   </div>
 </div>
 
 <div class="container">
   <div class="summary-row" id="summaryRow"></div>
   <div class="charts-row">
-    <div class="chart-card"><h3>按业务域分布</h3><div id="domainChart"></div></div>
-    <div class="chart-card"><h3>按状态分布</h3><div id="statusChart"></div></div>
+    <div class="chart-card"><h3 data-i18n="chartDomain">按业务域分布</h3><div id="domainChart"></div></div>
+    <div class="chart-card"><h3 data-i18n="chartStatus">按状态分布</h3><div id="statusChart"></div></div>
   </div>
   <div class="charts-row">
-    <div class="chart-card"><h3>按优先级分布</h3><div id="priorityChart"></div></div>
-    <div class="chart-card"><h3>按涉及品牌分布</h3><div id="brandChart"></div></div>
+    <div class="chart-card"><h3 data-i18n="chartPriority">按优先级分布</h3><div id="priorityChart"></div></div>
+    <div class="chart-card"><h3 data-i18n="chartBrand">按涉及品牌分布</h3><div id="brandChart"></div></div>
   </div>
   <div class="filter-bar">
-    <label>筛选:</label>
-    <select id="filterDomain" onchange="applyFilters()"><option value="">全部业务域</option></select>
-    <select id="filterStatus" onchange="applyFilters()"><option value="">全部状态</option></select>
-    <select id="filterPriority" onchange="applyFilters()"><option value="">全部优先级</option></select>
-    <input type="text" id="filterSearch" placeholder="搜索需求说明/提出人..." oninput="applyFilters()">
+    <label data-i18n="filterLabel">筛选:</label>
+    <select id="filterDomain" onchange="applyFilters()"><option value="" data-i18n="allDomain">全部业务域</option></select>
+    <select id="filterStatus" onchange="applyFilters()"><option value="" data-i18n="allStatus">全部状态</option></select>
+    <select id="filterPriority" onchange="applyFilters()"><option value="" data-i18n="allPriority">全部优先级</option></select>
+    <input type="text" id="filterSearch" placeholder="搜索需求说明/提出人..." data-i18n-placeholder="searchPlaceholder" oninput="applyFilters()">
   </div>
   <div class="table-card">
     <table id="dataTable">
-      <thead><tr><th>#</th><th>业务域</th><th>需求说明</th><th>优先级</th><th>状态</th><th>提出人</th><th>涉及品牌</th><th>产品经理</th><th>对应系统</th><th>当前进展</th></tr></thead>
+      <thead><tr><th>#</th><th data-i18n="thDomain">业务域</th><th data-i18n="thDesc">需求说明</th><th data-i18n="thPriority">优先级</th><th data-i18n="thStatus">状态</th><th data-i18n="thProposer">提出人</th><th data-i18n="thBrand">涉及品牌</th><th data-i18n="thPM">产品经理</th><th data-i18n="thSystem">对应系统</th><th data-i18n="thProgress">当前进展</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
   </div>
-  <div class="footer">南非IT需求进度可视化看板 | 支持编辑和反向同步</div>
+  <div class="footer" data-i18n="footer">南非IT需求进度可视化看板 | 支持编辑和反向同步</div>
 </div>
 
 <!-- 密码弹窗 -->
 <div class="modal-overlay" id="passwordModal">
   <div class="modal">
-    <h3>输入编辑密码</h3>
-    <input type="password" id="passwordInput" placeholder="请输入密码" onkeypress="if(event.key==='Enter')checkPassword()">
+    <h3 data-i18n="modalTitle">输入编辑密码</h3>
+    <input type="password" id="passwordInput" placeholder="请输入密码" data-i18n-placeholder="modalPlaceholder" onkeypress="if(event.key==='Enter')checkPassword()">
     <div class="modal-actions">
-      <button class="btn" onclick="closePasswordModal()">取消</button>
-      <button class="btn btn-success" onclick="checkPassword()">确认</button>
+      <button class="btn" onclick="closePasswordModal()" data-i18n="cancel">取消</button>
+      <button class="btn btn-success" onclick="checkPassword()" data-i18n="confirm">确认</button>
     </div>
   </div>
 </div>
@@ -298,7 +299,7 @@ function checkPassword() {
     closePasswordModal();
     enterEditMode();
   } else {
-    alert("密码错误！");
+    alert(t("wrongPwd"));
     document.getElementById("passwordInput").value = "";
   }
 }
@@ -312,11 +313,11 @@ function enterEditMode() {
   document.getElementById("cancelBtn").style.display = "inline-block";
   originalData = JSON.parse(JSON.stringify(DATA));
   renderTable(DATA);
-  showStatus("已进入编辑模式，可以直接修改表格内容", "info");
+  showStatus(t("editModeMsg"), "info");
 }
 
 function cancelEdit() {
-  if (confirm("确定要取消编辑吗？未保存的修改将丢失。")) {
+  if (confirm(t("cancelConfirm"))) {
     DATA = JSON.parse(JSON.stringify(originalData));
     exitEditMode();
   }
@@ -334,7 +335,7 @@ function exitEditMode() {
 
 function saveChanges() {
   saveToLocal();
-  showStatus("修改已保存到本地", "success");
+  showStatus(t("savedMsg"), "success");
 }
 
 function syncToFeishu() {
@@ -358,7 +359,7 @@ function syncToFeishu() {
   }
   
   if (changes.length === 0) {
-    showStatus("没有检测到修改", "info");
+    showStatus(t("noChanges"), "info");
     return;
   }
   
@@ -377,7 +378,7 @@ function syncToFeishu() {
   a.click();
   URL.revokeObjectURL(url);
   
-  showStatus("修改记录已导出，请运行同步脚本上传到飞书", "success");
+  showStatus(t("exportMsg"), "success");
   
   // 退出编辑模式
   exitEditMode();
