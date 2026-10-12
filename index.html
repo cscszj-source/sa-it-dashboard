@@ -7,9 +7,23 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; }
-.header { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 28px 40px; }
+.header { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; }
 .header h1 { font-size: 26px; font-weight: 600; }
 .header p { font-size: 14px; opacity: 0.85; margin-top: 6px; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
+.btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
+.btn-primary { background: white; color: #1a73e8; }
+.btn-primary:hover { background: #f0f0f0; }
+.btn-success { background: #0d9f4f; color: white; }
+.btn-success:hover { background: #0b8a43; }
+.btn-warning { background: #e8850a; color: white; }
+.btn-warning:hover { background: #d47808; }
+.btn-danger { background: #d93025; color: white; }
+.btn-danger:hover { background: #c5221f; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.lang-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+.lang-btn:hover { background: rgba(255,255,255,0.35); }
+.lang-btn.active-lang { background: white; color: #1a73e8; }
 .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
 .summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
 .summary-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
@@ -25,7 +39,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 .chart-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .chart-card h3 { font-size: 15px; color: #444; margin-bottom: 16px; }
 .bar-group { margin-bottom: 10px; display: flex; align-items: center; }
-.bar-label { width: 110px; font-size: 13px; color: #555; flex-shrink: 0; text-align: right; padding-right: 12px; }
+.bar-label { width: 130px; font-size: 13px; color: #555; flex-shrink: 0; text-align: right; padding-right: 12px; }
 .bar-track { flex: 1; height: 26px; background: #f0f0f0; border-radius: 13px; overflow: hidden; position: relative; }
 .bar-fill { height: 100%; border-radius: 13px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; color: white; font-weight: 600; min-width: 30px; transition: width 0.6s ease; }
 .filter-bar { background: white; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -33,7 +47,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 .filter-bar select { padding: 6px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; background: white; }
 .filter-bar input { padding: 6px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; width: 220px; }
 .table-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
-.table-card h3 { font-size: 15px; color: #444; padding: 16px 20px 0; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 thead th { background: #f8f9fa; padding: 12px 10px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e8eaed; white-space: nowrap; }
 tbody td { padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
@@ -55,132 +68,447 @@ tbody tr:hover { background: #f8f9ff; }
 .domain-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: #f0f0f0; color: #555; }
 .footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
 @media (max-width: 900px) { .charts-row { grid-template-columns: 1fr; } .summary-row { grid-template-columns: repeat(3, 1fr); } }
+
+/* 编辑模式样式 */
+.edit-mode tbody td { cursor: text; }
+.edit-mode tbody td:hover { background: #fff9c4; }
+.edit-mode tbody td[contenteditable="true"] { outline: 2px solid #1a73e8; background: #fff9c4; }
+.edit-mode tbody td[contenteditable="true"]:focus { background: #fff3cd; }
+.edit-indicator { display: none; background: #e8850a; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-left: 10px; }
+.edit-mode .edit-indicator { display: inline-block; }
+
+/* 密码弹窗 */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+.modal-overlay.active { display: flex; }
+.modal { background: white; border-radius: 12px; padding: 30px; width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.modal h3 { margin-bottom: 20px; color: #333; }
+.modal input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 15px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* 同步状态 */
+.sync-status { position: fixed; bottom: 20px; right: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 999; }
+.sync-status.show { display: block; }
+.sync-status.success { border-left: 4px solid #0d9f4f; }
+.sync-status.error { border-left: 4px solid #d93025; }
+.sync-status.info { border-left: 4px solid #1a73e8; }
 </style>
 </head>
 <body>
 <div class="header">
-  <h1>南非IT需求进度看板</h1>
-  <p>数据来源: 南非需求跟进表 | 更新时间: 2026-10-10</p>
+  <div>
+    <h1 id="pageTitle">南非IT需求进度看板 <span class="edit-indicator" id="editModeLabel">编辑模式</span></h1>
+    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-12 04:09</span></p>
+  </div>
+  <div class="header-actions">
+    <button class="btn lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()">编辑</button>
+    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none">保存</button>
+    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none">同步到飞书</button>
+    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none">取消</button>
+  </div>
 </div>
+
 <div class="container">
   <div class="summary-row" id="summaryRow"></div>
   <div class="charts-row">
-    <div class="chart-card"><h3>按业务域分布</h3><div id="domainChart"></div></div>
-    <div class="chart-card"><h3>按状态分布</h3><div id="statusChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle1">按业务域分布</h3><div id="domainChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle2">按状态分布</h3><div id="statusChart"></div></div>
   </div>
   <div class="charts-row">
-    <div class="chart-card"><h3>按优先级分布</h3><div id="priorityChart"></div></div>
-    <div class="chart-card"><h3>按涉及品牌分布</h3><div id="brandChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle3">按优先级分布</h3><div id="priorityChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle4">按涉及品牌分布</h3><div id="brandChart"></div></div>
   </div>
   <div class="filter-bar">
-    <label>筛选:</label>
-    <select id="filterDomain" onchange="applyFilters()"><option value="">全部业务域</option></select>
-    <select id="filterStatus" onchange="applyFilters()"><option value="">全部状态</option></select>
-    <select id="filterPriority" onchange="applyFilters()"><option value="">全部优先级</option></select>
+    <label id="filterLabel">筛选:</label>
+    <select id="filterDomain" onchange="applyFilters()"><option value="" id="filterDomainAll">全部业务域</option></select>
+    <select id="filterStatus" onchange="applyFilters()"><option value="" id="filterStatusAll">全部状态</option></select>
+    <select id="filterPriority" onchange="applyFilters()"><option value="" id="filterPriorityAll">全部优先级</option></select>
     <input type="text" id="filterSearch" placeholder="搜索需求说明/提出人..." oninput="applyFilters()">
   </div>
   <div class="table-card">
-    <table>
-      <thead><tr><th>#</th><th>业务域</th><th>需求说明</th><th>优先级</th><th>状态</th><th>提出人</th><th>涉及品牌</th><th>产品经理</th><th>对应系统</th><th>当前进展</th></tr></thead>
+    <table id="dataTable">
+      <thead><tr id="tableHeader"><th>#</th><th>业务域</th><th>需求说明</th><th>优先级</th><th>状态</th><th>提出人</th><th>涉及品牌</th><th>产品经理</th><th>对应系统</th><th>当前进展</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
   </div>
-  <div class="footer">南非IT需求进度可视化看板 | 数据基于飞书南非需求跟进表</div>
+  <div class="footer" id="footerText">南非IT需求进度可视化看板 | 支持编辑和反向同步</div>
 </div>
+
+<!-- 密码弹窗 -->
+<div class="modal-overlay" id="passwordModal">
+  <div class="modal">
+    <h3 id="modalTitle">输入编辑密码</h3>
+    <input type="password" id="passwordInput" placeholder="请输入密码" onkeypress="if(event.key==='Enter')checkPassword()">
+    <div class="modal-actions">
+      <button class="btn" onclick="closePasswordModal()" id="modalCancelBtn">取消</button>
+      <button class="btn btn-success" onclick="checkPassword()" id="modalConfirmBtn">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 同步状态提示 -->
+<div class="sync-status" id="syncStatus"></div>
+
+<script src="dashboard_data.js"></script>
 <script>
-var DATA = [
-["用户域","官网嵌入金融申请入口页及金融计算器","P1","需求已上线","邓博焰","南非吉利","王倩茹/黄小鸥","官网","2026.5已上线"],
-["用户域","官网嵌入留资入口并打通CMS系统","P1","需求已上线","薛佳豪","南非吉利","王倩茹","官网","2026.6已上线"],
-["用户域","官网增加售后服务及网点模块","P2","需求开发中","韩思国","南非吉利","王倩茹","官网","还剩钣喷中心和部分维修手册未配置"],
-["用户域","增加雷达品牌车型官网页面及HR招聘模块","P1","需求已上线","Nomfundo","南非吉利","","官网","雷达页表单开发完成"],
-["用户域","南非极氪官网","P2","需求已上线","郑一丁","南非极氪","","官网","官网预热页9/16上线"],
-["用户域","吉利官网联系我们页面补齐车型等","P1","需求已上线","Nomfundo","南非吉利","","官网","详见0716邮件"],
-["用户域","app官网的服务预约能力","P1","需求开发中","韩思国","南非吉利","","App/官网","方案变更10月底发布"],
-["用户域","增加求职页面","P2","需求确认中","Onela","南非吉利","","官网","三个页面待开发"],
-["用户域","官网增加GA埋点分析","P2","需求确认中","Onela","南非吉利","","官网","待业务提供GTM container ID"],
-["销售域","非洲总代国家向南非购买整车","P1","需求开发中","薛佳豪/孙超","南非吉利&极氪&领克","郑书宣等","OTD/OTWB/SAP","8.27吉利已上线,极氪领克待排期"],
-["销售域","领克非洲转口贸易下单支持","P0","需求已上线","孙超","南非吉利","王涛","OTD","2026.7月中上线"],
-["销售域","南非大客户订单","P1","需求开发中","温辉豪","南非吉利","郑书宣等","OTD/SAP","10.22上线整体大客户方案"],
-["销售域","支持远程品牌销售","P2","需求拒绝","温辉豪","南非吉利","","","订单管理部建议使用远程全套系统"],
-["销售域","雷达车支持售后维保并对接生产工厂系统","P1","需求已上线","邓博焰/薛佳豪","南非吉利","","iSales/工厂","雷达售后维保已验证无问题"],
-["销售域","区域经销商向南非下单","P1","需求已合并","刘立志","南非吉利","","OTD/OTWB/SAP","与非洲总代购车需求合并"],
-["销售域","支持车辆类型为内部车","P1","需求已上线","Xane","南非吉利","谢南南","OTD","计划9.10发布"],
-["销售域","渠道网发支持培训认证标识","P1","需求已接收","胡慧英/薛佳豪","南非吉利","","渠道网","初步确定排期11月初"],
-["销售域","对接南非车辆注册系统","P2","需求确认中","薛佳豪","南非吉利","","","待车辆注册系统提供接口"],
-["销售域","支持在线生成PR单经销商采购","P1","需求已接收","温辉豪","南非吉利","","OTD","10月排满预计11月"],
-["销售域","Riddara品牌支持FOC订单","P1","需求已接收","Michayla/张后备","南非吉利","","","待10月中旬需求分析"],
-["销售域","宝腾线下单生产车辆导入营销服","P1","需求确认中","温辉豪","南非吉利","","","1380台历史订单待导入"],
-["售后域","增加保修类型服务包","P1","需求已上线","韩思国/Daniel","南非吉利","周语薇","索赔","7.7已上线"],
-["售后域","发票增加门店税号字段","P2","需求已上线","Michayla","南非吉利","崔旭艳","","2026.6已上线"],
-["售后域","索赔发票下载自动填充","P2","需求已上线","韩思国","南非吉利","周语薇","索赔","7.7上线"],
-["售后域","售后支持雷达品牌","P1","需求已上线","韩思国","南非吉利","李晓庆","备件/索赔/维修","2026.7月底上线"],
-["售后域","备件售后对接宝腾系统","P1","需求确认中","韩思国","南非吉利","","","待宝腾给出系统上线计划"],
-["售后域","维修服务索赔优化","P1","需求已上线","Daniel","南非吉利","","索赔","8月底上线"],
-["售后域","南非当地C端精品商城","P2","需求确认中","韩思国","南非吉利","","","计划Q4或明年"],
-["售后域","预约工单看板维修进度看板","P2","需求已接收","韩思国","南非吉利","","iRepair","1013上线"],
-["售后域","售后经营管理BI看板","P2","需求确认中","韩思国","南非吉利","","BI","基础版本下周提供"],
-["售后域","back order状态跟踪记录","P2","需求确认中","Michayla","南非吉利","","","确认11月中旬上线"],
-["售后域","索赔类型维修工单支持开发票","P1","需求已接收","韩思国/Daniel","南非吉利","","iRepair","权荣民跟进中"],
-["售后域","结算单增加索赔类型查询条件","P2","需求已接收","韩思国/Daniel","南非吉利","","结算","需区分市场活动索赔和常规索赔"],
-["售后域","车辆检索聚合页面","P2","需求已接收","韩思国/Daniel","南非吉利","","iRepair","需聚合查询车辆信息"],
-["售后域","开单QB弹窗支持超链接","P2","需求已接收","韩思国/Daniel","南非吉利","","iRepair","权荣民跟进中"],
-["售后域","智库支持大小写手输查询车型","P2","需求已接收","韩思国","南非吉利","","","车系支持模糊查询"],
-["售后域","workshop PO取消功能","P3","需求已接收","Michayla","南非吉利","","","解决刷数据问题"],
-["售后域/物流域","南非备件FOC免费订单合并","P1","需求确认中","华淑君","南非吉利","","OTWB","让罗涛和梁俊杰评估"],
-["物流域","4月盘点备件盘亏处理","P1","需求已上线","韩思国/李朋","南非吉利","","OTWB/SAP","已对完并过账"],
-["财务域","南非经销商信用额度需求","P2","需求已接收","商滢瀛/薛佳豪","南非吉利","黄小鸥/郑书宣","OTD","计划11月初上线"],
-["财务域","经销商对账功能","P2","需求确认中","商滢瀛","南非吉利","王娟/吴宗整","SAP","待fund功能修复"],
-["财务域","南非备件return order在SAP记账","P1","需求已接收","韩思国/Michayla","南非吉利","","SAP/iParts","需切换SAP标准接口"],
-["财务域","南非整车发票问题","P1","需求已上线","商滢瀛","南非吉利","","OTD","7.23上线"],
-["IT运维","属地IT工作规范与系统培训","-","需求已上线","Roberto","南非吉利","","","发布培训计划及工作规范"],
-["BI域","BI线索报表CMS对接CRM","P2","需求已接收","石红梅/郑一丁","南非吉利","","BI/CRM","先注册开放平台"],
-["用户域","南非官网UI设计","P2","需求开发中","Nomfundo","南非吉利&极氪","","官网","极氪8.20上线,吉利10月中"],
-["用户域","南非属地DMS系统建设","P2","需求确认中","Roberto","南非吉利","","DMS","待沟通"],
-["销售域","南非子公司车辆采购","P1","需求确认中","薛佳豪","南非吉利","","OTD","需梳理使用场景"],
-["销售域","南非车辆转仓转库支持","P1","需求确认中","薛佳豪","南非吉利","","OTD/OTWB","需梳理业务场景"],
-["售后域","iRepair系统南非英语适配","P1","需求已上线","韩思国","南非吉利","","iRepair","已支持"],
-["售后域","DMS系统车辆pre-alert和PDI检查","P2","需求确认中","韩思国","南非吉利","","DMS","需和DMS确认方案"],
-["销售域","OTD系统南非英语适配","P1","需求开发中","薛佳豪","南非吉利","","OTD","10月底发布"],
-["销售域","经销商下单页面批量下单优化","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","经销商车辆库存页面优化","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","经销商订单管理页面优化","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","经销商订单批量选择配置功能","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","经销商订单批量选择经销商功能","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","经销商订单批量选择经销商和车辆","P2","需求确认中","薛佳豪","南非吉利","","iSales","10月版本"],
-["销售域","南非子公司向总部下单支持","P1","需求已接收","薛佳豪/刘立志","南非吉利","","OTD","需梳理业务场景"],
-["销售域","经销商融资管理系统","P2","需求确认中","薛佳豪","南非吉利","","","需和金融团队沟通"],
-["用户域","南非官网极氪品牌页面","P1","需求已上线","郑一丁","南非极氪","","官网","极氪8.20上线"],
-["用户域","南非官网领克品牌页面","P1","需求开发中","郑一丁","南非领克","","官网","领克计划10月中上线"],
-["销售域","极氪领克大客户方案","P1","需求开发中","温辉豪","南非极氪&领克","","OTD/SAP","10.22上线后安排"],
-["售后域","索赔系统优化本地人工支持","P1","需求已上线","Daniel","南非吉利","周语薇","索赔","8月底上线"],
-["财务域","请款文件自动生成和额度检查","P2","需求开发中","商滢瀛","南非吉利","黄小鸥","OTD","跟wesbank接口已通"]
-];
+var originalData = [];
+var isEditMode = false;
+var EDIT_PASSWORD = "123456";
+var currentLang = localStorage.getItem('sa_dashboard_lang') || 'zh';
+
+/* ====== I18N: UI 文本翻译 ====== */
+var I18N = {
+  zh: {
+    pageTitle: "南非IT需求进度看板",
+    editMode: "编辑模式",
+    subtitle: "数据来源: 南非需求跟进表 | 同步时间: ",
+    edit: "编辑",
+    save: "保存",
+    syncToFeishu: "同步到飞书",
+    cancel: "取消",
+    chartTitle1: "按业务域分布",
+    chartTitle2: "按状态分布",
+    chartTitle3: "按优先级分布",
+    chartTitle4: "按涉及品牌分布",
+    filterLabel: "筛选:",
+    filterDomainAll: "全部业务域",
+    filterStatusAll: "全部状态",
+    filterPriorityAll: "全部优先级",
+    filterSearchPh: "搜索需求说明/提出人...",
+    thIndex: "#",
+    thDomain: "业务域",
+    thDesc: "需求说明",
+    thPriority: "优先级",
+    thStatus: "状态",
+    thProposer: "提出人",
+    thBrand: "涉及品牌",
+    thPM: "产品经理",
+    thSystem: "对应系统",
+    thProgress: "当前进展",
+    footer: "南非IT需求进度可视化看板 | 支持编辑和反向同步",
+    modalTitle: "输入编辑密码",
+    modalPwdPh: "请输入密码",
+    modalCancel: "取消",
+    modalConfirm: "确认",
+    pwdError: "密码错误！",
+    sumTotal: "总需求数",
+    sumOnline: "已上线",
+    sumDev: "开发中",
+    sumReceived: "已接收",
+    sumConfirm: "确认中",
+    sumRejected: "已拒绝",
+    sumMerged: "已合并",
+    editModeEnter: "已进入编辑模式，可以直接修改表格内容",
+    cancelEditConfirm: "确定要取消编辑吗？未保存的修改将丢失。",
+    saveLocalOk: "修改已保存到本地",
+    noChanges: "没有检测到修改",
+    syncExportOk: "修改记录已导出，请运行同步脚本上传到飞书",
+    fieldDomain: "业务域",
+    fieldDesc: "需求说明",
+    fieldPriority: "优先级",
+    fieldStatus: "状态",
+    fieldProposer: "提出人",
+    fieldBrand: "涉及品牌",
+    fieldPM: "产品经理",
+    fieldSystem: "对应系统",
+    fieldProgress: "当前进展",
+    fieldUnknown: "未知字段"
+  },
+  en: {
+    pageTitle: "South Africa IT Requirement Dashboard",
+    editMode: "Edit Mode",
+    subtitle: "Data Source: SA Requirement Tracking Sheet | Sync Time: ",
+    edit: "Edit",
+    save: "Save",
+    syncToFeishu: "Sync to Feishu",
+    cancel: "Cancel",
+    chartTitle1: "By Business Domain",
+    chartTitle2: "By Status",
+    chartTitle3: "By Priority",
+    chartTitle4: "By Brand",
+    filterLabel: "Filter:",
+    filterDomainAll: "All Domains",
+    filterStatusAll: "All Status",
+    filterPriorityAll: "All Priorities",
+    filterSearchPh: "Search description/proposer...",
+    thIndex: "#",
+    thDomain: "Domain",
+    thDesc: "Description",
+    thPriority: "Priority",
+    thStatus: "Status",
+    thProposer: "Proposer",
+    thBrand: "Brand",
+    thPM: "Product Manager",
+    thSystem: "System",
+    thProgress: "Progress",
+    footer: "South Africa IT Requirement Dashboard | Edit & Reverse Sync Supported",
+    modalTitle: "Enter Edit Password",
+    modalPwdPh: "Enter password",
+    modalCancel: "Cancel",
+    modalConfirm: "Confirm",
+    pwdError: "Wrong password!",
+    sumTotal: "Total",
+    sumOnline: "Live",
+    sumDev: "In Dev",
+    sumReceived: "Received",
+    sumConfirm: "Confirming",
+    sumRejected: "Rejected",
+    sumMerged: "Merged",
+    editModeEnter: "Edit mode activated. You can now modify table content directly.",
+    cancelEditConfirm: "Are you sure you want to cancel editing? Unsaved changes will be lost.",
+    saveLocalOk: "Changes saved locally",
+    noChanges: "No changes detected",
+    syncExportOk: "Change records exported. Please run sync script to upload to Feishu.",
+    fieldDomain: "Domain",
+    fieldDesc: "Description",
+    fieldPriority: "Priority",
+    fieldStatus: "Status",
+    fieldProposer: "Proposer",
+    fieldBrand: "Brand",
+    fieldPM: "Product Manager",
+    fieldSystem: "System",
+    fieldProgress: "Progress",
+    fieldUnknown: "Unknown Field"
+  }
+};
+
+function t(key) { return I18N[currentLang][key] || key; }
+
+/* ====== 数据字段翻译映射 ====== */
+var DOMAIN_EN = {
+  "用户域": "User Domain",
+  "销售域": "Sales Domain",
+  "售后域": "After-Sales Domain",
+  "售后域/物流域": "After-Sales/Logistics",
+  "物流域": "Logistics Domain",
+  "财务域": "Finance Domain",
+  "IT运维": "IT Operations",
+  "BI域": "BI Domain"
+};
+
+var STATUS_EN = {
+  "需求已上线": "Live",
+  "需求开发中": "In Development",
+  "需求确认中": "Confirming",
+  "需求已接收": "Received",
+  "需求拒绝": "Rejected",
+  "需求已合并": "Merged"
+};
+
+var BRAND_EN = {
+  "南非吉利": "SA Geely",
+  "南非极氪": "SA ZEEKR",
+  "南非吉利&极氪&领克": "SA Geely & ZEEKR & Lynk & Co"
+};
+
+var SYSTEM_EN = {
+  "官网": "Website",
+  "OTD": "OTD",
+  "OTD/OTWB/SAP等": "OTD/OTWB/SAP",
+  "OTD/SAP等": "OTD/SAP",
+  "索赔": "Warranty Claim",
+  "备件/索赔/维修等": "Parts/Claim/Repair",
+  "SAP": "SAP"
+};
+
+/* ====== 自由文本翻译映射（描述 & 进展） ====== */
+var DESC_EN = {
+  "官网嵌入金融申请入口页及金融计算器。": "Embed financial application entry page and financial calculator on the official website.",
+  "官网嵌入留资入口并打通CMS系统。": "Embed lead capture entry on official website and integrate with CMS system.",
+  "官网增加售后服务及网点模块。\n包括服务网络，手册下载，精品件展示，在线咨询应答等。": "Add after-sales service and dealer network module to official website. Including service network, manual download, accessory display, online consultation, etc.",
+  "增加雷达品牌车型官网页面，以及HR招聘模块。": "Add Riddara brand model pages to official website, plus HR recruitment module.",
+  "南非极氪官网": "South Africa ZEEKR Official Website",
+  "吉利官网“联系我们”页面补齐车型；经销商网点地图更新；外饰颜色呈现方式调整": "Geely website 'Contact Us' page add vehicle models; dealer network map update; exterior color display adjustment",
+  "app、官网的服务预约能力": "App and website service appointment capability",
+  "增加求职页面": "Add recruitment page",
+  "官网增加GA埋点分析": "Add Google Analytics tracking to official website",
+  "非洲总代国家向南非购买整车。": "African distributor countries purchase vehicles from South Africa.",
+  "领克非洲转口贸易下单支持。\n预计7月下旬支持通过香港公司转口贸易。": "Lynk & Co Africa transit trade order support. Expected to support transit trade via Hong Kong company by late July.",
+  "南非大客户订单。": "South Africa key account orders.",
+  "支持远程品牌销售。": "Support remote brand sales.",
+  "雷达车支持售后维保并对接生产工厂系统。": "Riddara vehicle support after-sales warranty and integration with production factory system.",
+  "区域经销商向南非下单（阿尔及利亚模式）": "Regional dealer orders to South Africa (Algeria model)",
+  "支持车辆类型为“内部车”，同时内部车不可被OTD配车。": "Support vehicle type 'internal vehicle', and internal vehicles cannot be allocated by OTD.",
+  "渠道网发支持子公司员工给属地门店网点员工标识“培训认证”": "Channel network support for subsidiary employees to mark 'training certification' for local dealership staff",
+  "对接南非车辆注册系统，在做零售上报同时完成车辆注册。": "Integrate with South Africa vehicle registration system, complete registration during retail reporting.",
+  "支持在线生成PR单的经销商向子公司采购PI\\CI\\PL": "Support online PR order generation for dealer-to-subsidiary PI/CI/PL procurement",
+  "Riddara品牌支持FOC订单": "Riddara brand support FOC (free of charge) orders",
+  "宝腾线下单生产车辆导入营销服": "Proton offline production vehicle import to marketing & service system",
+  "增加一种保修类型-服务包，要求不向总部索赔，且备件加价会和给总部索赔类型的加价百分比有区别。": "Add warranty type - service package, no claim to HQ, and parts markup differs from HQ claim type markup percentage.",
+  "发票增加门店税号字段。": "Add store tax ID field on invoices.",
+  "索赔发票下载时要求自动填充发票内容。": "Claim invoice download auto-fill invoice content.",
+  "售后支持雷达品牌。": "After-sales support for Riddara brand.",
+  "备件、售后对接宝腾系统。\n目前是自闭环方案，备件订单和售后索赔都线下通知宝腾。": "Parts and after-sales integration with Proton system. Currently self-loop solution, parts orders and claims notified to Proton offline.",
+  "维修服务索赔无法转移到保修索赔的优化": "Repair service claim transfer to warranty claim optimization",
+  "南非当地C端精品商城": "South Africa local C-end accessory mall",
+  "预约工单看板、维修进度看板": "Appointment work order board, repair progress board",
+  "售后经营管理BI看板": "After-sales business management BI dashboard",
+  "back order的Status Tracking里面记录申请取消的操作日志": "Back order Status Tracking - record cancel operation logs",
+  "索赔类型的维修工单需要支持系统开发票": "Claim type repair work order needs system invoice support",
+  "结算单创建增加索赔类型查询条件": "Settlement order creation add claim type query filter",
+  "车辆检索聚合页面": "Vehicle search aggregate page",
+  "开单QB弹窗支持超链接": "QB popup in order creation support hyperlinks",
+  "智库需要支持大小写手输查询车型": "Knowledge base needs case-insensitive vehicle model search",
+  "workshop PO取消功能": "Workshop PO cancellation function",
+  "南非备件FOC免费订单合并作业需求": "South Africa parts FOC free order consolidation work requirement",
+  "4月份盘点结果，其中一部分备件盘亏并由三方物流支付": "April inventory count results - some parts shortfall paid by 3PL",
+  "南非经销商信用额度需求。": "South Africa dealer credit limit requirement.",
+  "经销商对账功能。": "Dealer reconciliation function.",
+  "支持南非备件return order在财务侧sap系统进销存及记账。": "Support SA parts return order in finance SAP system inventory and accounting.",
+  "南非整车发票问题。目前都是手工开的。": "SA vehicle invoice issue. Currently all manually issued.",
+  "属地IT工作规范与系统培训支持。": "Local IT work standards and system training support.",
+  "BI线索报表，需要CMS对接CRM": "BI lead report, needs CMS to CRM integration"
+};
+
+var PROGRESS_EN = {
+  "7.7已上线并培训完成； 8月版本完成。": "Online since 7.7, training completed; August version done.",
+  "7.7上线。": "Online since 7.7.",
+  "开发中，计划7月底上线。": "In development, planned online by end of July.",
+  "发布培训计划及工作规范。": "Published training plan and work standards.",
+  "详见0716 Nomfundo邮件。": "See 0716 Nomfundo email for details.",
+  "2026.5已上线": "Online since May 2026",
+  "2026.6已上线": "Online since June 2026",
+  "2026.7月中": "Mid July 2026",
+  "7.23上线": "Online since 7.23",
+  "郑一丁目前跟进中，预计10.30极氪车入驻南非。 对接海霞团队刘小雨。 0904更新：官网预热页9/14 上线  9/10提测。 0914更新：官网预热页9/16上线。": "Zheng Yiding following up, ZEEKR vehicles expected in SA by 10.30. Connecting Haixia team Liu Xiaoyu. 0904 update: Preview page launched 9/14, submitted for testing 9/10. 0914 update: Preview page launched 9/16.",
+  "app：极氪能力已有；吉利需要融合版本上线后才支持开发，从融合完毕到支持app预约还要1个月； 官网：极氪、吉利都暂无。0727已和业务沟通确认暂不做官网。 服务预约能力吉利计划9月底uat，10月中旬上线。 0915更新：方案变更，10月底发布。": "App: ZEEKR capability available; Geely needs fusion version launch before dev support, ~1 month from fusion to app appointment. Website: neither available. 0727 confirmed no website for now. Geely service appointment UAT end of Sept, launch mid-Oct. 0915 update: Plan changed, launch end of October.",
+  "求职页面，三个页面：整体介绍页，岗位详情页，申请岗位也表单。参考吉利英国官网。": "Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website.",
+  "7.31完成初步需求沟通，需要业务提供相关GTM container ID和DataLayer。待业务回复。": "7.31 completed preliminary requirement discussion, need business to provide GTM container ID and DataLayer. Awaiting business response.",
+  "目前都是手工生成的，需要支持系统自动处理。 0915：10月份已排满，预计11月份。": "Currently all manually generated, need system auto-processing support. 0915: October fully scheduled, expected November.",
+  "待10月中旬需求分析，产品：朱佳琳、吕倩。": "Pending requirement analysis mid-October, product: Zhu Jialin, Lyu Qian.",
+  "1380台历史宝腾工厂生产订单导入，10.7完成IT侧需求同步，待俞海波团队提供解决方案。": "1380 historical Proton factory production orders import, 10.7 completed IT side requirement sync, pending Yu Haibo team to provide solution.",
+  "目前宝腾只有SAP没有别的系统。 待宝腾给出系统上线计划后再制定接入计划。 目前宝腾要求9.30实施部署完成。ACOTECH 暂无进展。": "Currently Proton only has SAP, no other system. Pending Proton to provide system online plan before making integration plan. Currently Proton requires 9.30 implementation deployment completion. ACOTECH no progress.",
+  "UI需要设计，计划9月底。 0920更新：李晓庆回复1013上线。": "UI needs design, planned end of Sept. 0920 update: Li Xiaoqing replied online 1013.",
+  "0821业务提出需求，这样她就能告诉申请的那个人不要这么做。待产品评估。---应俊俊 0826确认11月中旬上线。": "0821 business raised requirement, this way she can tell the applicant not to do this. Pending product evaluation. --- Ying Junjun. 0826 confirmed online mid-November.",
+  "南非市场惯例是索赔类型的维修工单，也需要开发票给客户签字确认，经销商再拿着这个发票来索赔系统上传并索赔，所以需要iRepair系统也支持索赔类型工单开票 权荣民跟进中": "SA market practice is claim-type repair work orders also need to issue invoice for customer signature confirmation, dealer then takes this invoice to claim system to upload and claim, so need iRepair system to also support claim-type work order invoicing. Quan Rongmin following up.",
+  "在创建结算单的时候增加一个查询条件，可以按照索赔单的索赔类型来筛选，业务需要区分市场活动索赔和常规索赔，因为需要打款到不同的经销商账户": "When creating settlement, add a query condition to filter by claim type from claim order, business needs to distinguish market activity claims and regular claims, because need to pay to different dealer accounts",
+  "需要提供一个售后整体的聚合查询车辆的页面，可以查看车辆信息、保修时间、历史工单记录（屏蔽价格只展示工项）、历史索赔记录（屏蔽价格只展示工项）、涉及质量活动、通知公告等信息": "Need to provide an after-sales overall aggregated vehicle search page, can view vehicle information, warranty time, historical work order records (hide price only show work items), historical claim records (hide price only show work items), involved quality activities, notification announcements and other information",
+  "在iRepair开单时QB弹窗的单号上可以增加超链接，方便服务顾问和技师点击跳转查看详情 权荣民跟进中": "When creating work order in iRepair, can add hyperlink on QB popup order number, convenient for service advisor and technician to click and jump to view details. Quan Rongmin following up.",
+  "车系支持手输，不区分大小写模糊查询。 具体页面参考附件截图。": "Vehicle series supports manual input, case-insensitive fuzzy query. Specific page reference attached screenshot.",
+  "解决遇到类似情况只能刷数据的问题，": "Solve the problem of only being able to fix via data refresh in similar situations.",
+  "0915更新：让罗涛和梁俊杰评估业务诉求。看是否有办法让仓库业务不要重复关单动作。": "0915 update: let Luo Tao and Liang Junjie evaluate business requirements. See if there is a way to avoid warehouse business repeating order closure actions.",
+  "现在清单还有一些疑问等李朋和你们完全确认好会发邮件出来，然后it这边有一套现成的方案可以手动处理完成otwb/SAP库存扣减和财务收款。 0721已对完，仓库和SAP同时盘亏，且SAP过账。后续业务和财务操作有问题再联系IT。": "Now the list still has some questions, waiting for Li Peng to fully confirm with you then will send email, then IT side has a ready-made solution that can manually process to complete otwb/SAP inventory deduction and financial collection. 0721 already confirmed, warehouse and SAP simultaneously had shortage, and SAP posted. If subsequent business and financial operations have issues, contact IT.",
+  "财务需求，财务bp王娟负责跟进。预计7.23上线。 We require the final template to replicate this exact grid, section placement and data field alignment. 1.    Order no. 2.    Payment terms. 3.    Legacy code.  4.    Model code. 5.    Models. 6.    Engine/Motor number.": "Finance requirement, BP Wang Juan following up. Expected 7.23 launch. We require the final template to replicate this exact grid, section placement and data field alignment. 1. Order no. 2. Payment terms. 3. Legacy code. 4. Model code. 5. Models. 6. Engine/Motor number.",
+  "0909更新：和CMS的Leigh沟通了，先注册开放平台。同时CRM和BI侧对齐需要的数据信息。": "0909 update: Communicated with CMS's Leigh, registered open platform first. CRM and BI aligning required data.",
+  "0728进展：8月份需求没有排进去，待组织和产品的会议重新聊一下，建议找王涛沟通下，有类似的功能。 0730，涉及信用查询是否cover订单，信用金额锁定/解锁，信用额度下单起款。由黄小鸥发出邮件说明。 0804更新，根据南非商老师那边回复的邮件，小鸥会先推进南非请款文件的自动生成和额度检查接口的临界值探测。 请款文件的话，目前我们跟wesbank的接口已经通了，正在跟OTD订单中心确认南非这边需要的字段是否可以提供，如果没问题的话就可以跟订单中心安排协同排期了 0909更新：待信用池方案出来以后排期，当前预估计划10月版本。 0918更新：金融小鸥反馈目前待评审，计划11月初和isales功能一起上线。": "0728 progress: August requirements not scheduled, pending organization and product meeting to re-discuss, suggest finding Wang Tao to communicate, has similar functionality. 0730, involves credit query whether covers orders, credit amount lock/unlock, credit limit order placement. Huang Xiaoou to send email explanation. 0804 update, according to SA business teacher email reply, Xiaoou will first promote SA payment document auto-generation and limit check interface threshold detection. For payment documents, currently our interface with wesbank is connected, confirming with OTD order center SA side needed fields whether can provide, if no problem can arrange collaborative scheduling with order center. 0909 update: pending credit pool solution出来后 scheduling, currently estimated plan October version. 0918 update: Finance Xiaoou feedback currently pending review, planned early November online with isales function.",
+  "财务需求，财务bp王娟负责跟进。 0728最新沟通结论：王娟负责跟进，墨西哥，中东，南非都有这个诉求，计划先用BI工具满足需求，预计本周内组织会议沟通讨论。 0827更新：待fund功能修复且return order功能用起来--高坚洛。十月底。": "Financial requirement, financial BP Wang Juan responsible for following up. 0728 latest communication conclusion: Wang Juan responsible for following up, Mexico, Middle East, SA all have this requirement, plan to first use BI tool to meet requirements, expected to organize meeting for communication and discussion this week. 0827 update: waiting for fund function fix and return order function to be used -- Gao Jianlu. End of October.",
+  "现在南非备件的退货业务在业务端能用，但是业财结合部分暂时不可用。 援引产品王楠的描述： 需要给一个需求让iParts和SAP调通接口，对齐业务逻辑。 因为南非上线较早，使用的是SAP的一个老接口来推送销售单的，现在因为全球统一方案的原因，需要将老的销售单接口ZSDI_SALE_ORDER切换到SAP侧最新的标准销售单接口：ZSDI003_OTD_SALES_O": "Currently SA parts return order business can be used on business side, but business-finance integration part temporarily unavailable. Quoting product Wang Nan description: need to give a requirement to let iParts and SAP connect interface, align business logic. Because SA went online earlier, using an old SAP interface to push sales orders, now because of global unified solution reasons, need to switch old sales order interface ZSDI_SALE_ORDER to SAP side latest standard sales order interface: ZSDI003_OTD_SALES_O"
+};
+
+/* ====== 翻译辅助函数 ====== */
+function trDomain(v) { return currentLang === 'en' ? (DOMAIN_EN[v] || v) : v; }
+function trStatus(v) { return currentLang === 'en' ? (STATUS_EN[v] || v) : v; }
+function trBrand(v) { return currentLang === 'en' ? (BRAND_EN[v] || v) : v; }
+function trSystem(v) { return currentLang === 'en' ? (SYSTEM_EN[v] || v) : v; }
+function trDesc(v) { return currentLang === 'en' ? (DESC_EN[v] || v) : v; }
+function trProgress(v) { return currentLang === 'en' ? (PROGRESS_EN[v] || v) : v; }
+
+/* 获取当前语言的显示数据（不影响原始 DATA） */
+function getDisplayData() {
+  return DATA.map(function(r) {
+    return [
+      trDomain(r[0]),
+      trDesc(r[1]),
+      r[2], // priority 保持不变
+      trStatus(r[3]),
+      r[4], // proposer 保持不变
+      trBrand(r[5]),
+      r[6], // PM 保持不变
+      trSystem(r[7]),
+      trProgress(r[8])
+    ];
+  });
+}
+
+/* ====== 应用语言到静态 UI ====== */
+function applyLang() {
+  document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+  document.title = t('pageTitle');
+
+  var pageTitleEl = document.getElementById('pageTitle');
+  pageTitleEl.innerHTML = t('pageTitle') + ' <span class="edit-indicator" id="editModeLabel">' + t('editMode') + '</span>';
+
+  document.getElementById('subtitle').innerHTML = t('subtitle') + '<span id="syncTime">' + (document.getElementById('syncTime') ? document.getElementById('syncTime').textContent : '-') + '</span>';
+
+  document.getElementById('editBtn').textContent = t('edit');
+  document.getElementById('saveBtn').textContent = t('save');
+  document.getElementById('syncBtn').textContent = t('syncToFeishu');
+  document.getElementById('cancelBtn').textContent = t('cancel');
+
+  document.getElementById('chartTitle1').textContent = t('chartTitle1');
+  document.getElementById('chartTitle2').textContent = t('chartTitle2');
+  document.getElementById('chartTitle3').textContent = t('chartTitle3');
+  document.getElementById('chartTitle4').textContent = t('chartTitle4');
+
+  document.getElementById('filterLabel').textContent = t('filterLabel');
+  document.getElementById('filterDomainAll').textContent = t('filterDomainAll');
+  document.getElementById('filterStatusAll').textContent = t('filterStatusAll');
+  document.getElementById('filterPriorityAll').textContent = t('filterPriorityAll');
+  document.getElementById('filterSearch').placeholder = t('filterSearchPh');
+
+  var ths = document.getElementById('tableHeader').children;
+  ths[0].textContent = t('thIndex');
+  ths[1].textContent = t('thDomain');
+  ths[2].textContent = t('thDesc');
+  ths[3].textContent = t('thPriority');
+  ths[4].textContent = t('thStatus');
+  ths[5].textContent = t('thProposer');
+  ths[6].textContent = t('thBrand');
+  ths[7].textContent = t('thPM');
+  ths[8].textContent = t('thSystem');
+  ths[9].textContent = t('thProgress');
+
+  document.getElementById('footerText').textContent = t('footer');
+  document.getElementById('modalTitle').textContent = t('modalTitle');
+  document.getElementById('passwordInput').placeholder = t('modalPwdPh');
+  document.getElementById('modalCancelBtn').textContent = t('modalCancel');
+  document.getElementById('modalConfirmBtn').textContent = t('modalConfirm');
+
+  var langBtn = document.getElementById('langBtn');
+  langBtn.textContent = currentLang === 'zh' ? 'EN' : '中文';
+  langBtn.className = currentLang === 'en' ? 'btn lang-btn active-lang' : 'btn lang-btn';
+}
+
+/* ====== 语言切换 ====== */
+function toggleLang() {
+  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('sa_dashboard_lang', currentLang);
+  applyLang();
+  populateFilters();
+  applyFilters();
+}
+
+/* ====== 核心逻辑 ====== */
+function loadData() {
+  // 始终使用脚本注入的飞书数据，不读 localStorage 缓存
+  originalData = JSON.parse(JSON.stringify(DATA));
+}
+
+function saveToLocal() {
+  localStorage.setItem('sa_dashboard_data', JSON.stringify(DATA));
+}
 
 var statusMap = {"需求已上线":"badge-online","需求开发中":"badge-dev","需求确认中":"badge-confirm","需求已接收":"badge-received","需求拒绝":"badge-rejected","需求已合并":"badge-merged"};
 var priMap = {"P0":"pri-p0","P1":"pri-p1","P2":"pri-p2","P3":"pri-p3"};
 
-function countBy(arr, idx) {
-  var m = {};
-  arr.forEach(function(r) { var v = r[idx] || "-"; m[v] = (m[v]||0)+1; });
-  return Object.entries(m).sort(function(a,b){return b[1]-a[1];});
-}
+function countBy(arr, idx) { var m = {}; arr.forEach(function(r) { var v = r[idx] || "-"; m[v] = (m[v]||0)+1; }); return Object.entries(m).sort(function(a,b){return b[1]-a[1];}); }
 
 function renderSummary(data) {
   var total = data.length;
-  var online = data.filter(function(r){return r[3]==="需求已上线";}).length;
-  var dev = data.filter(function(r){return r[3]==="需求开发中";}).length;
-  var confirm = data.filter(function(r){return r[3]==="需求确认中";}).length;
-  var received = data.filter(function(r){return r[3]==="需求已接收";}).length;
-  var rejected = data.filter(function(r){return r[3]==="需求拒绝";}).length;
-  var merged = data.filter(function(r){return r[3]==="需求已合并";}).length;
-  document.getElementById("summaryRow").innerHTML = 
-    '<div class="summary-card"><div class="num num-blue">'+total+'</div><div class="label">总需求数</div></div>'+
-    '<div class="summary-card"><div class="num num-green">'+online+'</div><div class="label">已上线</div></div>'+
-    '<div class="summary-card"><div class="num num-orange">'+dev+'</div><div class="label">开发中</div></div>'+
-    '<div class="summary-card"><div class="num num-purple">'+received+'</div><div class="label">已接收</div></div>'+
-    '<div class="summary-card"><div class="num num-blue">'+confirm+'</div><div class="label">确认中</div></div>'+
-    '<div class="summary-card"><div class="num num-red">'+rejected+'</div><div class="label">已拒绝</div></div>'+
-    '<div class="summary-card"><div class="num num-teal">'+merged+'</div><div class="label">已合并</div></div>';
+  var online = data.filter(function(r){return r[3]==="需求已上线"||r[3]==="Live";}).length;
+  var dev = data.filter(function(r){return r[3]==="需求开发中"||r[3]==="In Development";}).length;
+  var received = data.filter(function(r){return r[3]==="需求已接收"||r[3]==="Received";}).length;
+  var confirm = data.filter(function(r){return r[3]==="需求确认中"||r[3]==="Confirming";}).length;
+  var rejected = data.filter(function(r){return r[3]==="需求拒绝"||r[3]==="Rejected";}).length;
+  var merged = data.filter(function(r){return r[3]==="需求已合并"||r[3]==="Merged";}).length;
+  document.getElementById("summaryRow").innerHTML =
+    '<div class="summary-card"><div class="num num-blue">'+total+'</div><div class="label">'+t('sumTotal')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-green">'+online+'</div><div class="label">'+t('sumOnline')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-orange">'+dev+'</div><div class="label">'+t('sumDev')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-purple">'+received+'</div><div class="label">'+t('sumReceived')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-blue">'+confirm+'</div><div class="label">'+t('sumConfirm')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-red">'+rejected+'</div><div class="label">'+t('sumRejected')+'</div></div>'+
+    '<div class="summary-card"><div class="num num-teal">'+merged+'</div><div class="label">'+t('sumMerged')+'</div></div>';
 }
 
 function renderBarChart(containerId, entries, colors) {
@@ -202,10 +530,19 @@ function renderCharts(data) {
   renderBarChart("domainChart", countBy(data, 0), barColors);
   renderBarChart("statusChart", countBy(data, 3), ["#137333","#b06000","#7b1fa2","#1967d2","#c5221f","#00695c"]);
   renderBarChart("priorityChart", countBy(data, 2), ["#c5221f","#b06000","#1967d2","#666"]);
-  renderBarChart("brandChart", countBy(data, 4), barColors);
+  renderBarChart("brandChart", countBy(data, 5), barColors);
 }
 
 function populateFilters() {
+  var dSel = document.getElementById("filterDomain");
+  var sSel = document.getElementById("filterStatus");
+  var pSel = document.getElementById("filterPriority");
+
+  // 保留第一个 option（全部），重置后面的
+  while (dSel.children.length > 1) dSel.removeChild(dSel.lastChild);
+  while (sSel.children.length > 1) sSel.removeChild(sSel.lastChild);
+  while (pSel.children.length > 1) pSel.removeChild(pSel.lastChild);
+
   var domains = [], statuses = [], priorities = [];
   DATA.forEach(function(r) {
     if (domains.indexOf(r[0])<0) domains.push(r[0]);
@@ -213,25 +550,53 @@ function populateFilters() {
     if (priorities.indexOf(r[2])<0) priorities.push(r[2]);
   });
   domains.sort(); statuses.sort(); priorities.sort();
-  var dSel = document.getElementById("filterDomain");
-  domains.forEach(function(d) { var o = document.createElement("option"); o.value=d; o.textContent=d; dSel.appendChild(o); });
-  var sSel = document.getElementById("filterStatus");
-  statuses.forEach(function(s) { var o = document.createElement("option"); o.value=s; o.textContent=s; sSel.appendChild(o); });
-  var pSel = document.getElementById("filterPriority");
+  domains.forEach(function(d) { var o = document.createElement("option"); o.value=d; o.textContent=trDomain(d); dSel.appendChild(o); });
+  statuses.forEach(function(s) { var o = document.createElement("option"); o.value=s; o.textContent=trStatus(s); sSel.appendChild(o); });
   priorities.forEach(function(p) { var o = document.createElement("option"); o.value=p; o.textContent=p; pSel.appendChild(o); });
 }
 
 function renderTable(data) {
+  var displayData = getDisplayData();
+
+  // data 是过滤后的原始 DATA 子集，需要找到在 displayData 中对应的行
   var tbody = document.getElementById("tableBody");
   var html = "";
   for (var i = 0; i < data.length; i++) {
     var r = data[i];
+    // 找到在原始 DATA 中的索引
+    var origIdx = DATA.indexOf(r);
+    var dr = displayData[origIdx] || r;
+
     var sc = statusMap[r[3]] || "badge-confirm";
     var pc = priMap[r[2]] || "pri-p3";
-    var progressText = r[8] && r[8].length > 80 ? r[8].substring(0,80)+"..." : (r[8]||"-");
-    html += '<tr><td>'+(i+1)+'</td><td><span class="domain-tag">'+r[0]+'</span></td><td class="req-desc">'+r[1]+'</td><td><span class="pri '+pc+'">'+r[2]+'</span></td><td><span class="badge '+sc+'">'+r[3]+'</span></td><td>'+r[5]+'</td><td>'+r[4]+'</td><td>'+r[6]+'</td><td>'+r[7]+'</td><td class="progress-cell" title="'+r[8]+'">'+progressText+'</td></tr>';
+    var progressText = dr[8] && dr[8].length > 80 ? dr[8].substring(0,80)+"..." : (dr[8]||"-");
+
+    if (isEditMode) {
+      html += '<tr data-index="'+origIdx+'"><td>'+(i+1)+'</td>'+
+        '<td contenteditable="true" data-field="0">'+dr[0]+'</td>'+
+        '<td contenteditable="true" data-field="1" class="req-desc">'+dr[1]+'</td>'+
+        '<td contenteditable="true" data-field="2"><span class="pri '+pc+'">'+dr[2]+'</span></td>'+
+        '<td contenteditable="true" data-field="3"><span class="badge '+sc+'">'+dr[3]+'</span></td>'+
+        '<td contenteditable="true" data-field="4">'+dr[4]+'</td>'+
+        '<td contenteditable="true" data-field="5">'+dr[5]+'</td>'+
+        '<td contenteditable="true" data-field="6">'+dr[6]+'</td>'+
+        '<td contenteditable="true" data-field="7">'+dr[7]+'</td>'+
+        '<td contenteditable="true" data-field="8" class="progress-cell">'+dr[8]+'</td></tr>';
+    } else {
+      html += '<tr><td>'+(i+1)+'</td><td><span class="domain-tag">'+dr[0]+'</span></td><td class="req-desc">'+dr[1]+'</td><td><span class="pri '+pc+'">'+dr[2]+'</span></td><td><span class="badge '+sc+'">'+dr[3]+'</span></td><td>'+dr[4]+'</td><td>'+dr[5]+'</td><td>'+dr[6]+'</td><td>'+dr[7]+'</td><td class="progress-cell" title="'+dr[8]+'">'+progressText+'</td></tr>';
+    }
   }
   tbody.innerHTML = html;
+
+  if (isEditMode) {
+    tbody.querySelectorAll('td[contenteditable]').forEach(function(td) {
+      td.addEventListener('blur', function() {
+        var row = parseInt(this.parentElement.dataset.index);
+        var field = parseInt(this.dataset.field);
+        DATA[row][field] = this.textContent.trim();
+      });
+    });
+  }
 }
 
 function applyFilters() {
@@ -243,18 +608,131 @@ function applyFilters() {
     if (d && r[0] !== d) return false;
     if (s && r[3] !== s) return false;
     if (p && r[2] !== p) return false;
-    if (q && r[1].toLowerCase().indexOf(q)<0 && r[5].toLowerCase().indexOf(q)<0) return false;
+    if (q && r[1].toLowerCase().indexOf(q)<0 && r[4].toLowerCase().indexOf(q)<0) return false;
     return true;
   });
-  renderSummary(filtered);
-  renderCharts(filtered);
+
+  // 对过滤后的数据应用翻译用于图表和摘要
+  var displayFiltered = filtered.map(function(r) {
+    var idx = DATA.indexOf(r);
+    return [trDomain(r[0]), trDesc(r[1]), r[2], trStatus(r[3]), r[4], trBrand(r[5]), r[6], trSystem(r[7]), trProgress(r[8])];
+  });
+
+  renderSummary(displayFiltered);
+  renderCharts(displayFiltered);
   renderTable(filtered);
 }
 
-renderSummary(DATA);
-renderCharts(DATA);
-populateFilters();
-renderTable(DATA);
+// 编辑功能
+function toggleEdit() {
+  document.getElementById("passwordModal").classList.add("active");
+  document.getElementById("passwordInput").focus();
+}
+
+function closePasswordModal() {
+  document.getElementById("passwordModal").classList.remove("active");
+  document.getElementById("passwordInput").value = "";
+}
+
+function checkPassword() {
+  var pwd = document.getElementById("passwordInput").value;
+  if (pwd === EDIT_PASSWORD) {
+    closePasswordModal();
+    enterEditMode();
+  } else {
+    alert(t('pwdError'));
+    document.getElementById("passwordInput").value = "";
+  }
+}
+
+function enterEditMode() {
+  isEditMode = true;
+  document.body.classList.add("edit-mode");
+  document.getElementById("editBtn").style.display = "none";
+  document.getElementById("saveBtn").style.display = "inline-block";
+  document.getElementById("syncBtn").style.display = "inline-block";
+  document.getElementById("cancelBtn").style.display = "inline-block";
+  originalData = JSON.parse(JSON.stringify(DATA));
+  applyFilters();
+  showStatus(t('editModeEnter'), "info");
+}
+
+function cancelEdit() {
+  if (confirm(t('cancelEditConfirm'))) {
+    DATA = JSON.parse(JSON.stringify(originalData));
+    exitEditMode();
+  }
+}
+
+function exitEditMode() {
+  isEditMode = false;
+  document.body.classList.remove("edit-mode");
+  document.getElementById("editBtn").style.display = "inline-block";
+  document.getElementById("saveBtn").style.display = "none";
+  document.getElementById("syncBtn").style.display = "none";
+  document.getElementById("cancelBtn").style.display = "none";
+  applyFilters();
+}
+
+function saveChanges() {
+  saveToLocal();
+  showStatus(t('saveLocalOk'), "success");
+}
+
+function syncToFeishu() {
+  var fieldNames = [t('fieldDomain'),t('fieldDesc'),t('fieldPriority'),t('fieldStatus'),t('fieldProposer'),t('fieldBrand'),t('fieldPM'),t('fieldSystem'),t('fieldProgress')];
+  var changes = [];
+  for (var i = 0; i < DATA.length; i++) {
+    for (var j = 0; j < DATA[i].length; j++) {
+      if (DATA[i][j] !== originalData[i][j]) {
+        changes.push({
+          row: i + 3,
+          col: j,
+          field: fieldNames[j] || t('fieldUnknown'),
+          oldValue: originalData[i][j],
+          newValue: DATA[i][j]
+        });
+      }
+    }
+  }
+  if (changes.length === 0) {
+    showStatus(t('noChanges'), "info");
+    return;
+  }
+  var exportData = {
+    timestamp: new Date().toISOString(),
+    changes: changes,
+    fullData: DATA
+  };
+  var blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'feishu_sync_' + new Date().toISOString().slice(0,19).replace(/:/g,'-') + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showStatus(t('syncExportOk'), "success");
+  exitEditMode();
+}
+
+function showStatus(msg, type) {
+  var el = document.getElementById("syncStatus");
+  el.textContent = msg;
+  el.className = "sync-status show " + type;
+  setTimeout(function() {
+    el.classList.remove("show");
+  }, 5000);
+}
+
+// 初始化
+try {
+  loadData();
+  applyLang();
+  populateFilters();
+  applyFilters();
+} catch(e) {
+  console.error('Init error:', e);
+}
 </script>
 </body>
 </html>
