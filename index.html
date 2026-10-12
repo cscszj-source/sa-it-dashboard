@@ -97,7 +97,7 @@ tbody tr:hover { background: #f8f9ff; }
 <div class="header">
   <div>
     <h1 id="pageTitle">南非IT需求进度看板 <span class="edit-indicator" id="editModeLabel">编辑模式</span></h1>
-    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-12 10:38</span></p>
+    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-12 03:49</span></p>
   </div>
   <div class="header-actions">
     <button class="btn lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
@@ -109,7 +109,6 @@ tbody tr:hover { background: #f8f9ff; }
 </div>
 
 <div class="container">
-  <div id="debugInfo" style="display:none;background:#fff3cd;border:1px solid #ffc107;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:13px;color:#856404"></div>
   <div class="summary-row" id="summaryRow"></div>
   <div class="charts-row">
     <div class="chart-card"><h3 id="chartTitle1">按业务域分布</h3><div id="domainChart"></div></div>
@@ -316,6 +315,7 @@ var SYSTEM_EN = {
 var DESC_EN = {
   "官网嵌入金融申请入口页及金融计算器。": "Embed financial application entry page and financial calculator on the official website.",
   "官网嵌入留资入口并打通CMS系统。": "Embed lead capture entry on official website and integrate with CMS system.",
+  "官网增加售后服务及网点模块。\n包括服务网络，手册下载，精品件展示，在线咨询应答等。": "Add after-sales service and dealer network module to official website. Including service network, manual download, accessory display, online consultation, etc.",
   "增加雷达品牌车型官网页面，以及HR招聘模块。": "Add Riddara brand model pages to official website, plus HR recruitment module.",
   "南非极氪官网": "South Africa ZEEKR Official Website",
   "吉利官网“联系我们”页面补齐车型；经销商网点地图更新；外饰颜色呈现方式调整": "Geely website 'Contact Us' page add vehicle models; dealer network map update; exterior color display adjustment",
@@ -736,27 +736,12 @@ function showStatus(msg, type) {
 
 // 初始化
 try {
-  var dbg = document.getElementById('debugInfo');
-  dbg.style.display = 'block';
-  dbg.textContent = 'Loading... DATA rows: ' + DATA.length;
   loadData();
-  dbg.textContent += ' | After loadData: ' + DATA.length + ' rows';
   applyLang();
-  dbg.textContent += ' | applyLang OK';
   populateFilters();
-  dbg.textContent += ' | filters OK';
   applyFilters();
-  dbg.textContent += ' | render OK ✓';
-  setTimeout(function(){ dbg.style.display = 'none'; }, 3000);
 } catch(e) {
-  var dbg = document.getElementById('debugInfo');
-  dbg.style.display = 'block';
-  dbg.style.background = '#f8d7da';
-  dbg.style.color = '#721c24';
-  dbg.style.borderColor = '#f5c6cb';
-  dbg.textContent = 'ERROR: ' + e.message + ' | DATA rows: ' + DATA.length;
   console.error('Init error:', e);
-  try { renderSummary(DATA); renderCharts(DATA); renderTable(DATA); } catch(e2) { dbg.textContent += ' | Fallback also failed: ' + e2.message; }
 }
 </script>
 </body>
