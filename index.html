@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南非IT需求进度看板</title>
+<title>鍗楅潪IT闇€姹傝繘搴︾湅鏉?/title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; }
@@ -69,7 +69,7 @@ tbody tr:hover { background: #f8f9ff; }
 .footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
 @media (max-width: 900px) { .charts-row { grid-template-columns: 1fr; } .summary-row { grid-template-columns: repeat(3, 1fr); } }
 
-/* 编辑模式样式 */
+/* 缂栬緫妯″紡鏍峰紡 */
 .edit-mode tbody td { cursor: text; }
 .edit-mode tbody td:hover { background: #fff9c4; }
 .edit-mode tbody td[contenteditable="true"] { outline: 2px solid #1a73e8; background: #fff9c4; }
@@ -77,7 +77,7 @@ tbody tr:hover { background: #f8f9ff; }
 .edit-indicator { display: none; background: #e8850a; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-left: 10px; }
 .edit-mode .edit-indicator { display: inline-block; }
 
-/* 密码弹窗 */
+/* 瀵嗙爜寮圭獥 */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
 .modal-overlay.active { display: flex; }
 .modal { background: white; border-radius: 12px; padding: 30px; width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
@@ -85,7 +85,7 @@ tbody tr:hover { background: #f8f9ff; }
 .modal input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 15px; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
 
-/* 同步状态 */
+/* 鍚屾鐘舵€?*/
 .sync-status { position: fixed; bottom: 20px; right: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 999; }
 .sync-status.show { display: block; }
 .sync-status.success { border-left: 4px solid #0d9f4f; }
@@ -96,123 +96,126 @@ tbody tr:hover { background: #f8f9ff; }
 <body>
 <div class="header">
   <div>
-    <h1 id="pageTitle">南非IT需求进度看板 <span class="edit-indicator" id="editModeLabel">编辑模式</span></h1>
-    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-13 15:04</span></p>
+    <h1 id="pageTitle">鍗楅潪IT闇€姹傝繘搴︾湅鏉?<span class="edit-indicator" id="editModeLabel">缂栬緫妯″紡</span></h1>
+    <p id="subtitle">鏁版嵁鏉ユ簮: 鍗楅潪闇€姹傝窡杩涜〃 | 鍚屾鏃堕棿: <span id="syncTime">2026-10-13 15:34</span></p>
   </div>
   <div class="header-actions">
     <button class="btn lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
-    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()">编辑</button>
-    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none">保存</button>
-    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none">同步到飞书</button>
-    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none">取消</button>
+    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()">缂栬緫</button>
+    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none">淇濆瓨</button>
+    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none">鍚屾鍒伴涔?/button>
+    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none">鍙栨秷</button>
   </div>
 </div>
 
 <div class="container">
   <div class="summary-row" id="summaryRow"></div>
   <div class="charts-row">
-    <div class="chart-card"><h3 id="chartTitle1">按业务域分布</h3><div id="domainChart"></div></div>
-    <div class="chart-card"><h3 id="chartTitle2">按状态分布</h3><div id="statusChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle1">鎸変笟鍔″煙鍒嗗竷</h3><div id="domainChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle2">鎸夌姸鎬佸垎甯?/h3><div id="statusChart"></div></div>
   </div>
   <div class="charts-row">
-    <div class="chart-card"><h3 id="chartTitle3">按优先级分布</h3><div id="priorityChart"></div></div>
-    <div class="chart-card"><h3 id="chartTitle4">按涉及品牌分布</h3><div id="brandChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle3">鎸変紭鍏堢骇鍒嗗竷</h3><div id="priorityChart"></div></div>
+    <div class="chart-card"><h3 id="chartTitle4">鎸夋秹鍙婂搧鐗屽垎甯?/h3><div id="brandChart"></div></div>
   </div>
   <div class="filter-bar">
-    <label id="filterLabel">筛选:</label>
-    <select id="filterDomain" onchange="applyFilters()"><option value="" id="filterDomainAll">全部业务域</option></select>
-    <select id="filterStatus" onchange="applyFilters()"><option value="" id="filterStatusAll">全部状态</option></select>
-    <select id="filterPriority" onchange="applyFilters()"><option value="" id="filterPriorityAll">全部优先级</option></select>
-    <input type="text" id="filterSearch" placeholder="搜索需求说明/提出人..." oninput="applyFilters()">
+    <label id="filterLabel">绛涢€?</label>
+    <select id="filterDomain" onchange="applyFilters()"><option value="" id="filterDomainAll">鍏ㄩ儴涓氬姟鍩?/option></select>
+    <select id="filterStatus" onchange="applyFilters()"><option value="" id="filterStatusAll">鍏ㄩ儴鐘舵€?/option></select>
+    <select id="filterPriority" onchange="applyFilters()"><option value="" id="filterPriorityAll">鍏ㄩ儴浼樺厛绾?/option></select>
+    <input type="text" id="filterSearch" placeholder="鎼滅储闇€姹傝鏄?鎻愬嚭浜?.." oninput="applyFilters()">
   </div>
   <div class="table-card">
     <table id="dataTable">
-      <thead><tr id="tableHeader"><th>#</th><th>业务域</th><th>需求说明</th><th>优先级</th><th>状态</th><th>提出人</th><th>涉及品牌</th><th>产品经理</th><th>对应系统</th><th>当前进展</th></tr></thead>
+      <thead><tr id="tableHeader"><th>#</th><th>涓氬姟鍩?/th><th>闇€姹傝鏄?/th><th>浼樺厛绾?/th><th>鐘舵€?/th><th>鎻愬嚭浜?/th><th>娑夊強鍝佺墝</th><th>浜у搧缁忕悊</th><th>瀵瑰簲绯荤粺</th><th>褰撳墠杩涘睍</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
   </div>
-  <div class="footer" id="footerText">南非IT需求进度可视化看板 | 支持编辑和反向同步</div>
+  <div class="footer" id="footerText">鍗楅潪IT闇€姹傝繘搴﹀彲瑙嗗寲鐪嬫澘 | 鏀寔缂栬緫鍜屽弽鍚戝悓姝?/div>
 </div>
 
-<!-- 密码弹窗 -->
+<!-- 瀵嗙爜寮圭獥 -->
 <div class="modal-overlay" id="passwordModal">
   <div class="modal">
-    <h3 id="modalTitle">输入编辑密码</h3>
-    <input type="password" id="passwordInput" placeholder="请输入密码" onkeypress="if(event.key==='Enter')checkPassword()">
+    <h3 id="modalTitle">杈撳叆缂栬緫瀵嗙爜</h3>
+    <input type="password" id="passwordInput" placeholder="璇疯緭鍏ュ瘑鐮? onkeypress="if(event.key==='Enter')checkPassword()">
     <div class="modal-actions">
-      <button class="btn" onclick="closePasswordModal()" id="modalCancelBtn">取消</button>
-      <button class="btn btn-success" onclick="checkPassword()" id="modalConfirmBtn">确认</button>
+      <button class="btn" onclick="closePasswordModal()" id="modalCancelBtn">鍙栨秷</button>
+      <button class="btn btn-success" onclick="checkPassword()" id="modalConfirmBtn">纭</button>
     </div>
   </div>
 </div>
 
-<!-- 同步状态提示 -->
+<!-- 鍚屾鐘舵€佹彁绀?-->
 <div class="sync-status" id="syncStatus"></div>
 
-<script src="dashboard_data.js"></script>
+<script>
+var DATA = [["鐢ㄦ埛鍩?, "瀹樼綉宓屽叆閲戣瀺鐢宠鍏ュ彛椤靛強閲戣瀺璁＄畻鍣ㄣ€?, "P1", "闇€姹傚凡涓婄嚎", "閭撳崥鐒?, "鍗楅潪鍚夊埄", "鐜嬪€╄尮/榛勫皬楦?, "瀹樼綉", ""], ["鐢ㄦ埛鍩?, "瀹樼綉宓屽叆鐣欒祫鍏ュ彛骞舵墦閫欳MS绯荤粺銆?, "P1", "闇€姹傚凡涓婄嚎", "钖涗匠璞?, "鍗楅潪鍚夊埄", "鐜嬪€╄尮", "瀹樼綉", ""], ["鐢ㄦ埛鍩?, "瀹樼綉澧炲姞鍞悗鏈嶅姟鍙婄綉鐐规ā鍧椼€俓n鍖呮嫭鏈嶅姟缃戠粶锛屾墜鍐屼笅杞斤紝绮惧搧浠跺睍绀猴紝鍦ㄧ嚎鍜ㄨ搴旂瓟绛夈€?, "P2", "闇€姹傚凡涓婄嚎", "闊╂€濆浗", "鍗楅潪鍚夊埄", "鐜嬪€╄尮", "瀹樼綉", "1. 鍗楅潪鍞悗瀹樼綉闇€瑕佸祵鍏ョ簿鍝佸晢鍩庡姛鑳斤紝 @浣曞厛鍧?JamesHe)  璇峰府蹇欐媺閫氱簿鍝佸晢鍩庡拰鍗楅潪鍞悗鍥㈤槦杩涜闇€姹傛矡閫歕n2. 鍗楅潪鍞悗瀹樼綉闇€瑕佹湁鏈嶅姟棰勭害鍔熻兘锛?@浣曞厛鍧?JamesHe)  璇峰府蹇欐媺閫氬敭鍚庣淮淇郴缁熷拰鍗楅潪鍞悗鍥㈤槦杩涜闇€姹傛矡閫歕n3. 鍗楅潪鍞悗瀹樼綉鐨凜ontact Us闇€纭閿€鍞拰鍞悗inquiry type浠ュ強琛ㄥ崟鐨勭暀璧勯摼璺疈闊╂€濆浗(HankHan)\n鍊╄尮渚?鏈堜唤闇€姹傦細Geely SA 鍞悗椤甸渶姹?Phase 1 \n鐩墠閰嶇疆杩涘睍锛氳繕鍓╅挘鍠蜂腑蹇冨拰閮ㄥ垎缁翠慨鎵嬪唽鏈厤缃€傚彂甯冭鍒?鏈堜笅鏃€?], ["鐢ㄦ埛鍩?, "澧炲姞闆疯揪鍝佺墝杞﹀瀷瀹樼綉椤甸潰锛屼互鍙奌R鎷涜仒妯″潡銆?, "P1", "闇€姹傚凡涓婄嚎", "Nomfundo", "鍗楅潪鍚夊埄", "", "", "0709浼氳缁撹锛歕n1. 闆疯揪鐨則est drive landing page锛岄渶瑕佹寜鐓т笟鍔¤姹傚姞杞﹀瀷瀛楁涓旀湁banner銆傚悓鏃跺笇鏈涙妸鎵€鏈夊悏鍒╄溅鍨嬬殑test drive椤甸潰閮藉姞涓婅溅鍨嬨€俓n2. 姹傝亴椤甸潰锛屼笁涓〉闈細鏁翠綋浠嬬粛椤碉紝宀椾綅璇︽儏椤碉紝鐢宠宀椾綅涔熻〃鍗曘€傚弬鑰冨悏鍒╄嫳鍥藉畼缃戙€俓n浠ヤ笂涓や釜闇€姹傦紝闇€瑕佽瘎浼版柟妗堝強浜や粯鏃堕棿銆俓n0716鏇存柊锛歕n1. 闆疯揪闇€姹傝鏇存柊鏃堕棿锛?727灏辫姝ｅ紡寮€鍞簡銆傚畼缃戦渶瑕佸湪7鏈堝簳鏇存柊銆傜敱Nomfundo閰嶇疆銆?], ["鐢ㄦ埛鍩?, "鍗楅潪鏋佹蔼瀹樼綉", "P2", "闇€姹傚凡涓婄嚎", "閮戜竴涓?, "鍗楅潪鏋佹蔼", "", "", "閮戜竴涓佺洰鍓嶈窡杩涗腑锛岄璁?0.30鏋佹蔼杞﹀叆椹诲崡闈炪€俓n瀵规帴娴烽湠鍥㈤槦鍒樺皬闆ㄣ€俓n0904鏇存柊锛氬畼缃戦鐑〉9/14 涓婄嚎  9/10鎻愭祴銆俓n0914鏇存柊锛氬畼缃戦鐑〉9/16涓婄嚎銆?], ["鐢ㄦ埛鍩?, "鍚夊埄瀹樼綉"鑱旂郴鎴戜滑"椤甸潰琛ラ綈杞﹀瀷锛涚粡閿€鍟嗙綉鐐瑰湴鍥炬洿鏂帮紱澶栭グ棰滆壊鍛堢幇鏂瑰紡璋冩暣", "P1", "闇€姹傚凡涓婄嚎", "Nomfundo", "鍗楅潪鍚夊埄", "", "", "璇﹁0716 Nomfundo閭欢銆?], ["鐢ㄦ埛鍩?, "app銆佸畼缃戠殑鏈嶅姟棰勭害鑳藉姏", "P1", "闇€姹傚紑鍙戜腑", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "app锛氭瀬姘兘鍔涘凡鏈夛紱鍚夊埄闇€瑕佽瀺鍚堢増鏈笂绾垮悗鎵嶆敮鎸佸紑鍙戯紝浠庤瀺鍚堝畬姣曞埌鏀寔app棰勭害杩樿1涓湀锛沑n瀹樼綉锛氭瀬姘€佸悏鍒╅兘鏆傛棤銆?727宸插拰涓氬姟娌熼€氱‘璁ゆ殏涓嶅仛瀹樼綉銆俓n鏈嶅姟棰勭害鑳藉姏鍚夊埄璁″垝9鏈堝簳uat锛?0鏈堜腑鏃笂绾裤€俓n0915鏇存柊锛氭柟妗堝彉鏇达紝10鏈堝簳鍙戝竷銆?], ["鐢ㄦ埛鍩?, "澧炲姞姹傝亴椤甸潰", "P2", "闇€姹傜‘璁や腑", "Onela.Mtilwa", "鍗楅潪鍚夊埄", "", "", "姹傝亴椤甸潰锛屼笁涓〉闈細鏁翠綋浠嬬粛椤碉紝宀椾綅璇︽儏椤碉紝鐢宠宀椾綅涔熻〃鍗曘€傚弬鑰冨悏鍒╄嫳鍥藉畼缃戙€?], ["鐢ㄦ埛鍩?, "瀹樼綉澧炲姞GA鍩嬬偣鍒嗘瀽", "P2", "闇€姹傜‘璁や腑", "Onela.Mtilwa", "鍗楅潪鍚夊埄", "", "", "7.31瀹屾垚鍒濇闇€姹傛矡閫氾紝闇€瑕佷笟鍔℃彁渚涚浉鍏矴TM container ID鍜孌ataLayer銆傚緟涓氬姟鍥炲銆?], ["閿€鍞煙", "闈炴床鎬讳唬鍥藉鍚戝崡闈炶喘涔版暣杞︺€?, "P1", "闇€姹傚紑鍙戜腑", "钖涗匠璞?瀛欒秴", "鍗楅潪鍚夊埄&鏋佹蔼&棰嗗厠", "閮戜功瀹ｇ瓑", "OTD/OTWB/SAP绛?, "iSales 瀛愬叕鍙稿紓鍥戒氦鏄撴柟妗?\n0803-棰嗗厠鍜屾瀬姘篃鏈夐渶姹傦紝闇€瑕佽瘎浼?鎺掓湡銆傝阿鍗楀崡宸叉帴鍒帮紝寰呯粰鍑鸿瘎浼板拰鎺掓湡銆俓n0806-璋㈠崡鍗楀弽棣堬紝8鏈堜唤瀹屾垚鍚夊埄鍝佺墝锛?鏈堜唤鍋氭瀬姘搧鐗岋紝棰勮9鏈堝簳銆俓n褰撳墠鐘舵€侊細8.27鍚夊埄宸蹭笂绾匡紝鏋佹蔼棰嗗厠璁″垝10鏈堝簳涔嬪墠瀹屾垚銆俓n0918鏇存柊锛氭瀬姘鍏嬪緟鎺掓湡銆?], ["閿€鍞煙", "棰嗗厠闈炴床杞彛璐告槗涓嬪崟鏀寔銆俓n棰勮7鏈堜笅鏃敮鎸侀€氳繃棣欐腐鍏徃杞彛璐告槗銆?, "P0", "闇€姹傚凡涓婄嚎", "瀛欒秴", "鍗楅潪鍚夊埄", "鐜嬫稕", "OTD", "寰呭紑鍙戝畬鎴愩€傚彂甯冩椂闂磋皟鏁村埌0723浜嗐€俓n0805鏇存柊锛屽彂甯冩椂闂磋皟鏁村埌0813锛岃储鍔ap绯荤粺鍛ㄦ湯鍗囩骇锛屾墍浠ュ師鍏?806鐨勬椂闂村啀娆″欢鏈熴€俓n0812IT杩欒竟鍙嶉锛岃惀閿€鏈嶄晶绯荤粺璁″垝鏄庡ぉ8.13姝ｅ紡鍙戝竷锛孲AP璁″垝8.20鍙戝竷锛屼粨杩愮郴缁熻鍒?.25鍙戝竷銆?], ["閿€鍞煙", "鍗楅潪澶у鎴疯鍗曘€?, "P1", "闇€姹傚紑鍙戜腑", "娓╄緣璞?, "鍗楅潪鍚夊埄", "閮戜功瀹ｇ瓑", "OTD/SAP绛?, "宸插畬鎴愪笟鍔￠渶姹傝皟鐮斻€傜洰鍓嶅緟鎺掓湡銆俓n0728鏇存柊锛屼骇鍝佸惔缁村弽棣堥璁?鏈堝簳涓婄嚎銆俓n0908鏇存柊锛岃阿鍗楀崡鍙嶉9鏈?2鏃ヤ笂绾裤€?-涓嶈法鍥姐€俓n0910鏇存柊锛?0鏈堜唤銆?-璺ㄥ浗銆俓n0916鏇存柊锛?0.22涓婄嚎鏁翠綋澶у鎴锋柟妗堛€傛帴涓嬫潵瀹夋帓鏋佹蔼棰嗗厠澶у鎴锋柟妗堛€?], ["閿€鍞煙", "鏀寔杩滅▼鍝佺墝閿€鍞€?, "P1", "闇€姹傛嫆缁?, "娓╄緣璞?, "鍗楅潪鍚夊埄", "", "", "璁㈠崟绠＄悊閮ㄥ缓璁娇鐢ㄨ繙绋嬪叏濂楃郴缁熴€傝涓氬姟鍜岃繙绋嬩笟鍔″厛鎵撳拰銆侷T鏆傚仠鎺ㄥ姩銆?], ["閿€鍞煙", "闆疯揪杞︽敮鎸佸敭鍚庣淮淇濆苟瀵规帴鐢熶骇宸ュ巶绯荤粺銆?, "P1", "闇€姹傚凡涓婄嚎", "閭撳崥鐒?钖涗匠璞?, "鍗楅潪鍚夊埄", "", "", "1.鐗╂枡涓绘暟鎹淮鎶ゅ伐浣溿€傚緟缁勭粐鍒掕浆瀹屾垚鍚庡叿澶囩郴缁熷強瀹℃壒鏉冮檺鍚庣珛鍗冲紑濮嬫搷浣滐紝棰勮寮€濮嬫椂闂?.15--閮濆皯鍫傦紝鏀瑰埌7.20浜嗐€俓n2.鐢熶骇璁㈠崟鑷姩鍚屾闆疯揪宸ュ巶绯荤粺銆傞渶瑕佺瓑宸ュ巶绯荤粺涓婄嚎鍚庡悜IT鎻愰渶姹傚仛绯荤粺瀵规帴锛岄璁″紑濮嬫椂闂?.30--閮濆皯鍫俓n0907鏇存柊锛氬惔鏋楅灎鍙嶉vin鏁版嵁瀵煎叆鎻掍欢9.10涓婄嚎锛?.11瀵煎叆鍚庡啀璇锋€婚儴缁翠繚涓氬姟閰嶇疆涓绘暟鎹嵆鍙娇鐢ㄩ浄杈惧敭鍚庣淮淇濆姛鑳姐€俓n0918鏇存柊锛氶浄杈惧敭鍚庣淮淇濆凡楠岃瘉鏃犻棶棰橈紝isales鍜屽伐鍘傛墦閫氳鍒?929"], ["閿€鍞煙", "鍖哄煙缁忛攢鍟嗗悜鍗楅潪涓嬪崟锛堥樋灏斿強鍒╀簹妯″紡锛?, "P1", "闇€姹傚凡鍚堝苟", "鍒樼珛蹇?, "鍗楅潪鍚夊埄", "", "", "鍗楅潪瀛愬叕鍙稿皢瑙勫垝涓洪潪娲蹭笟鍔′腑蹇冿紝鏈潵浼氱敱鍗楅潪瀛愬叕鍙哥洿鎺ユ巿鏉冨叾浠栧浗瀹舵垨鍖哄煙鐨勭粡閿€鍟嗭紝璧勯噾娴佽蛋鍗楅潪锛屼絾杞﹁締涓嶈蛋鍗楅潪锛岃€屾槸鐩存帴鍙戝埌鐩殑閿€鍞浗\n褰撳墠鏂规锛氱幇鍦ㄧ殑绯荤粺鎿嶄綔涓婂彲浠ユ敮鎸侊紝浣嗘槸闇€瑕佸垎 2 娈碉紝鍗楅潪鎸夌収瀹㈡埛闇€姹備笅鍗曪紝浣嗘槸鐩殑鍦扮淮鎶や负瀹㈡埛鐩殑鍦帮紝缁忛攢鍟嗗啀涓嬪崟璧颁竴閬嶄氦浠樸€俓n\n杈炬垚浠ヤ笅缁撹鍙婁唬鍔烇細\n1锛庢暣杞︿复鏃舵柟妗堣鏄庝竴涓嬪彂鍑烘潵銆傛敞鎰忥細鏀规腐鍙ｆ柟妗堣繍淇濊垂鏄惁鏈夊奖鍝嶉渶瑕佸拰OTWB纭銆傝@閮戜功瀹?.3涓嬬彮鍓嶈緭鍑恒€俓n2锛庡浠舵柟妗堟殏瀹氬弬鑰冧腑涓滄柟妗堛€傝@搴斾繆淇?.17鍓嶈緭鍑轰腑涓滃浠舵柟妗堣鏄庡強鎺掓湡缁欏埌@闊╂€濆浗锛岀敱涓氬姟鍐冲畾鏄惁澶嶇敤涓笢鏂规銆俓n3锛庢暣杞︽暣浣撴柟妗堝強鎺掓湡銆傝@閮戜功瀹ｇ粨鍚堝墠鏈熸彁鐨勬€讳唬鍚戝瓙鍏徃涓嬪崟銆佸ぇ瀹㈡埛璁㈠崟闇€姹傦紝鎷夐€歄TD銆丱TWB鍜孲AP绛夊煙鍏卞悓鏁插畾锛屼簬7.10涔嬪墠缁欏嚭鏂规璇存槑鍙婇璁℃帓鏈熴€?], ["閿€鍞煙", "鏀寔杞﹁締绫诲瀷涓?鍐呴儴杞?锛屽悓鏃跺唴閮ㄨ溅涓嶅彲琚玂TD閰嶈溅銆?, "P1", "闇€姹傚凡涓婄嚎", "Xane", "鍗楅潪鍚夊埄", "璋㈠崡鍗?, "", "0819锛歕nWe require a solution for internal Company Cars, Marketing Cars and Fleet Cars to be moved through OTD, and be able to be reported.  What is the suggested solution on this topic?\n浜у搧鍙嶉锛氳鍒?.10鍙戝竷銆?], ["閿€鍞煙", "娓犻亾缃戝彂鏀寔瀛愬叕鍙稿憳宸ョ粰灞炲湴闂ㄥ簵缃戠偣鍛樺伐鏍囪瘑"鍩硅璁よ瘉"", "P1", "闇€姹傚凡鎺ユ敹", "鑳℃収鑻?钖涗匠璞?, "鍗楅潪鍚夊埄", "", "", "0824鍜屼笟鍔″彾楣忋€佽枦浣宠豹銆佽儭鎱ц嫳浠ュ強浜у搧缁忕悊闅嗕匠鐞虫矡閫氶渶姹傚拰鏂规锛屽垵姝ョ‘瀹氭帓鏈熶负11鏈堝垵銆?], ["閿€鍞煙", "瀵规帴鍗楅潪杞﹁締娉ㄥ唽绯荤粺锛屽湪鍋氶浂鍞笂鎶ュ悓鏃跺畬鎴愯溅杈嗘敞鍐屻€?, "P2", "闇€姹傜‘璁や腑", "钖涗匠璞?, "鍗楅潪鍚夊埄", "", "", "0916鐩墠浜у搧鍜屾湇鍔″晢娌熼€氬彲琛屾€ц繃绋嬩腑锛屽緟杞﹁締娉ㄥ唽绯荤粺鎻愪緵鎺ュ彛銆?], ["閿€鍞煙", "鏀寔鍦ㄧ嚎鐢熸垚PR鍗曠殑缁忛攢鍟嗗悜瀛愬叕鍙搁噰璐璓I\\CI\\PL", "P1", "闇€姹傚凡鎺ユ敹", "娓╄緣璞?, "鍗楅潪鍚夊埄", "", "", "鐩墠閮芥槸鎵嬪伐鐢熸垚鐨勶紝闇€瑕佹敮鎸佺郴缁熻嚜鍔ㄥ鐞嗐€俓n0915锛?0鏈堜唤宸叉帓婊★紝棰勮11鏈堜唤銆?], ["閿€鍞煙", "Riddara鍝佺墝鏀寔FOC璁㈠崟", "P1", "闇€姹傚凡鎺ユ敹", "Michayla/寮犲悗澶?, "鍗楅潪鍚夊埄", "", "", "寰?0鏈堜腑鏃渶姹傚垎鏋愶紝浜у搧锛氭湵浣崇惓銆佸悤鍊┿€?], ["閿€鍞煙", "瀹濊吘绾夸笅鍗曠敓浜ц溅杈嗗鍏ヨ惀閿€鏈?, "P1", "闇€姹傜‘璁や腑", "娓╄緣璞?, "鍗楅潪鍚夊埄", "", "", "1380鍙板巻鍙插疂鑵惧伐鍘傜敓浜ц鍗曞鍏ワ紝10.7瀹屾垚IT渚ч渶姹傚悓姝ワ紝寰呬繛娴锋尝鍥㈤槦鎻愪緵瑙ｅ喅鏂规銆?], ["鍞悗鍩?, "澧炲姞涓€绉嶄繚淇被鍨?鏈嶅姟鍖咃紝瑕佹眰涓嶅悜鎬婚儴绱㈣禂锛屼笖澶囦欢鍔犱环浼氬拰缁欐€婚儴绱㈣禂绫诲瀷鐨勫姞浠风櫨鍒嗘瘮鏈夊尯鍒€?, "P1", "闇€姹傚凡涓婄嚎", "闊╂€濆浗/Daniel.Tau", "鍗楅潪鍚夊埄", "鍛ㄨ钖?, "绱㈣禂", "7.7宸蹭笂绾垮苟鍩硅瀹屾垚锛沑n8鏈堢増鏈畬鎴愩€?], ["鍞悗鍩?, "鍙戠エ澧炲姞闂ㄥ簵绋庡彿瀛楁銆?, "P2", "闇€姹傚凡涓婄嚎", "Michayla", "鍗楅潪鍚夊埄", "宕旀棴鑹?, "", ""], ["鍞悗鍩?, "绱㈣禂鍙戠エ涓嬭浇鏃惰姹傝嚜鍔ㄥ～鍏呭彂绁ㄥ唴瀹广€?, "P2", "闇€姹傚凡涓婄嚎", "闊╂€濆浗", "鍗楅潪鍚夊埄", "鍛ㄨ钖?, "绱㈣禂", "7.7涓婄嚎銆?], ["鍞悗鍩?, "鍞悗鏀寔闆疯揪鍝佺墝銆?, "P1", "闇€姹傚凡涓婄嚎", "闊╂€濆浗", "鍗楅潪鍚夊埄", "鏉庢檽搴?, "澶囦欢/绱㈣禂/缁翠慨绛?, "寮€鍙戜腑锛岃鍒?鏈堝簳涓婄嚎銆?], ["鍞悗鍩?, "澶囦欢銆佸敭鍚庡鎺ュ疂鑵剧郴缁熴€俓n鐩墠鏄嚜闂幆鏂规锛屽浠惰鍗曞拰鍞悗绱㈣禂閮界嚎涓嬮€氱煡瀹濊吘銆?, "P1", "闇€姹傜‘璁や腑", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "鐩墠瀹濊吘鍙湁SAP娌℃湁鍒殑绯荤粺銆俓n寰呭疂鑵剧粰鍑虹郴缁熶笂绾胯鍒掑悗鍐嶅埗瀹氭帴鍏ヨ鍒掋€俓n鐩墠瀹濊吘瑕佹眰9.30瀹炴柦閮ㄧ讲瀹屾垚銆侫COTECH\n鏆傛棤杩涘睍銆?], ["鍞悗鍩?, "缁翠慨鏈嶅姟绱㈣禂鏃犳硶杞Щ鍒颁繚淇储璧旂殑浼樺寲", "P1", "闇€姹傚凡涓婄嚎", "Daniel", "鍗楅潪鍚夊埄", "", "", "闂锛氱淮淇湇鍔＄储璧旀棤娉曡浆绉诲埌淇濅慨绱㈣禂锛欴aniel鎸囧嚭锛屽綋缁翠慨鏈嶅姟瀹屾垚鍚庯紝鍒涘缓鐨勭储璧斿仠鐣欏湪缁翠慨鏈嶅姟渚э紝涓嶄細杞Щ鍒版甯哥殑淇濅慨绱㈣禂銆俓n鍘熷洜锛氫繚淇储璧旂郴缁熶笉鏀寔浣跨敤鏈湴浜哄伐锛坙ocal labors锛夛紝鍥犳鏃犳硶鎻愪氦鍒癐claim绯荤粺銆俓n鐭湡鏂规锛氬湪绯荤粺鍗囩骇鍓嶏紝灏嗘湰鍦颁汉宸ュ拰闄勫姞椤圭洰浣滀负"鍏朵粬鎴愭湰"锛坥ther cost锛夊鐞嗭紝骞堕€氳繃甯傚満娲诲姩锛坢arket activity锛夌储璧旂被鍨嬫彁浜ゃ€俓n闀挎湡鏂规锛歕n1.瑕佹眰灏嗘秷鑰楀搧锛堝鏈烘补銆佸喎鍗存恫銆佸埞杞︽补锛変綔涓洪檮鍔犻」鐩坊鍔犲埌甯傚満娲诲姩涓紝浠ヤ究鎺у埗鏁伴噺銆俓n2.瑕佹眰甯傚満娲诲姩绱㈣禂绫诲瀷鍏佽鍒涘缓鍜屼娇鐢ㄦ湰鍦颁汉宸ヤ唬鐮併€俓n宸茬粡鍜屾€婚儴鐜嬪瓙鐞︺€佸懆璇枃娌熼€氾紝8鏈堜唤鐗堟湰锛?鏈堝簳涓婄嚎銆?], ["鍞悗鍩?, "鍗楅潪褰撳湴C绔簿鍝佸晢鍩?, "P2", "闇€姹傜‘璁や腑", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "1锛?閽堝鍗楅潪鍦烘櫙涓婥绔敤鎴蜂笅鍗曪紝灞炲湴缁忛攢鍟嗗饱绾︼紝璋冪爺鍙戠幇鐩墠鍏ㄧ悆杩樻病鏈変笂绾緾绔簿鍝佷欢閿€鍞笟鍔°€備綔涓烘柊妯″紡灞炲湴闇€瑕佸厛鍜屾€婚儴涓氬姟鍚屽鐞嗘竻涓氬姟閫昏緫鍜屼氦鏄撻摼璺€侤闊╂€濆浗@寮犵布绮粿椹鏄庛€俓n2锛?涓氬姟闇€姹傚熀鏈悊娓呭悗锛屽彲浠ユ媺ITBP缁勭粐IT闇€姹傛矡閫氫細锛屽苟閫愭鎺ㄥ姩C绔簿鍝佸晢鍩庡叏濂桰T鑳藉姏寤鸿銆傚寘鎷晢鍝佺淮鎶ゃ€丆绔晫闈€佽鍗曞饱绾︺€佺墿娴佹湇鍔°€佸鏈嶄笌鍞悗銆佸睘鍦版敮浠樸€佽储鍔＄◣鍔＄瓑銆俓n3锛?浼氫笂IT浜у搧缁忕悊杩樺睍绀轰簡褰撳墠鏋佹蔼涓氬姟浣跨敤鐨?B绮惧搧鍟嗗煄椤甸潰锛屽鍗楅潪渚у笇鏈涗娇鐢ㄧ被浼肩殑鎬婚儴绮惧搧閿€鍞ā寮忓彲浠ュ悗缁啀缁勭粐娌熼€氥€侷T浜у搧浼氬熀浜庡叿浣撹瘔姹傚悓鏋佹蔼褰撳墠涓氬姟宸紓鎬у垽鏂槸鍚﹀彲浠ュ鐢ㄥ綋鍓岻T鑳藉姏銆俓n璁″垝Q4鎴栬€呮槑骞村畨鎺掋€?], ["鍞悗鍩?, "棰勭害宸ュ崟鐪嬫澘銆佺淮淇繘搴︾湅鏉?, "P2", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "UI闇€瑕佽璁★紝璁″垝9鏈堝簳銆俓n0920鏇存柊锛氭潕鏅撳簡鍥炲1013涓婄嚎銆?], ["鍞悗鍩?, "鍞悗缁忚惀绠＄悊BI鐪嬫澘", "P2", "闇€姹傜‘璁や腑", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "鐩墠鏈変竴涓熀纭€鐗堟湰涓嬪懆鍙互鎻愪緵鍑烘潵@鏉媷锛屾湭鏉ヨ鍒掕鍒?2鏈堝乏鍙充細鏈変竴涓ぇ鏀圭増锛岀洰鍓嶆鍦ㄥ拰鎬婚儴鏈嶅姟绠＄悊鍚屽瀵归渶姹傘€?], ["鍞悗鍩?, "back order鐨凷tatus Tracking閲岄潰璁板綍鐢宠鍙栨秷鐨勬搷浣滄棩蹇?, "P2", "闇€姹傜‘璁や腑", "Michayla.Thomas", "鍗楅潪鍚夊埄", "", "", "0821涓氬姟鎻愬嚭闇€姹傦紝杩欐牱濂瑰氨鑳藉憡璇夌敵璇风殑閭ｄ釜浜轰笉瑕佽繖涔堝仛銆傚緟浜у搧璇勪及銆?--搴斾繆淇奬n0826纭11鏈堜腑鏃笂绾裤€?], ["鍞悗鍩?, "绱㈣禂绫诲瀷鐨勭淮淇伐鍗曢渶瑕佹敮鎸佺郴缁熷紑鍙戠エ", "P1", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗/Daniel Tau", "鍗楅潪鍚夊埄", "", "", "鍗楅潪甯傚満鎯緥鏄储璧旂被鍨嬬殑缁翠慨宸ュ崟锛屼篃闇€瑕佸紑鍙戠エ缁欏鎴风瀛楃‘璁わ紝缁忛攢鍟嗗啀鎷跨潃杩欎釜鍙戠エ鏉ョ储璧旂郴缁熶笂浼犲苟绱㈣禂锛屾墍浠ラ渶瑕乮Repair绯荤粺涔熸敮鎸佺储璧旂被鍨嬪伐鍗曞紑绁╘n鏉冭崳姘戣窡杩涗腑"], ["鍞悗鍩?, "缁撶畻鍗曞垱寤哄鍔犵储璧旂被鍨嬫煡璇㈡潯浠?, "P2", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗/Daniel Tau", "鍗楅潪鍚夊埄", "", "", "鍦ㄥ垱寤虹粨绠楀崟鐨勬椂鍊欏鍔犱竴涓煡璇㈡潯浠讹紝鍙互鎸夌収绱㈣禂鍗曠殑绱㈣禂绫诲瀷鏉ョ瓫閫夛紝涓氬姟闇€瑕佸尯鍒嗗競鍦烘椿鍔ㄧ储璧斿拰甯歌绱㈣禂锛屽洜涓洪渶瑕佹墦娆惧埌涓嶅悓鐨勭粡閿€鍟嗚处鎴?], ["鍞悗鍩?, "杞﹁締妫€绱㈣仛鍚堥〉闈?, "P2", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗/Daniel Tau", "鍗楅潪鍚夊埄", "", "", "闇€瑕佹彁渚涗竴涓敭鍚庢暣浣撶殑鑱氬悎鏌ヨ杞﹁締鐨勯〉闈紝鍙互鏌ョ湅杞﹁締淇℃伅銆佷繚淇椂闂淬€佸巻鍙插伐鍗曡褰曪紙灞忚斀浠锋牸鍙睍绀哄伐椤癸級銆佸巻鍙茬储璧旇褰曪紙灞忚斀浠锋牸鍙睍绀哄伐椤癸級銆佹秹鍙婅川閲忔椿鍔ㄣ€侀€氱煡鍏憡绛変俊鎭?], ["鍞悗鍩?, "寮€鍗昋B寮圭獥鏀寔瓒呴摼鎺?, "P2", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗/Daniel Tau", "鍗楅潪鍚夊埄", "", "", "鍦╥Repair寮€鍗曟椂QB寮圭獥鐨勫崟鍙蜂笂鍙互澧炲姞瓒呴摼鎺ワ紝鏂逛究鏈嶅姟椤鹃棶鍜屾妧甯堢偣鍑昏烦杞煡鐪嬭鎯匼n鏉冭崳姘戣窡杩涗腑"], ["鍞悗鍩?, "鏅哄簱闇€瑕佹敮鎸佸ぇ灏忓啓鎵嬭緭鏌ヨ杞﹀瀷", "P2", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗", "鍗楅潪鍚夊埄", "", "", "杞︾郴鏀寔鎵嬭緭锛屼笉鍖哄垎澶у皬鍐欐ā绯婃煡璇€俓n鍏蜂綋椤甸潰鍙傝€冮檮浠舵埅鍥俱€?], ["鍞悗鍩?, "workshop PO鍙栨秷鍔熻兘", "P3", "闇€姹傚凡鎺ユ敹", "Michayla", "鍗楅潪鍚夊埄", "", "", "瑙ｅ喅閬囧埌绫讳技鎯呭喌鍙兘鍒锋暟鎹殑闂锛?], ["鍞悗鍩?鐗╂祦鍩?, "鍗楅潪澶囦欢FOC鍏嶈垂璁㈠崟鍚堝苟浣滀笟闇€姹?, "P1", "闇€姹傜‘璁や腑", "鍗庢窇鍚?, "鍗楅潪鍚夊埄", "", "", "0915鏇存柊锛氳缃楁稕鍜屾淇婃澃璇勪及涓氬姟璇夋眰銆傜湅鏄惁鏈夊姙娉曡浠撳簱涓氬姟涓嶈閲嶅鍏冲崟鍔ㄤ綔銆?], ["鐗╂祦鍩?, "4鏈堜唤鐩樼偣缁撴灉锛屽叾涓竴閮ㄥ垎澶囦欢鐩樹簭骞剁敱涓夋柟鐗╂祦鏀粯", "P1", "闇€姹傚凡涓婄嚎", "闊╂€濆浗/鏉庢湅", "鍗楅潪鍚夊埄", "", "", "鐜板湪娓呭崟杩樻湁涓€浜涚枒闂瓑鏉庢湅鍜屼綘浠畬鍏ㄧ‘璁ゅソ浼氬彂閭欢鍑烘潵锛岀劧鍚巌t杩欒竟鏈変竴濂楃幇鎴愮殑鏂规鍙互鎵嬪姩澶勭悊瀹屾垚otwb/SAP搴撳瓨鎵ｅ噺鍜岃储鍔℃敹娆俱€俓n0721宸插瀹岋紝浠撳簱鍜孲AP鍚屾椂鐩樹簭锛屼笖SAP杩囪处銆傚悗缁笟鍔″拰璐㈠姟鎿嶄綔鏈夐棶棰樺啀鑱旂郴IT銆?], ["璐㈠姟鍩?, "鍗楅潪缁忛攢鍟嗕俊鐢ㄩ搴﹂渶姹傘€?, "P2", "闇€姹傚凡鎺ユ敹", "鍟嗘虎鐎?钖涗匠璞?, "鍗楅潪鍚夊埄", "榛勫皬楦?閮戜功瀹?, "OTD", "0728杩涘睍锛?鏈堜唤闇€姹傛病鏈夋帓杩涘幓锛屽緟缁勭粐鍜屼骇鍝佺殑浼氳閲嶆柊鑱婁竴涓嬶紝寤鸿鎵剧帇娑涙矡閫氫笅锛屾湁绫讳技鐨勫姛鑳姐€俓n0730锛屾秹鍙婁俊鐢ㄦ煡璇㈡槸鍚over璁㈠崟锛屼俊鐢ㄩ噾棰濋攣瀹?瑙ｉ攣锛屼俊鐢ㄩ搴︿笅鍗曡捣娆俱€傜敱榛勫皬楦ュ彂鍑洪偖浠惰鏄庛€俓n0804鏇存柊锛屾牴鎹崡闈炲晢鑰佸笀閭ｈ竟鍥炲鐨勯偖浠讹紝灏忛弗浼氬厛鎺ㄨ繘鍗楅潪璇锋鏂囦欢鐨勮嚜鍔ㄧ敓鎴愬拰棰濆害妫€鏌ユ帴鍙ｇ殑涓寸晫鍊兼帰娴嬨€俓n璇锋鏂囦欢鐨勮瘽锛岀洰鍓嶆垜浠窡wesbank鐨勬帴鍙ｅ凡缁忛€氫簡锛屾鍦ㄨ窡OTD璁㈠崟涓績纭鍗楅潪杩欒竟闇€瑕佺殑瀛楁鏄惁鍙互鎻愪緵锛屽鏋滄病闂鐨勮瘽灏卞彲浠ヨ窡璁㈠崟涓績瀹夋帓鍗忓悓鎺掓湡浜哱n0909鏇存柊锛氬緟淇＄敤姹犳柟妗堝嚭鏉ヤ互鍚庢帓鏈燂紝褰撳墠棰勪及璁″垝10鏈堢増鏈€俓n0918鏇存柊锛氶噾铻嶅皬楦ュ弽棣堢洰鍓嶅緟璇勫锛岃鍒?1鏈堝垵鍜宨sales鍔熻兘涓€璧蜂笂绾裤€?], ["璐㈠姟鍩?, "缁忛攢鍟嗗璐﹀姛鑳姐€?, "P2", "闇€姹傚凡鎺ユ敹", "鍟嗘虎鐎?, "鍗楅潪鍚夊埄", "鐜嬪/鍚村畻鏁?, "SAP", "璐㈠姟闇€姹傦紝璐㈠姟bp鐜嬪璐熻矗璺熻繘銆俓n0728鏈€鏂版矡閫氱粨璁猴細鐜嬪璐熻矗璺熻繘锛屽ⅷ瑗垮摜锛屼腑涓滐紝鍗楅潪閮芥湁杩欎釜璇夋眰锛岃鍒掑厛鐢˙I宸ュ叿婊¤冻闇€姹傦紝棰勮鏈懆鍐呯粍缁囦細璁矡閫氳璁恒€俓n0827鏇存柊锛氬緟fund鍔熻兘淇涓攔eturn order鍔熻兘鐢ㄨ捣鏉ワ紝鍗佹湀搴曘€俓n1012鏇存柊锛氱‘瀹氶棶棰樹富瑕佹槸閿佸畾鍜岄噴鏀剧殑鏄庣粏绠楁暟宸紓锛岄璁?1鏈?1鏃ヤ慨澶嶃€?搴斾繆淇?], ["璐㈠姟鍩?, "鏀寔鍗楅潪澶囦欢return order鍦ㄨ储鍔′晶sap绯荤粺杩涢攢瀛樺強璁拌处銆?, "P1", "闇€姹傚凡鎺ユ敹", "闊╂€濆浗/Michayla.Thomas", "鍗楅潪鍚夊埄", "", "", "鐜板湪鍗楅潪澶囦欢鐨勯€€璐т笟鍔″湪涓氬姟绔兘鐢紝浣嗘槸涓氳储缁撳悎閮ㄥ垎鏆傛椂涓嶅彲鐢ㄣ€俓n鎻村紩浜у搧鐜嬫鐨勬弿杩帮細\n闇€瑕佺粰涓€涓渶姹傝iParts鍜孲AP璋冮€氭帴鍙ｏ紝瀵归綈涓氬姟閫昏緫銆俓n鍥犱负鍗楅潪涓婄嚎杈冩棭锛屼娇鐢ㄧ殑鏄疭AP鐨勪竴涓€佹帴鍙ｆ潵鎺ㄩ€侀攢鍞崟鐨勶紝鐜板湪鍥犱负鍏ㄧ悆缁熶竴鏂规鐨勫師鍥狅紝闇€瑕佸皢鑰佺殑閿€鍞崟鎺ュ彛ZSDI_SALE_ORDER鍒囨崲鍒癝AP渚ф渶鏂扮殑鏍囧噯閿€鍞崟鎺ュ彛锛歓SDI003_OTD_SALES_O"], ["璐㈠姟鍩?, "鍗楅潪鏁磋溅鍙戠エ闂銆傜洰鍓嶉兘鏄墜宸ュ紑鐨勩€?, "P1", "闇€姹傚凡涓婄嚎", "鍟嗘虎鐎?, "鍗楅潪鍚夊埄", "", "OTD", "璐㈠姟闇€姹傦紝璐㈠姟bp鐜嬪璐熻矗璺熻繘銆傞璁?.23涓婄嚎銆俓nWe require the final template to replicate this exact grid, section placement and data field alignment.\n1.    Order no.\n2.    Payment terms.\n3.    Legacy code. \n4.    Model code.\n5.    Models.\n6.    Engine/Motor number."], ["IT杩愮淮", "灞炲湴IT宸ヤ綔瑙勮寖涓庣郴缁熷煿璁敮鎸併€?, "P2", "闇€姹傚凡涓婄嚎", "Roberto", "鍗楅潪鍚夊埄", "", "", "鍙戝竷鍩硅璁″垝鍙婂伐浣滆鑼冦€?], ["BI鍩?, "BI绾跨储鎶ヨ〃锛岄渶瑕丆MS瀵规帴CRM", "P2", "闇€姹傚凡鎺ユ敹", "鐭崇孩姊?閮戜竴涓?, "鍗楅潪鍚夊埄", "", "", "0909鏇存柊锛氬拰CMS鐨凩eigh娌熼€氫簡锛屽厛娉ㄥ唽寮€鏀惧钩鍙般€傚悓鏃禖RM鍜孊I渚у榻愰渶瑕佺殑鏁版嵁淇℃伅銆?]];
+
+</script>
 <script>
 var originalData = [];
 var isEditMode = false;
 var EDIT_PASSWORD = "123456";
 var currentLang = localStorage.getItem('sa_dashboard_lang') || 'zh';
 
-/* ====== I18N: UI 文本翻译 ====== */
+/* ====== I18N: UI 鏂囨湰缈昏瘧 ====== */
 var I18N = {
   zh: {
-    pageTitle: "南非IT需求进度看板",
-    editMode: "编辑模式",
-    subtitle: "数据来源: 南非需求跟进表 | 同步时间: ",
-    edit: "编辑",
-    save: "保存",
-    syncToFeishu: "同步到飞书",
-    cancel: "取消",
-    chartTitle1: "按业务域分布",
-    chartTitle2: "按状态分布",
-    chartTitle3: "按优先级分布",
-    chartTitle4: "按涉及品牌分布",
-    filterLabel: "筛选:",
-    filterDomainAll: "全部业务域",
-    filterStatusAll: "全部状态",
-    filterPriorityAll: "全部优先级",
-    filterSearchPh: "搜索需求说明/提出人...",
+    pageTitle: "鍗楅潪IT闇€姹傝繘搴︾湅鏉?,
+    editMode: "缂栬緫妯″紡",
+    subtitle: "鏁版嵁鏉ユ簮: 鍗楅潪闇€姹傝窡杩涜〃 | 鍚屾鏃堕棿: ",
+    edit: "缂栬緫",
+    save: "淇濆瓨",
+    syncToFeishu: "鍚屾鍒伴涔?,
+    cancel: "鍙栨秷",
+    chartTitle1: "鎸変笟鍔″煙鍒嗗竷",
+    chartTitle2: "鎸夌姸鎬佸垎甯?,
+    chartTitle3: "鎸変紭鍏堢骇鍒嗗竷",
+    chartTitle4: "鎸夋秹鍙婂搧鐗屽垎甯?,
+    filterLabel: "绛涢€?",
+    filterDomainAll: "鍏ㄩ儴涓氬姟鍩?,
+    filterStatusAll: "鍏ㄩ儴鐘舵€?,
+    filterPriorityAll: "鍏ㄩ儴浼樺厛绾?,
+    filterSearchPh: "鎼滅储闇€姹傝鏄?鎻愬嚭浜?..",
     thIndex: "#",
-    thDomain: "业务域",
-    thDesc: "需求说明",
-    thPriority: "优先级",
-    thStatus: "状态",
-    thProposer: "提出人",
-    thBrand: "涉及品牌",
-    thPM: "产品经理",
-    thSystem: "对应系统",
-    thProgress: "当前进展",
-    footer: "南非IT需求进度可视化看板 | 支持编辑和反向同步",
-    modalTitle: "输入编辑密码",
-    modalPwdPh: "请输入密码",
-    modalCancel: "取消",
-    modalConfirm: "确认",
-    pwdError: "密码错误！",
-    sumTotal: "总需求数",
-    sumOnline: "已上线",
-    sumDev: "开发中",
-    sumReceived: "已接收",
-    sumConfirm: "确认中",
-    sumRejected: "已拒绝",
-    sumMerged: "已合并",
-    editModeEnter: "已进入编辑模式，可以直接修改表格内容",
-    cancelEditConfirm: "确定要取消编辑吗？未保存的修改将丢失。",
-    saveLocalOk: "修改已保存到本地",
-    noChanges: "没有检测到修改",
-    syncExportOk: "修改记录已导出，请运行同步脚本上传到飞书",
-    fieldDomain: "业务域",
-    fieldDesc: "需求说明",
-    fieldPriority: "优先级",
-    fieldStatus: "状态",
-    fieldProposer: "提出人",
-    fieldBrand: "涉及品牌",
-    fieldPM: "产品经理",
-    fieldSystem: "对应系统",
-    fieldProgress: "当前进展",
-    fieldUnknown: "未知字段"
+    thDomain: "涓氬姟鍩?,
+    thDesc: "闇€姹傝鏄?,
+    thPriority: "浼樺厛绾?,
+    thStatus: "鐘舵€?,
+    thProposer: "鎻愬嚭浜?,
+    thBrand: "娑夊強鍝佺墝",
+    thPM: "浜у搧缁忕悊",
+    thSystem: "瀵瑰簲绯荤粺",
+    thProgress: "褰撳墠杩涘睍",
+    footer: "鍗楅潪IT闇€姹傝繘搴﹀彲瑙嗗寲鐪嬫澘 | 鏀寔缂栬緫鍜屽弽鍚戝悓姝?,
+    modalTitle: "杈撳叆缂栬緫瀵嗙爜",
+    modalPwdPh: "璇疯緭鍏ュ瘑鐮?,
+    modalCancel: "鍙栨秷",
+    modalConfirm: "纭",
+    pwdError: "瀵嗙爜閿欒锛?,
+    sumTotal: "鎬婚渶姹傛暟",
+    sumOnline: "宸蹭笂绾?,
+    sumDev: "寮€鍙戜腑",
+    sumReceived: "宸叉帴鏀?,
+    sumConfirm: "纭涓?,
+    sumRejected: "宸叉嫆缁?,
+    sumMerged: "宸插悎骞?,
+    editModeEnter: "宸茶繘鍏ョ紪杈戞ā寮忥紝鍙互鐩存帴淇敼琛ㄦ牸鍐呭",
+    cancelEditConfirm: "纭畾瑕佸彇娑堢紪杈戝悧锛熸湭淇濆瓨鐨勪慨鏀瑰皢涓㈠け銆?,
+    saveLocalOk: "淇敼宸蹭繚瀛樺埌鏈湴",
+    noChanges: "娌℃湁妫€娴嬪埌淇敼",
+    syncExportOk: "淇敼璁板綍宸插鍑猴紝璇疯繍琛屽悓姝ヨ剼鏈笂浼犲埌椋炰功",
+    fieldDomain: "涓氬姟鍩?,
+    fieldDesc: "闇€姹傝鏄?,
+    fieldPriority: "浼樺厛绾?,
+    fieldStatus: "鐘舵€?,
+    fieldProposer: "鎻愬嚭浜?,
+    fieldBrand: "娑夊強鍝佺墝",
+    fieldPM: "浜у搧缁忕悊",
+    fieldSystem: "瀵瑰簲绯荤粺",
+    fieldProgress: "褰撳墠杩涘睍",
+    fieldUnknown: "鏈煡瀛楁"
   },
   en: {
     pageTitle: "South Africa IT Requirement Dashboard",
@@ -274,138 +277,138 @@ var I18N = {
 
 function t(key) { return I18N[currentLang][key] || key; }
 
-/* ====== 数据字段翻译映射 ====== */
+/* ====== 鏁版嵁瀛楁缈昏瘧鏄犲皠 ====== */
 var DOMAIN_EN = {
-  "用户域": "User Domain",
-  "销售域": "Sales Domain",
-  "售后域": "After-Sales Domain",
-  "售后域/物流域": "After-Sales/Logistics",
-  "物流域": "Logistics Domain",
-  "财务域": "Finance Domain",
-  "IT运维": "IT Operations",
-  "BI域": "BI Domain"
+  "鐢ㄦ埛鍩?: "User Domain",
+  "閿€鍞煙": "Sales Domain",
+  "鍞悗鍩?: "After-Sales Domain",
+  "鍞悗鍩?鐗╂祦鍩?: "After-Sales/Logistics",
+  "鐗╂祦鍩?: "Logistics Domain",
+  "璐㈠姟鍩?: "Finance Domain",
+  "IT杩愮淮": "IT Operations",
+  "BI鍩?: "BI Domain"
 };
 
 var STATUS_EN = {
-  "需求已上线": "Live",
-  "需求开发中": "In Development",
-  "需求确认中": "Confirming",
-  "需求已接收": "Received",
-  "需求拒绝": "Rejected",
-  "需求已合并": "Merged"
+  "闇€姹傚凡涓婄嚎": "Live",
+  "闇€姹傚紑鍙戜腑": "In Development",
+  "闇€姹傜‘璁や腑": "Confirming",
+  "闇€姹傚凡鎺ユ敹": "Received",
+  "闇€姹傛嫆缁?: "Rejected",
+  "闇€姹傚凡鍚堝苟": "Merged"
 };
 
 var BRAND_EN = {
-  "南非吉利": "SA Geely",
-  "南非极氪": "SA ZEEKR",
-  "南非吉利&极氪&领克": "SA Geely & ZEEKR & Lynk & Co"
+  "鍗楅潪鍚夊埄": "SA Geely",
+  "鍗楅潪鏋佹蔼": "SA ZEEKR",
+  "鍗楅潪鍚夊埄&鏋佹蔼&棰嗗厠": "SA Geely & ZEEKR & Lynk & Co"
 };
 
 var SYSTEM_EN = {
-  "官网": "Website",
+  "瀹樼綉": "Website",
   "OTD": "OTD",
-  "OTD/OTWB/SAP等": "OTD/OTWB/SAP",
-  "OTD/SAP等": "OTD/SAP",
-  "索赔": "Warranty Claim",
-  "备件/索赔/维修等": "Parts/Claim/Repair",
+  "OTD/OTWB/SAP绛?: "OTD/OTWB/SAP",
+  "OTD/SAP绛?: "OTD/SAP",
+  "绱㈣禂": "Warranty Claim",
+  "澶囦欢/绱㈣禂/缁翠慨绛?: "Parts/Claim/Repair",
   "SAP": "SAP"
 };
 
-/* ====== 自由文本翻译映射（描述 & 进展） ====== */
+/* ====== 鑷敱鏂囨湰缈昏瘧鏄犲皠锛堟弿杩?& 杩涘睍锛?====== */
 var DESC_EN = {
-  "官网嵌入金融申请入口页及金融计算器。": "Embed financial application entry page and financial calculator on the official website.",
-  "官网嵌入留资入口并打通CMS系统。": "Embed lead capture entry on official website and integrate with CMS system.",
-  "官网增加售后服务及网点模块。\n包括服务网络，手册下载，精品件展示，在线咨询应答等。": "Add after-sales service and dealer network module to official website. Including service network, manual download, accessory display, online consultation, etc.",
-  "增加雷达品牌车型官网页面，以及HR招聘模块。": "Add Riddara brand model pages to official website, plus HR recruitment module.",
-  "南非极氪官网": "South Africa ZEEKR Official Website",
-  "吉利官网“联系我们”页面补齐车型；经销商网点地图更新；外饰颜色呈现方式调整": "Geely website 'Contact Us' page add vehicle models; dealer network map update; exterior color display adjustment",
-  "app、官网的服务预约能力": "App and website service appointment capability",
-  "增加求职页面": "Add recruitment page",
-  "官网增加GA埋点分析": "Add Google Analytics tracking to official website",
-  "非洲总代国家向南非购买整车。": "African distributor countries purchase vehicles from South Africa.",
-  "领克非洲转口贸易下单支持。\n预计7月下旬支持通过香港公司转口贸易。": "Lynk & Co Africa transit trade order support. Expected to support transit trade via Hong Kong company by late July.",
-  "南非大客户订单。": "South Africa key account orders.",
-  "支持远程品牌销售。": "Support remote brand sales.",
-  "雷达车支持售后维保并对接生产工厂系统。": "Riddara vehicle support after-sales warranty and integration with production factory system.",
-  "区域经销商向南非下单（阿尔及利亚模式）": "Regional dealer orders to South Africa (Algeria model)",
-  "支持车辆类型为“内部车”，同时内部车不可被OTD配车。": "Support vehicle type 'internal vehicle', and internal vehicles cannot be allocated by OTD.",
-  "渠道网发支持子公司员工给属地门店网点员工标识“培训认证”": "Channel network support for subsidiary employees to mark 'training certification' for local dealership staff",
-  "对接南非车辆注册系统，在做零售上报同时完成车辆注册。": "Integrate with South Africa vehicle registration system, complete registration during retail reporting.",
-  "支持在线生成PR单的经销商向子公司采购PI\\CI\\PL": "Support online PR order generation for dealer-to-subsidiary PI/CI/PL procurement",
-  "Riddara品牌支持FOC订单": "Riddara brand support FOC (free of charge) orders",
-  "宝腾线下单生产车辆导入营销服": "Proton offline production vehicle import to marketing & service system",
-  "增加一种保修类型-服务包，要求不向总部索赔，且备件加价会和给总部索赔类型的加价百分比有区别。": "Add warranty type - service package, no claim to HQ, and parts markup differs from HQ claim type markup percentage.",
-  "发票增加门店税号字段。": "Add store tax ID field on invoices.",
-  "索赔发票下载时要求自动填充发票内容。": "Claim invoice download auto-fill invoice content.",
-  "售后支持雷达品牌。": "After-sales support for Riddara brand.",
-  "备件、售后对接宝腾系统。\n目前是自闭环方案，备件订单和售后索赔都线下通知宝腾。": "Parts and after-sales integration with Proton system. Currently self-loop solution, parts orders and claims notified to Proton offline.",
-  "维修服务索赔无法转移到保修索赔的优化": "Repair service claim transfer to warranty claim optimization",
-  "南非当地C端精品商城": "South Africa local C-end accessory mall",
-  "预约工单看板、维修进度看板": "Appointment work order board, repair progress board",
-  "售后经营管理BI看板": "After-sales business management BI dashboard",
-  "back order的Status Tracking里面记录申请取消的操作日志": "Back order Status Tracking - record cancel operation logs",
-  "索赔类型的维修工单需要支持系统开发票": "Claim type repair work order needs system invoice support",
-  "结算单创建增加索赔类型查询条件": "Settlement order creation add claim type query filter",
-  "车辆检索聚合页面": "Vehicle search aggregate page",
-  "开单QB弹窗支持超链接": "QB popup in order creation support hyperlinks",
-  "智库需要支持大小写手输查询车型": "Knowledge base needs case-insensitive vehicle model search",
-  "workshop PO取消功能": "Workshop PO cancellation function",
-  "南非备件FOC免费订单合并作业需求": "South Africa parts FOC free order consolidation work requirement",
-  "4月份盘点结果，其中一部分备件盘亏并由三方物流支付": "April inventory count results - some parts shortfall paid by 3PL",
-  "南非经销商信用额度需求。": "South Africa dealer credit limit requirement.",
-  "经销商对账功能。": "Dealer reconciliation function.",
-  "支持南非备件return order在财务侧sap系统进销存及记账。": "Support SA parts return order in finance SAP system inventory and accounting.",
-  "南非整车发票问题。目前都是手工开的。": "SA vehicle invoice issue. Currently all manually issued.",
-  "属地IT工作规范与系统培训支持。": "Local IT work standards and system training support.",
-  "BI线索报表，需要CMS对接CRM": "BI lead report, needs CMS to CRM integration"
+  "瀹樼綉宓屽叆閲戣瀺鐢宠鍏ュ彛椤靛強閲戣瀺璁＄畻鍣ㄣ€?: "Embed financial application entry page and financial calculator on the official website.",
+  "瀹樼綉宓屽叆鐣欒祫鍏ュ彛骞舵墦閫欳MS绯荤粺銆?: "Embed lead capture entry on official website and integrate with CMS system.",
+  "瀹樼綉澧炲姞鍞悗鏈嶅姟鍙婄綉鐐规ā鍧椼€俓n鍖呮嫭鏈嶅姟缃戠粶锛屾墜鍐屼笅杞斤紝绮惧搧浠跺睍绀猴紝鍦ㄧ嚎鍜ㄨ搴旂瓟绛夈€?: "Add after-sales service and dealer network module to official website. Including service network, manual download, accessory display, online consultation, etc.",
+  "澧炲姞闆疯揪鍝佺墝杞﹀瀷瀹樼綉椤甸潰锛屼互鍙奌R鎷涜仒妯″潡銆?: "Add Riddara brand model pages to official website, plus HR recruitment module.",
+  "鍗楅潪鏋佹蔼瀹樼綉": "South Africa ZEEKR Official Website",
+  "鍚夊埄瀹樼綉鈥滆仈绯绘垜浠€濋〉闈㈣ˉ榻愯溅鍨嬶紱缁忛攢鍟嗙綉鐐瑰湴鍥炬洿鏂帮紱澶栭グ棰滆壊鍛堢幇鏂瑰紡璋冩暣": "Geely website 'Contact Us' page add vehicle models; dealer network map update; exterior color display adjustment",
+  "app銆佸畼缃戠殑鏈嶅姟棰勭害鑳藉姏": "App and website service appointment capability",
+  "澧炲姞姹傝亴椤甸潰": "Add recruitment page",
+  "瀹樼綉澧炲姞GA鍩嬬偣鍒嗘瀽": "Add Google Analytics tracking to official website",
+  "闈炴床鎬讳唬鍥藉鍚戝崡闈炶喘涔版暣杞︺€?: "African distributor countries purchase vehicles from South Africa.",
+  "棰嗗厠闈炴床杞彛璐告槗涓嬪崟鏀寔銆俓n棰勮7鏈堜笅鏃敮鎸侀€氳繃棣欐腐鍏徃杞彛璐告槗銆?: "Lynk & Co Africa transit trade order support. Expected to support transit trade via Hong Kong company by late July.",
+  "鍗楅潪澶у鎴疯鍗曘€?: "South Africa key account orders.",
+  "鏀寔杩滅▼鍝佺墝閿€鍞€?: "Support remote brand sales.",
+  "闆疯揪杞︽敮鎸佸敭鍚庣淮淇濆苟瀵规帴鐢熶骇宸ュ巶绯荤粺銆?: "Riddara vehicle support after-sales warranty and integration with production factory system.",
+  "鍖哄煙缁忛攢鍟嗗悜鍗楅潪涓嬪崟锛堥樋灏斿強鍒╀簹妯″紡锛?: "Regional dealer orders to South Africa (Algeria model)",
+  "鏀寔杞﹁締绫诲瀷涓衡€滃唴閮ㄨ溅鈥濓紝鍚屾椂鍐呴儴杞︿笉鍙OTD閰嶈溅銆?: "Support vehicle type 'internal vehicle', and internal vehicles cannot be allocated by OTD.",
+  "娓犻亾缃戝彂鏀寔瀛愬叕鍙稿憳宸ョ粰灞炲湴闂ㄥ簵缃戠偣鍛樺伐鏍囪瘑鈥滃煿璁璇佲€?: "Channel network support for subsidiary employees to mark 'training certification' for local dealership staff",
+  "瀵规帴鍗楅潪杞﹁締娉ㄥ唽绯荤粺锛屽湪鍋氶浂鍞笂鎶ュ悓鏃跺畬鎴愯溅杈嗘敞鍐屻€?: "Integrate with South Africa vehicle registration system, complete registration during retail reporting.",
+  "鏀寔鍦ㄧ嚎鐢熸垚PR鍗曠殑缁忛攢鍟嗗悜瀛愬叕鍙搁噰璐璓I\\CI\\PL": "Support online PR order generation for dealer-to-subsidiary PI/CI/PL procurement",
+  "Riddara鍝佺墝鏀寔FOC璁㈠崟": "Riddara brand support FOC (free of charge) orders",
+  "瀹濊吘绾夸笅鍗曠敓浜ц溅杈嗗鍏ヨ惀閿€鏈?: "Proton offline production vehicle import to marketing & service system",
+  "澧炲姞涓€绉嶄繚淇被鍨?鏈嶅姟鍖咃紝瑕佹眰涓嶅悜鎬婚儴绱㈣禂锛屼笖澶囦欢鍔犱环浼氬拰缁欐€婚儴绱㈣禂绫诲瀷鐨勫姞浠风櫨鍒嗘瘮鏈夊尯鍒€?: "Add warranty type - service package, no claim to HQ, and parts markup differs from HQ claim type markup percentage.",
+  "鍙戠エ澧炲姞闂ㄥ簵绋庡彿瀛楁銆?: "Add store tax ID field on invoices.",
+  "绱㈣禂鍙戠エ涓嬭浇鏃惰姹傝嚜鍔ㄥ～鍏呭彂绁ㄥ唴瀹广€?: "Claim invoice download auto-fill invoice content.",
+  "鍞悗鏀寔闆疯揪鍝佺墝銆?: "After-sales support for Riddara brand.",
+  "澶囦欢銆佸敭鍚庡鎺ュ疂鑵剧郴缁熴€俓n鐩墠鏄嚜闂幆鏂规锛屽浠惰鍗曞拰鍞悗绱㈣禂閮界嚎涓嬮€氱煡瀹濊吘銆?: "Parts and after-sales integration with Proton system. Currently self-loop solution, parts orders and claims notified to Proton offline.",
+  "缁翠慨鏈嶅姟绱㈣禂鏃犳硶杞Щ鍒颁繚淇储璧旂殑浼樺寲": "Repair service claim transfer to warranty claim optimization",
+  "鍗楅潪褰撳湴C绔簿鍝佸晢鍩?: "South Africa local C-end accessory mall",
+  "棰勭害宸ュ崟鐪嬫澘銆佺淮淇繘搴︾湅鏉?: "Appointment work order board, repair progress board",
+  "鍞悗缁忚惀绠＄悊BI鐪嬫澘": "After-sales business management BI dashboard",
+  "back order鐨凷tatus Tracking閲岄潰璁板綍鐢宠鍙栨秷鐨勬搷浣滄棩蹇?: "Back order Status Tracking - record cancel operation logs",
+  "绱㈣禂绫诲瀷鐨勭淮淇伐鍗曢渶瑕佹敮鎸佺郴缁熷紑鍙戠エ": "Claim type repair work order needs system invoice support",
+  "缁撶畻鍗曞垱寤哄鍔犵储璧旂被鍨嬫煡璇㈡潯浠?: "Settlement order creation add claim type query filter",
+  "杞﹁締妫€绱㈣仛鍚堥〉闈?: "Vehicle search aggregate page",
+  "寮€鍗昋B寮圭獥鏀寔瓒呴摼鎺?: "QB popup in order creation support hyperlinks",
+  "鏅哄簱闇€瑕佹敮鎸佸ぇ灏忓啓鎵嬭緭鏌ヨ杞﹀瀷": "Knowledge base needs case-insensitive vehicle model search",
+  "workshop PO鍙栨秷鍔熻兘": "Workshop PO cancellation function",
+  "鍗楅潪澶囦欢FOC鍏嶈垂璁㈠崟鍚堝苟浣滀笟闇€姹?: "South Africa parts FOC free order consolidation work requirement",
+  "4鏈堜唤鐩樼偣缁撴灉锛屽叾涓竴閮ㄥ垎澶囦欢鐩樹簭骞剁敱涓夋柟鐗╂祦鏀粯": "April inventory count results - some parts shortfall paid by 3PL",
+  "鍗楅潪缁忛攢鍟嗕俊鐢ㄩ搴﹂渶姹傘€?: "South Africa dealer credit limit requirement.",
+  "缁忛攢鍟嗗璐﹀姛鑳姐€?: "Dealer reconciliation function.",
+  "鏀寔鍗楅潪澶囦欢return order鍦ㄨ储鍔′晶sap绯荤粺杩涢攢瀛樺強璁拌处銆?: "Support SA parts return order in finance SAP system inventory and accounting.",
+  "鍗楅潪鏁磋溅鍙戠エ闂銆傜洰鍓嶉兘鏄墜宸ュ紑鐨勩€?: "SA vehicle invoice issue. Currently all manually issued.",
+  "灞炲湴IT宸ヤ綔瑙勮寖涓庣郴缁熷煿璁敮鎸併€?: "Local IT work standards and system training support.",
+  "BI绾跨储鎶ヨ〃锛岄渶瑕丆MS瀵规帴CRM": "BI lead report, needs CMS to CRM integration"
 };
 
 var PROGRESS_EN = {
-  "0709会议结论： 1. 雷达的test drive landing page，需要按照业务要求加车型字段且有banner。同时希望把所有吉利车型的test drive页面都加上车型。 2. 求职页面，三个页面：整体介绍页，岗位详情页，申请岗位也表单。参考吉利英国官网。 以上两个需求，需要评估方案及交付时间。  0716更新： 1. 雷达需求要更新时间，0727就要正式开售了。官网需要在7月底更新...": "0709 meeting conclusions: 1. Riddara test drive landing page needs model field with banner per business requirements. Also add model field to all Geely test drive pages. 2. Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website. Both requirements need solution assessment and delivery time. 0716 update: 1. Riddara requirements need timeline update, 0727 official launch. Website needs update by end of July...",
-  "1. 南非售后官网需要嵌入精品商城功能， @何先坤(JamesHe)  请帮忙拉通精品商城和南非售后团队进行需求沟通  2. 南非售后官网需要有服务预约功能， @何先坤(JamesHe)  请帮忙拉通售后维修系统和南非售后团队进行需求沟通  3. 南非售后官网的Contact Us需确认销售和售后inquiry type以及表单的留资链路@韩思国(HankHan)  倩茹侧8月份需求： Geely...": "1. SA after-sales website needs accessory mall function, @JamesHe please coordinate accessory mall and SA after-sales team for requirement discussion. 2. SA after-sales website needs service appointment function, @JamesHe please coordinate repair system and SA after-sales team. 3. Contact Us page needs sales and after-sales inquiry types and lead capture flow @HankHan. Qianru's August requirements: Geely...",
-  "郑一丁目前跟进中，预计10.30极氪车入驻南非。 对接海霞团队刘小雨。 0904更新：官网预热页9/14 上线  9/10提测。 0914更新：官网预热页9/16上线。": "Zheng Yiding following up, ZEEKR vehicles expected in SA by 10.30. Connecting Haixia team Liu Xiaoyu. 0904 update: Preview page launched 9/14, submitted for testing 9/10. 0914 update: Preview page launched 9/16.",
-  "详见0716 Nomfundo邮件。": "See 0716 Nomfundo email for details.",
-  "app：极氪能力已有；吉利需要融合版本上线后才支持开发，从融合完毕到支持app预约还要1个月； 官网：极氪、吉利都暂无。0727已和业务沟通确认暂不做官网。 服务预约能力吉利计划9月底uat，10月中旬上线。 0915更新：方案变更，10月底发布。": "App: ZEEKR capability available; Geely needs fusion version launch before dev support, ~1 month from fusion to app appointment. Website: neither available. 0727 confirmed no website for now. Geely service appointment UAT end of Sept, launch mid-Oct. 0915 update: Plan changed, launch end of October.",
-  "求职页面，三个页面：整体介绍页，岗位详情页，申请岗位也表单。参考吉利英国官网。": "Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website.",
-  "7.31完成初步需求沟通，需要业务提供相关GTM container ID和DataLayer。待业务回复。": "7.31 completed preliminary requirement discussion, need business to provide GTM container ID and DataLayer. Awaiting business response.",
-  "iSales 子公司异国交易方案    0803-领克和极氪也有需求，需要评估&排期。谢南南已接到，待给出评估和排期。  0806-谢南南反馈，8月份完成吉利品牌，9月份做极氪品牌，预计9月底。  当前状态：8.27吉利已上线，极氪领克计划10月底之前完成。   0918更新：极氪领克待排期。": "iSales subsidiary cross-country trade solution. 0803 - Lynk & Co and ZEEKR also need this, require assessment & scheduling. Xie Nannan received, pending assessment. 0806 - Xie Nannan: Geely done in Aug, ZEEKR in Sept, expected end of Sept. Current: Geely launched 8.27, ZEEKR & Lynk planned before end of Oct. 0918 update: ZEEKR & Lynk pending scheduling.",
-  "待开发完成。发布时间调整到0723了。 0805更新，发布时间调整到0813，财务sap系统周末升级，所以原先0806的时间再次延期。 0812IT这边反馈，营销服侧系统计划明天8.13正式发布，SAP计划8.20发布，仓运系统计划8.25发布。": "Pending development. Release moved to 0723. 0805 update: Moved to 0813, SAP weekend upgrade caused delay from 0806. 0812 IT feedback: Marketing systems 8.13 release, SAP 8.20, warehouse 8.25.",
-  "已完成业务需求调研。目前待排期。 0728更新，产品吴维反馈预计9月底上线。 0908更新，谢南南反馈9月22日上线。--不跨国。 0910更新，10月份。--跨国。 0916更新，10.22上线整体大客户方案。接下来安排极氪领克大客户方案。": "Business requirement research done. Pending scheduling. 0728: Product Wu Wei expects end of Sept. 0908: Xie Nannan - Sept 22 launch. --Not cross-border. 0910: October. --Cross-border. 0916: 10.22 launch overall key account solution. Next: ZEEKR & Lynk key account solution.",
-  "订单管理部建议使用远程全套系统。请业务和远程业务先打和。IT暂停推动。": "Order management dept suggests using remote full-set system. Business needs to coordinate with remote business first. IT paused.",
-  "1.物料主数据维护工作。待组织划转完成后具备系统及审批权限后立即开始操作，预计开始时间7.15--郝少堂，改到7.20了。 2.生产订单自动同步雷达工厂系统。需要等工厂系统上线后向IT提需求做系统对接，预计开始时间7.30--郝少堂 0907更新：吴林鞠反馈vin数据导入插件9.10上线，9.11导入后再请总部维保业务配置主数据即可使用雷达售后维保功能。 0918更新：雷达售后维保已验证无问题，i...": "1. Material master data maintenance. Start after org transfer and permissions ready, est. 7.15 -- Hao Shaotang, moved to 7.20. 2. Production order auto-sync with Riddara factory system. Needs factory system launch first, est. 7.30. 0907 update: VIN data import plugin 9.10 launch, 9.11 import then HQ config. 0918 update: Riddara warranty verified OK...",
-  "南非子公司将规划为非洲业务中心，未来会由南非子公司直接授权其他国家或区域的经销商，资金流走南非，但车辆不走南非，而是直接发到目的销售国 当前方案：现在的系统操作上可以支持，但是需要分 2 段，南非按照客户需求下单，但是目的地维护为客户目的地，经销商再下单走一遍交付。  达成以下结论及代办： 1．整车临时方案说明一下发出来。注意：改港口方案运保费是否有影响需要和OTWB确认。请@郑书宣7.3下班前输...": "SA subsidiary planned as Africa business center. Future: SA directly authorizes dealers in other countries, funds via SA, vehicles direct to destination. Current solution: System supports but needs 2 steps - SA orders per customer demand with destination, dealer places delivery order. Conclusions: 1. Temporary vehicle solution description needed. Port change impact on insurance/transport - OTWB confirmation. @Zheng Shuxuan 7.3...",
-  "0819： We require a solution for internal Company Cars, Marketing Cars and Fleet Cars to be moved through OTD, and be able to be reported.  What is the suggested solution on this topic? 产品反馈：计划9.10发布。": "0819: We require a solution for internal Company Cars, Marketing Cars and Fleet Cars to be moved through OTD, and be able to be reported. What is the suggested solution? Product: Planned 9.10 release.",
-  "0824和业务叶鹏、薛佳豪、胡慧英以及产品经理隆佳琳沟通需求和方案，初步确定排期为11月初。": "0824 discussed with business Ye Peng, Xue Jiahao, Hu Huiying and PM Long Jialin. Preliminary schedule: early November.",
-  "0916目前产品和服务商沟通可行性过程中，待车辆注册系统提供接口。": "0916 Product and service provider discussing feasibility. Pending vehicle registration system API.",
-  "目前都是手工生成的，需要支持系统自动处理。 0915：10月份已排满，预计11月份。": "Currently all manual, need system automation. 0915: October full, expected November.",
-  "待10月中旬需求分析，产品：朱佳琳、吕倩。": "Pending mid-October requirement analysis. Product: Zhu Jialin, Lv Qian.",
-  "1380台历史宝腾工厂生产订单导入，10.7完成IT侧需求同步，待俞海波团队提供解决方案。": "1380 units historical Proton factory orders import. 10.7 IT requirement sync done, pending Yu Haibo team solution.",
-  "7.7已上线并培训完成； 8月版本完成。": "7.7 launched and training completed; August version completed.",
-  "7.7上线。": "7.7 launched.",
-  "开发中，计划7月底上线。": "In development, planned end of July launch.",
-  "目前宝腾只有SAP没有别的系统。 待宝腾给出系统上线计划后再制定接入计划。 目前宝腾要求9.30实施部署完成。ACOTECH 暂无进展。": "Proton currently only has SAP. Pending Proton system launch plan before integration plan. Proton requires 9.30 deployment. ACOTECH no progress.",
-  "问题：维修服务索赔无法转移到保修索赔：Daniel指出，当维修服务完成后，创建的索赔停留在维修服务侧，不会转移到正常的保修索赔。 原因：保修索赔系统不支持使用本地人工（local labors），因此无法提交到Iclaim系统。 短期方案：在系统升级前，将本地人工和附加项目作为“其他成本”（other cost）处理，并通过市场活动（market activity）索赔类型提交。 长期方案： 1....": "Issue: Repair service claims can't transfer to warranty claims. Daniel noted: when repair service completes, claim stays on repair side, doesn't transfer to warranty. Cause: Warranty claim system doesn't support local labors, can't submit to Iclaim. Short-term: Before upgrade, process local labors and additional items as 'other cost' via market activity claim type. Long-term: 1...",
-  "1． 针对南非场景下C端用户下单，属地经销商履约，调研发现目前全球还没有上线C端精品件销售业务。作为新模式属地需要先和总部业务同学理清业务逻辑和交易链路。@韩思国@张粼粼@马福明。 2． 业务需求基本理清后，可以拉ITBP组织IT需求沟通会，并逐步推动C端精品商城全套IT能力建设。包括商品维护、C端界面、订单履约、物流服务、客服与售后、属地支付、财务税务等。 3． 会上IT产品经理还展示了当前极氪...": "1. For SA C-end user ordering with local dealer fulfillment - research found no global C-end accessory sales live yet. As new model, need to clarify business logic and transaction flow with HQ. @Han Siguo @Zhang Linlin @Ma Fuming. 2. After requirements clarified, ITBP organizes IT requirement meeting, gradually promote C-end accessory mall full IT capability. 3. IT PM also showed current ZEEKR...",
-  "UI需要设计，计划9月底。 0920更新：李晓庆回复1013上线。": "UI needs design, planned end of Sept. 0920 update: Li Xiaoqing - 1013 launch.",
-  "目前有一个基础版本下周可以提供出来 @杭勇 ，未来规划要到12月左右会有一个大改版，目前正在和总部服务管理同学对需求。": "Basic version available next week @Hang Yong. Major revision planned around December, currently aligning requirements with HQ service management.",
-  "0821业务提出需求，这样她就能告诉申请的那个人不要这么做。待产品评估。---应俊俊 0826确认11月中旬上线。": "0821 business raised requirement so she can tell applicants not to do this. Pending product assessment. ---Ying Junjun 0826 confirmed mid-November launch.",
-  "南非市场惯例是索赔类型的维修工单，也需要开发票给客户签字确认，经销商再拿着这个发票来索赔系统上传并索赔，所以需要iRepair系统也支持索赔类型工单开票 权荣民跟进中": "SA market practice: claim type repair work orders need invoices for customer signature, dealer submits with invoice to claim system. iRepair needs to support claim type work order invoicing. Quan Rongmin following up.",
-  "在创建结算单的时候增加一个查询条件，可以按照索赔单的索赔类型来筛选，业务需要区分市场活动索赔和常规索赔，因为需要打款到不同的经销商账户": "Add query filter when creating settlement orders to filter by claim type. Business needs to distinguish market activity claims from regular claims, as payments go to different dealer accounts.",
-  "需要提供一个售后整体的聚合查询车辆的页面，可以查看车辆信息、保修时间、历史工单记录（屏蔽价格只展示工项）、历史索赔记录（屏蔽价格只展示工项）、涉及质量活动、通知公告等信息": "Need after-sales aggregate vehicle search page showing vehicle info, warranty period, historical work orders (hide prices, show items), historical claims (hide prices, show items), quality activities, notifications, etc.",
-  "在iRepair开单时QB弹窗的单号上可以增加超链接，方便服务顾问和技师点击跳转查看详情 权荣民跟进中": "Add hyperlinks to QB popup order numbers in iRepair for service advisors and technicians to click and view details. Quan Rongmin following up.",
-  "车系支持手输，不区分大小写模糊查询。 具体页面参考附件截图。": "Vehicle series supports manual input, case-insensitive fuzzy search. See attached screenshots.",
-  "解决遇到类似情况只能刷数据的问题，": "Solve the problem of only being able to fix via data refresh in similar situations.",
-  "0915更新：让罗涛和梁俊杰评估业务诉求。看是否有办法让仓库业务不要重复关单动作。": "0915 update: Ask Luo Tao and Liang Junjie to evaluate. See if there's a way to prevent warehouse from repeating close-order actions.",
-  "现在清单还有一些疑问等李朋和你们完全确认好会发邮件出来，然后it这边有一套现成的方案可以手动处理完成otwb/SAP库存扣减和财务收款。 0721已对完，仓库和SAP同时盘亏，且SAP过账。后续业务和财务操作有问题再联系IT。": "List still has questions pending Li Peng confirmation before email. IT has ready solution for manual OTWB/SAP inventory deduction and finance receipt. 0721 completed reconciliation, warehouse and SAP both show shortfall, SAP posted. Contact IT for subsequent issues.",
-  "0728进展：8月份需求没有排进去，待组织和产品的会议重新聊一下，建议找王涛沟通下，有类似的功能。 0730，涉及信用查询是否cover订单，信用金额锁定/解锁，信用额度下单起款。由黄小鸥发出邮件说明。 0804更新，根据南非商老师那边回复的邮件，小鸥会先推进南非请款文件的自动生成和额度检查接口的临界值探测。 请款文件的话，目前我们跟wesbank的接口已经通了，正在跟OTD订单中心确认南非这边需...": "0728: August not scheduled, pending org/product meeting. Suggest contacting Wang Tao, has similar function. 0730: Credit query cover order, amount lock/unlock, threshold. Huang Xiaoou to send email. 0804 update: Per SA Shang's reply, Xiaoou will promote SA request document auto-generation and credit check threshold detection. Wesbank interface connected, confirming SA...",
-  "财务需求，财务bp王娟负责跟进。 0728最新沟通结论：王娟负责跟进，墨西哥，中东，南非都有这个诉求，计划先用BI工具满足需求，预计本周内组织会议沟通讨论。 0827更新：待fund功能修复且return order功能用起来--高坚洛。十月底。": "Finance requirement, BP Wang Juan following up. 0728: Wang Juan following up. Mexico, Middle East, SA all need this. Plan to use BI tool first, meeting this week. 0827 update: Pending fund fix and return order function in use -- Gao Jianluo. End of October.",
-  "现在南非备件的退货业务在业务端能用，但是业财结合部分暂时不可用。 援引产品王楠的描述： 需要给一个需求让iParts和SAP调通接口，对齐业务逻辑。 因为南非上线较早，使用的是SAP的一个老接口来推送销售单的，现在因为全球统一方案的原因，需要将老的销售单接口ZSDI_SALE_ORDER切换到SAP侧最新的标准销售单接口：ZSDI003_OTD_SALES_O": "SA parts return works on business side, but finance integration not yet available. Per product Wang Nan: Need requirement for iParts-SAP API integration. SA launched early, uses old SAP sales order API ZSDI_SALE_ORDER, needs to switch to latest standard API ZSDI003_OTD_SALES_O.",
-  "财务需求，财务bp王娟负责跟进。预计7.23上线。 We require the final template to replicate this exact grid, section placement and data field alignment. 1.    Order no. 2.    Payment terms. 3.    Legacy code.  4.    Model c...": "Finance requirement, BP Wang Juan following up. Expected 7.23 launch. We require the final template to replicate this exact grid, section placement and data field alignment. 1. Order no. 2. Payment terms. 3. Legacy code. 4. Model c...",
-  "发布培训计划及工作规范。": "Published training plan and work standards.",
-  "0909更新：和CMS的Leigh沟通了，先注册开放平台。同时CRM和BI侧对齐需要的数据信息。": "0909 update: Communicated with CMS's Leigh, registered open platform first. CRM and BI aligning required data."
+  "0709浼氳缁撹锛?1. 闆疯揪鐨則est drive landing page锛岄渶瑕佹寜鐓т笟鍔¤姹傚姞杞﹀瀷瀛楁涓旀湁banner銆傚悓鏃跺笇鏈涙妸鎵€鏈夊悏鍒╄溅鍨嬬殑test drive椤甸潰閮藉姞涓婅溅鍨嬨€?2. 姹傝亴椤甸潰锛屼笁涓〉闈細鏁翠綋浠嬬粛椤碉紝宀椾綅璇︽儏椤碉紝鐢宠宀椾綅涔熻〃鍗曘€傚弬鑰冨悏鍒╄嫳鍥藉畼缃戙€?浠ヤ笂涓や釜闇€姹傦紝闇€瑕佽瘎浼版柟妗堝強浜や粯鏃堕棿銆? 0716鏇存柊锛?1. 闆疯揪闇€姹傝鏇存柊鏃堕棿锛?727灏辫姝ｅ紡寮€鍞簡銆傚畼缃戦渶瑕佸湪7鏈堝簳鏇存柊...": "0709 meeting conclusions: 1. Riddara test drive landing page needs model field with banner per business requirements. Also add model field to all Geely test drive pages. 2. Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website. Both requirements need solution assessment and delivery time. 0716 update: 1. Riddara requirements need timeline update, 0727 official launch. Website needs update by end of July...",
+  "1. 鍗楅潪鍞悗瀹樼綉闇€瑕佸祵鍏ョ簿鍝佸晢鍩庡姛鑳斤紝 @浣曞厛鍧?JamesHe)  璇峰府蹇欐媺閫氱簿鍝佸晢鍩庡拰鍗楅潪鍞悗鍥㈤槦杩涜闇€姹傛矡閫? 2. 鍗楅潪鍞悗瀹樼綉闇€瑕佹湁鏈嶅姟棰勭害鍔熻兘锛?@浣曞厛鍧?JamesHe)  璇峰府蹇欐媺閫氬敭鍚庣淮淇郴缁熷拰鍗楅潪鍞悗鍥㈤槦杩涜闇€姹傛矡閫? 3. 鍗楅潪鍞悗瀹樼綉鐨凜ontact Us闇€纭閿€鍞拰鍞悗inquiry type浠ュ強琛ㄥ崟鐨勭暀璧勯摼璺疈闊╂€濆浗(HankHan)  鍊╄尮渚?鏈堜唤闇€姹傦細 Geely...": "1. SA after-sales website needs accessory mall function, @JamesHe please coordinate accessory mall and SA after-sales team for requirement discussion. 2. SA after-sales website needs service appointment function, @JamesHe please coordinate repair system and SA after-sales team. 3. Contact Us page needs sales and after-sales inquiry types and lead capture flow @HankHan. Qianru's August requirements: Geely...",
+  "閮戜竴涓佺洰鍓嶈窡杩涗腑锛岄璁?0.30鏋佹蔼杞﹀叆椹诲崡闈炪€?瀵规帴娴烽湠鍥㈤槦鍒樺皬闆ㄣ€?0904鏇存柊锛氬畼缃戦鐑〉9/14 涓婄嚎  9/10鎻愭祴銆?0914鏇存柊锛氬畼缃戦鐑〉9/16涓婄嚎銆?: "Zheng Yiding following up, ZEEKR vehicles expected in SA by 10.30. Connecting Haixia team Liu Xiaoyu. 0904 update: Preview page launched 9/14, submitted for testing 9/10. 0914 update: Preview page launched 9/16.",
+  "璇﹁0716 Nomfundo閭欢銆?: "See 0716 Nomfundo email for details.",
+  "app锛氭瀬姘兘鍔涘凡鏈夛紱鍚夊埄闇€瑕佽瀺鍚堢増鏈笂绾垮悗鎵嶆敮鎸佸紑鍙戯紝浠庤瀺鍚堝畬姣曞埌鏀寔app棰勭害杩樿1涓湀锛?瀹樼綉锛氭瀬姘€佸悏鍒╅兘鏆傛棤銆?727宸插拰涓氬姟娌熼€氱‘璁ゆ殏涓嶅仛瀹樼綉銆?鏈嶅姟棰勭害鑳藉姏鍚夊埄璁″垝9鏈堝簳uat锛?0鏈堜腑鏃笂绾裤€?0915鏇存柊锛氭柟妗堝彉鏇达紝10鏈堝簳鍙戝竷銆?: "App: ZEEKR capability available; Geely needs fusion version launch before dev support, ~1 month from fusion to app appointment. Website: neither available. 0727 confirmed no website for now. Geely service appointment UAT end of Sept, launch mid-Oct. 0915 update: Plan changed, launch end of October.",
+  "姹傝亴椤甸潰锛屼笁涓〉闈細鏁翠綋浠嬬粛椤碉紝宀椾綅璇︽儏椤碉紝鐢宠宀椾綅涔熻〃鍗曘€傚弬鑰冨悏鍒╄嫳鍥藉畼缃戙€?: "Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website.",
+  "7.31瀹屾垚鍒濇闇€姹傛矡閫氾紝闇€瑕佷笟鍔℃彁渚涚浉鍏矴TM container ID鍜孌ataLayer銆傚緟涓氬姟鍥炲銆?: "7.31 completed preliminary requirement discussion, need business to provide GTM container ID and DataLayer. Awaiting business response.",
+  "iSales 瀛愬叕鍙稿紓鍥戒氦鏄撴柟妗?   0803-棰嗗厠鍜屾瀬姘篃鏈夐渶姹傦紝闇€瑕佽瘎浼?鎺掓湡銆傝阿鍗楀崡宸叉帴鍒帮紝寰呯粰鍑鸿瘎浼板拰鎺掓湡銆? 0806-璋㈠崡鍗楀弽棣堬紝8鏈堜唤瀹屾垚鍚夊埄鍝佺墝锛?鏈堜唤鍋氭瀬姘搧鐗岋紝棰勮9鏈堝簳銆? 褰撳墠鐘舵€侊細8.27鍚夊埄宸蹭笂绾匡紝鏋佹蔼棰嗗厠璁″垝10鏈堝簳涔嬪墠瀹屾垚銆?  0918鏇存柊锛氭瀬姘鍏嬪緟鎺掓湡銆?: "iSales subsidiary cross-country trade solution. 0803 - Lynk & Co and ZEEKR also need this, require assessment & scheduling. Xie Nannan received, pending assessment. 0806 - Xie Nannan: Geely done in Aug, ZEEKR in Sept, expected end of Sept. Current: Geely launched 8.27, ZEEKR & Lynk planned before end of Oct. 0918 update: ZEEKR & Lynk pending scheduling.",
+  "寰呭紑鍙戝畬鎴愩€傚彂甯冩椂闂磋皟鏁村埌0723浜嗐€?0805鏇存柊锛屽彂甯冩椂闂磋皟鏁村埌0813锛岃储鍔ap绯荤粺鍛ㄦ湯鍗囩骇锛屾墍浠ュ師鍏?806鐨勬椂闂村啀娆″欢鏈熴€?0812IT杩欒竟鍙嶉锛岃惀閿€鏈嶄晶绯荤粺璁″垝鏄庡ぉ8.13姝ｅ紡鍙戝竷锛孲AP璁″垝8.20鍙戝竷锛屼粨杩愮郴缁熻鍒?.25鍙戝竷銆?: "Pending development. Release moved to 0723. 0805 update: Moved to 0813, SAP weekend upgrade caused delay from 0806. 0812 IT feedback: Marketing systems 8.13 release, SAP 8.20, warehouse 8.25.",
+  "宸插畬鎴愪笟鍔￠渶姹傝皟鐮斻€傜洰鍓嶅緟鎺掓湡銆?0728鏇存柊锛屼骇鍝佸惔缁村弽棣堥璁?鏈堝簳涓婄嚎銆?0908鏇存柊锛岃阿鍗楀崡鍙嶉9鏈?2鏃ヤ笂绾裤€?-涓嶈法鍥姐€?0910鏇存柊锛?0鏈堜唤銆?-璺ㄥ浗銆?0916鏇存柊锛?0.22涓婄嚎鏁翠綋澶у鎴锋柟妗堛€傛帴涓嬫潵瀹夋帓鏋佹蔼棰嗗厠澶у鎴锋柟妗堛€?: "Business requirement research done. Pending scheduling. 0728: Product Wu Wei expects end of Sept. 0908: Xie Nannan - Sept 22 launch. --Not cross-border. 0910: October. --Cross-border. 0916: 10.22 launch overall key account solution. Next: ZEEKR & Lynk key account solution.",
+  "璁㈠崟绠＄悊閮ㄥ缓璁娇鐢ㄨ繙绋嬪叏濂楃郴缁熴€傝涓氬姟鍜岃繙绋嬩笟鍔″厛鎵撳拰銆侷T鏆傚仠鎺ㄥ姩銆?: "Order management dept suggests using remote full-set system. Business needs to coordinate with remote business first. IT paused.",
+  "1.鐗╂枡涓绘暟鎹淮鎶ゅ伐浣溿€傚緟缁勭粐鍒掕浆瀹屾垚鍚庡叿澶囩郴缁熷強瀹℃壒鏉冮檺鍚庣珛鍗冲紑濮嬫搷浣滐紝棰勮寮€濮嬫椂闂?.15--閮濆皯鍫傦紝鏀瑰埌7.20浜嗐€?2.鐢熶骇璁㈠崟鑷姩鍚屾闆疯揪宸ュ巶绯荤粺銆傞渶瑕佺瓑宸ュ巶绯荤粺涓婄嚎鍚庡悜IT鎻愰渶姹傚仛绯荤粺瀵规帴锛岄璁″紑濮嬫椂闂?.30--閮濆皯鍫?0907鏇存柊锛氬惔鏋楅灎鍙嶉vin鏁版嵁瀵煎叆鎻掍欢9.10涓婄嚎锛?.11瀵煎叆鍚庡啀璇锋€婚儴缁翠繚涓氬姟閰嶇疆涓绘暟鎹嵆鍙娇鐢ㄩ浄杈惧敭鍚庣淮淇濆姛鑳姐€?0918鏇存柊锛氶浄杈惧敭鍚庣淮淇濆凡楠岃瘉鏃犻棶棰橈紝i...": "1. Material master data maintenance. Start after org transfer and permissions ready, est. 7.15 -- Hao Shaotang, moved to 7.20. 2. Production order auto-sync with Riddara factory system. Needs factory system launch first, est. 7.30. 0907 update: VIN data import plugin 9.10 launch, 9.11 import then HQ config. 0918 update: Riddara warranty verified OK...",
+  "鍗楅潪瀛愬叕鍙稿皢瑙勫垝涓洪潪娲蹭笟鍔′腑蹇冿紝鏈潵浼氱敱鍗楅潪瀛愬叕鍙哥洿鎺ユ巿鏉冨叾浠栧浗瀹舵垨鍖哄煙鐨勭粡閿€鍟嗭紝璧勯噾娴佽蛋鍗楅潪锛屼絾杞﹁締涓嶈蛋鍗楅潪锛岃€屾槸鐩存帴鍙戝埌鐩殑閿€鍞浗 褰撳墠鏂规锛氱幇鍦ㄧ殑绯荤粺鎿嶄綔涓婂彲浠ユ敮鎸侊紝浣嗘槸闇€瑕佸垎 2 娈碉紝鍗楅潪鎸夌収瀹㈡埛闇€姹備笅鍗曪紝浣嗘槸鐩殑鍦扮淮鎶や负瀹㈡埛鐩殑鍦帮紝缁忛攢鍟嗗啀涓嬪崟璧颁竴閬嶄氦浠樸€? 杈炬垚浠ヤ笅缁撹鍙婁唬鍔烇細 1锛庢暣杞︿复鏃舵柟妗堣鏄庝竴涓嬪彂鍑烘潵銆傛敞鎰忥細鏀规腐鍙ｆ柟妗堣繍淇濊垂鏄惁鏈夊奖鍝嶉渶瑕佸拰OTWB纭銆傝@閮戜功瀹?.3涓嬬彮鍓嶈緭...": "SA subsidiary planned as Africa business center. Future: SA directly authorizes dealers in other countries, funds via SA, vehicles direct to destination. Current solution: System supports but needs 2 steps - SA orders per customer demand with destination, dealer places delivery order. Conclusions: 1. Temporary vehicle solution description needed. Port change impact on insurance/transport - OTWB confirmation. @Zheng Shuxuan 7.3...",
+  "0819锛?We require a solution for internal Company Cars, Marketing Cars and Fleet Cars to be moved through OTD, and be able to be reported.  What is the suggested solution on this topic? 浜у搧鍙嶉锛氳鍒?.10鍙戝竷銆?: "0819: We require a solution for internal Company Cars, Marketing Cars and Fleet Cars to be moved through OTD, and be able to be reported. What is the suggested solution? Product: Planned 9.10 release.",
+  "0824鍜屼笟鍔″彾楣忋€佽枦浣宠豹銆佽儭鎱ц嫳浠ュ強浜у搧缁忕悊闅嗕匠鐞虫矡閫氶渶姹傚拰鏂规锛屽垵姝ョ‘瀹氭帓鏈熶负11鏈堝垵銆?: "0824 discussed with business Ye Peng, Xue Jiahao, Hu Huiying and PM Long Jialin. Preliminary schedule: early November.",
+  "0916鐩墠浜у搧鍜屾湇鍔″晢娌熼€氬彲琛屾€ц繃绋嬩腑锛屽緟杞﹁締娉ㄥ唽绯荤粺鎻愪緵鎺ュ彛銆?: "0916 Product and service provider discussing feasibility. Pending vehicle registration system API.",
+  "鐩墠閮芥槸鎵嬪伐鐢熸垚鐨勶紝闇€瑕佹敮鎸佺郴缁熻嚜鍔ㄥ鐞嗐€?0915锛?0鏈堜唤宸叉帓婊★紝棰勮11鏈堜唤銆?: "Currently all manual, need system automation. 0915: October full, expected November.",
+  "寰?0鏈堜腑鏃渶姹傚垎鏋愶紝浜у搧锛氭湵浣崇惓銆佸悤鍊┿€?: "Pending mid-October requirement analysis. Product: Zhu Jialin, Lv Qian.",
+  "1380鍙板巻鍙插疂鑵惧伐鍘傜敓浜ц鍗曞鍏ワ紝10.7瀹屾垚IT渚ч渶姹傚悓姝ワ紝寰呬繛娴锋尝鍥㈤槦鎻愪緵瑙ｅ喅鏂规銆?: "1380 units historical Proton factory orders import. 10.7 IT requirement sync done, pending Yu Haibo team solution.",
+  "7.7宸蹭笂绾垮苟鍩硅瀹屾垚锛?8鏈堢増鏈畬鎴愩€?: "7.7 launched and training completed; August version completed.",
+  "7.7涓婄嚎銆?: "7.7 launched.",
+  "寮€鍙戜腑锛岃鍒?鏈堝簳涓婄嚎銆?: "In development, planned end of July launch.",
+  "鐩墠瀹濊吘鍙湁SAP娌℃湁鍒殑绯荤粺銆?寰呭疂鑵剧粰鍑虹郴缁熶笂绾胯鍒掑悗鍐嶅埗瀹氭帴鍏ヨ鍒掋€?鐩墠瀹濊吘瑕佹眰9.30瀹炴柦閮ㄧ讲瀹屾垚銆侫COTECH 鏆傛棤杩涘睍銆?: "Proton currently only has SAP. Pending Proton system launch plan before integration plan. Proton requires 9.30 deployment. ACOTECH no progress.",
+  "闂锛氱淮淇湇鍔＄储璧旀棤娉曡浆绉诲埌淇濅慨绱㈣禂锛欴aniel鎸囧嚭锛屽綋缁翠慨鏈嶅姟瀹屾垚鍚庯紝鍒涘缓鐨勭储璧斿仠鐣欏湪缁翠慨鏈嶅姟渚э紝涓嶄細杞Щ鍒版甯哥殑淇濅慨绱㈣禂銆?鍘熷洜锛氫繚淇储璧旂郴缁熶笉鏀寔浣跨敤鏈湴浜哄伐锛坙ocal labors锛夛紝鍥犳鏃犳硶鎻愪氦鍒癐claim绯荤粺銆?鐭湡鏂规锛氬湪绯荤粺鍗囩骇鍓嶏紝灏嗘湰鍦颁汉宸ュ拰闄勫姞椤圭洰浣滀负鈥滃叾浠栨垚鏈€濓紙other cost锛夊鐞嗭紝骞堕€氳繃甯傚満娲诲姩锛坢arket activity锛夌储璧旂被鍨嬫彁浜ゃ€?闀挎湡鏂规锛?1....": "Issue: Repair service claims can't transfer to warranty claims. Daniel noted: when repair service completes, claim stays on repair side, doesn't transfer to warranty. Cause: Warranty claim system doesn't support local labors, can't submit to Iclaim. Short-term: Before upgrade, process local labors and additional items as 'other cost' via market activity claim type. Long-term: 1...",
+  "1锛?閽堝鍗楅潪鍦烘櫙涓婥绔敤鎴蜂笅鍗曪紝灞炲湴缁忛攢鍟嗗饱绾︼紝璋冪爺鍙戠幇鐩墠鍏ㄧ悆杩樻病鏈変笂绾緾绔簿鍝佷欢閿€鍞笟鍔°€備綔涓烘柊妯″紡灞炲湴闇€瑕佸厛鍜屾€婚儴涓氬姟鍚屽鐞嗘竻涓氬姟閫昏緫鍜屼氦鏄撻摼璺€侤闊╂€濆浗@寮犵布绮粿椹鏄庛€?2锛?涓氬姟闇€姹傚熀鏈悊娓呭悗锛屽彲浠ユ媺ITBP缁勭粐IT闇€姹傛矡閫氫細锛屽苟閫愭鎺ㄥ姩C绔簿鍝佸晢鍩庡叏濂桰T鑳藉姏寤鸿銆傚寘鎷晢鍝佺淮鎶ゃ€丆绔晫闈€佽鍗曞饱绾︺€佺墿娴佹湇鍔°€佸鏈嶄笌鍞悗銆佸睘鍦版敮浠樸€佽储鍔＄◣鍔＄瓑銆?3锛?浼氫笂IT浜у搧缁忕悊杩樺睍绀轰簡褰撳墠鏋佹蔼...": "1. For SA C-end user ordering with local dealer fulfillment - research found no global C-end accessory sales live yet. As new model, need to clarify business logic and transaction flow with HQ. @Han Siguo @Zhang Linlin @Ma Fuming. 2. After requirements clarified, ITBP organizes IT requirement meeting, gradually promote C-end accessory mall full IT capability. 3. IT PM also showed current ZEEKR...",
+  "UI闇€瑕佽璁★紝璁″垝9鏈堝簳銆?0920鏇存柊锛氭潕鏅撳簡鍥炲1013涓婄嚎銆?: "UI needs design, planned end of Sept. 0920 update: Li Xiaoqing - 1013 launch.",
+  "鐩墠鏈変竴涓熀纭€鐗堟湰涓嬪懆鍙互鎻愪緵鍑烘潵 @鏉媷 锛屾湭鏉ヨ鍒掕鍒?2鏈堝乏鍙充細鏈変竴涓ぇ鏀圭増锛岀洰鍓嶆鍦ㄥ拰鎬婚儴鏈嶅姟绠＄悊鍚屽瀵归渶姹傘€?: "Basic version available next week @Hang Yong. Major revision planned around December, currently aligning requirements with HQ service management.",
+  "0821涓氬姟鎻愬嚭闇€姹傦紝杩欐牱濂瑰氨鑳藉憡璇夌敵璇风殑閭ｄ釜浜轰笉瑕佽繖涔堝仛銆傚緟浜у搧璇勪及銆?--搴斾繆淇?0826纭11鏈堜腑鏃笂绾裤€?: "0821 business raised requirement so she can tell applicants not to do this. Pending product assessment. ---Ying Junjun 0826 confirmed mid-November launch.",
+  "鍗楅潪甯傚満鎯緥鏄储璧旂被鍨嬬殑缁翠慨宸ュ崟锛屼篃闇€瑕佸紑鍙戠エ缁欏鎴风瀛楃‘璁わ紝缁忛攢鍟嗗啀鎷跨潃杩欎釜鍙戠エ鏉ョ储璧旂郴缁熶笂浼犲苟绱㈣禂锛屾墍浠ラ渶瑕乮Repair绯荤粺涔熸敮鎸佺储璧旂被鍨嬪伐鍗曞紑绁?鏉冭崳姘戣窡杩涗腑": "SA market practice: claim type repair work orders need invoices for customer signature, dealer submits with invoice to claim system. iRepair needs to support claim type work order invoicing. Quan Rongmin following up.",
+  "鍦ㄥ垱寤虹粨绠楀崟鐨勬椂鍊欏鍔犱竴涓煡璇㈡潯浠讹紝鍙互鎸夌収绱㈣禂鍗曠殑绱㈣禂绫诲瀷鏉ョ瓫閫夛紝涓氬姟闇€瑕佸尯鍒嗗競鍦烘椿鍔ㄧ储璧斿拰甯歌绱㈣禂锛屽洜涓洪渶瑕佹墦娆惧埌涓嶅悓鐨勭粡閿€鍟嗚处鎴?: "Add query filter when creating settlement orders to filter by claim type. Business needs to distinguish market activity claims from regular claims, as payments go to different dealer accounts.",
+  "闇€瑕佹彁渚涗竴涓敭鍚庢暣浣撶殑鑱氬悎鏌ヨ杞﹁締鐨勯〉闈紝鍙互鏌ョ湅杞﹁締淇℃伅銆佷繚淇椂闂淬€佸巻鍙插伐鍗曡褰曪紙灞忚斀浠锋牸鍙睍绀哄伐椤癸級銆佸巻鍙茬储璧旇褰曪紙灞忚斀浠锋牸鍙睍绀哄伐椤癸級銆佹秹鍙婅川閲忔椿鍔ㄣ€侀€氱煡鍏憡绛変俊鎭?: "Need after-sales aggregate vehicle search page showing vehicle info, warranty period, historical work orders (hide prices, show items), historical claims (hide prices, show items), quality activities, notifications, etc.",
+  "鍦╥Repair寮€鍗曟椂QB寮圭獥鐨勫崟鍙蜂笂鍙互澧炲姞瓒呴摼鎺ワ紝鏂逛究鏈嶅姟椤鹃棶鍜屾妧甯堢偣鍑昏烦杞煡鐪嬭鎯?鏉冭崳姘戣窡杩涗腑": "Add hyperlinks to QB popup order numbers in iRepair for service advisors and technicians to click and view details. Quan Rongmin following up.",
+  "杞︾郴鏀寔鎵嬭緭锛屼笉鍖哄垎澶у皬鍐欐ā绯婃煡璇€?鍏蜂綋椤甸潰鍙傝€冮檮浠舵埅鍥俱€?: "Vehicle series supports manual input, case-insensitive fuzzy search. See attached screenshots.",
+  "瑙ｅ喅閬囧埌绫讳技鎯呭喌鍙兘鍒锋暟鎹殑闂锛?: "Solve the problem of only being able to fix via data refresh in similar situations.",
+  "0915鏇存柊锛氳缃楁稕鍜屾淇婃澃璇勪及涓氬姟璇夋眰銆傜湅鏄惁鏈夊姙娉曡浠撳簱涓氬姟涓嶈閲嶅鍏冲崟鍔ㄤ綔銆?: "0915 update: Ask Luo Tao and Liang Junjie to evaluate. See if there's a way to prevent warehouse from repeating close-order actions.",
+  "鐜板湪娓呭崟杩樻湁涓€浜涚枒闂瓑鏉庢湅鍜屼綘浠畬鍏ㄧ‘璁ゅソ浼氬彂閭欢鍑烘潵锛岀劧鍚巌t杩欒竟鏈変竴濂楃幇鎴愮殑鏂规鍙互鎵嬪姩澶勭悊瀹屾垚otwb/SAP搴撳瓨鎵ｅ噺鍜岃储鍔℃敹娆俱€?0721宸插瀹岋紝浠撳簱鍜孲AP鍚屾椂鐩樹簭锛屼笖SAP杩囪处銆傚悗缁笟鍔″拰璐㈠姟鎿嶄綔鏈夐棶棰樺啀鑱旂郴IT銆?: "List still has questions pending Li Peng confirmation before email. IT has ready solution for manual OTWB/SAP inventory deduction and finance receipt. 0721 completed reconciliation, warehouse and SAP both show shortfall, SAP posted. Contact IT for subsequent issues.",
+  "0728杩涘睍锛?鏈堜唤闇€姹傛病鏈夋帓杩涘幓锛屽緟缁勭粐鍜屼骇鍝佺殑浼氳閲嶆柊鑱婁竴涓嬶紝寤鸿鎵剧帇娑涙矡閫氫笅锛屾湁绫讳技鐨勫姛鑳姐€?0730锛屾秹鍙婁俊鐢ㄦ煡璇㈡槸鍚over璁㈠崟锛屼俊鐢ㄩ噾棰濋攣瀹?瑙ｉ攣锛屼俊鐢ㄩ搴︿笅鍗曡捣娆俱€傜敱榛勫皬楦ュ彂鍑洪偖浠惰鏄庛€?0804鏇存柊锛屾牴鎹崡闈炲晢鑰佸笀閭ｈ竟鍥炲鐨勯偖浠讹紝灏忛弗浼氬厛鎺ㄨ繘鍗楅潪璇锋鏂囦欢鐨勮嚜鍔ㄧ敓鎴愬拰棰濆害妫€鏌ユ帴鍙ｇ殑涓寸晫鍊兼帰娴嬨€?璇锋鏂囦欢鐨勮瘽锛岀洰鍓嶆垜浠窡wesbank鐨勬帴鍙ｅ凡缁忛€氫簡锛屾鍦ㄨ窡OTD璁㈠崟涓績纭鍗楅潪杩欒竟闇€...": "0728: August not scheduled, pending org/product meeting. Suggest contacting Wang Tao, has similar function. 0730: Credit query cover order, amount lock/unlock, threshold. Huang Xiaoou to send email. 0804 update: Per SA Shang's reply, Xiaoou will promote SA request document auto-generation and credit check threshold detection. Wesbank interface connected, confirming SA...",
+  "璐㈠姟闇€姹傦紝璐㈠姟bp鐜嬪璐熻矗璺熻繘銆?0728鏈€鏂版矡閫氱粨璁猴細鐜嬪璐熻矗璺熻繘锛屽ⅷ瑗垮摜锛屼腑涓滐紝鍗楅潪閮芥湁杩欎釜璇夋眰锛岃鍒掑厛鐢˙I宸ュ叿婊¤冻闇€姹傦紝棰勮鏈懆鍐呯粍缁囦細璁矡閫氳璁恒€?0827鏇存柊锛氬緟fund鍔熻兘淇涓攔eturn order鍔熻兘鐢ㄨ捣鏉?-楂樺潥娲涖€傚崄鏈堝簳銆?: "Finance requirement, BP Wang Juan following up. 0728: Wang Juan following up. Mexico, Middle East, SA all need this. Plan to use BI tool first, meeting this week. 0827 update: Pending fund fix and return order function in use -- Gao Jianluo. End of October.",
+  "鐜板湪鍗楅潪澶囦欢鐨勯€€璐т笟鍔″湪涓氬姟绔兘鐢紝浣嗘槸涓氳储缁撳悎閮ㄥ垎鏆傛椂涓嶅彲鐢ㄣ€?鎻村紩浜у搧鐜嬫鐨勬弿杩帮細 闇€瑕佺粰涓€涓渶姹傝iParts鍜孲AP璋冮€氭帴鍙ｏ紝瀵归綈涓氬姟閫昏緫銆?鍥犱负鍗楅潪涓婄嚎杈冩棭锛屼娇鐢ㄧ殑鏄疭AP鐨勪竴涓€佹帴鍙ｆ潵鎺ㄩ€侀攢鍞崟鐨勶紝鐜板湪鍥犱负鍏ㄧ悆缁熶竴鏂规鐨勫師鍥狅紝闇€瑕佸皢鑰佺殑閿€鍞崟鎺ュ彛ZSDI_SALE_ORDER鍒囨崲鍒癝AP渚ф渶鏂扮殑鏍囧噯閿€鍞崟鎺ュ彛锛歓SDI003_OTD_SALES_O": "SA parts return works on business side, but finance integration not yet available. Per product Wang Nan: Need requirement for iParts-SAP API integration. SA launched early, uses old SAP sales order API ZSDI_SALE_ORDER, needs to switch to latest standard API ZSDI003_OTD_SALES_O.",
+  "璐㈠姟闇€姹傦紝璐㈠姟bp鐜嬪璐熻矗璺熻繘銆傞璁?.23涓婄嚎銆?We require the final template to replicate this exact grid, section placement and data field alignment. 1.    Order no. 2.    Payment terms. 3.    Legacy code.  4.    Model c...": "Finance requirement, BP Wang Juan following up. Expected 7.23 launch. We require the final template to replicate this exact grid, section placement and data field alignment. 1. Order no. 2. Payment terms. 3. Legacy code. 4. Model c...",
+  "鍙戝竷鍩硅璁″垝鍙婂伐浣滆鑼冦€?: "Published training plan and work standards.",
+  "0909鏇存柊锛氬拰CMS鐨凩eigh娌熼€氫簡锛屽厛娉ㄥ唽寮€鏀惧钩鍙般€傚悓鏃禖RM鍜孊I渚у榻愰渶瑕佺殑鏁版嵁淇℃伅銆?: "0909 update: Communicated with CMS's Leigh, registered open platform first. CRM and BI aligning required data."
 };
 
-/* ====== 翻译辅助函数 ====== */
+/* ====== 缈昏瘧杈呭姪鍑芥暟 ====== */
 function trDomain(v) { return currentLang === 'en' ? (DOMAIN_EN[v] || v) : v; }
 function trStatus(v) { return currentLang === 'en' ? (STATUS_EN[v] || v) : v; }
 function trBrand(v) { return currentLang === 'en' ? (BRAND_EN[v] || v) : v; }
@@ -413,24 +416,24 @@ function trSystem(v) { return currentLang === 'en' ? (SYSTEM_EN[v] || v) : v; }
 function trDesc(v) { return currentLang === 'en' ? (DESC_EN[v] || v) : v; }
 function trProgress(v) { return currentLang === 'en' ? (PROGRESS_EN[v] || v) : v; }
 
-/* 获取当前语言的显示数据（不影响原始 DATA） */
+/* 鑾峰彇褰撳墠璇█鐨勬樉绀烘暟鎹紙涓嶅奖鍝嶅師濮?DATA锛?*/
 function getDisplayData() {
   return DATA.map(function(r) {
     return [
       trDomain(r[0]),
       trDesc(r[1]),
-      r[2], // priority 保持不变
+      r[2], // priority 淇濇寔涓嶅彉
       trStatus(r[3]),
-      r[4], // proposer 保持不变
+      r[4], // proposer 淇濇寔涓嶅彉
       trBrand(r[5]),
-      r[6], // PM 保持不变
+      r[6], // PM 淇濇寔涓嶅彉
       trSystem(r[7]),
       trProgress(r[8])
     ];
   });
 }
 
-/* ====== 应用语言到静态 UI ====== */
+/* ====== 搴旂敤璇█鍒伴潤鎬?UI ====== */
 function applyLang() {
   document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
   document.title = t('pageTitle');
@@ -475,11 +478,11 @@ function applyLang() {
   document.getElementById('modalConfirmBtn').textContent = t('modalConfirm');
 
   var langBtn = document.getElementById('langBtn');
-  langBtn.textContent = currentLang === 'zh' ? 'EN' : '中文';
+  langBtn.textContent = currentLang === 'zh' ? 'EN' : '涓枃';
   langBtn.className = currentLang === 'en' ? 'btn lang-btn active-lang' : 'btn lang-btn';
 }
 
-/* ====== 语言切换 ====== */
+/* ====== 璇█鍒囨崲 ====== */
 function toggleLang() {
   currentLang = currentLang === 'zh' ? 'en' : 'zh';
   localStorage.setItem('sa_dashboard_lang', currentLang);
@@ -488,9 +491,9 @@ function toggleLang() {
   applyFilters();
 }
 
-/* ====== 核心逻辑 ====== */
+/* ====== 鏍稿績閫昏緫 ====== */
 function loadData() {
-  // 始终使用脚本注入的飞书数据，不读 localStorage 缓存
+  // 濮嬬粓浣跨敤鑴氭湰娉ㄥ叆鐨勯涔︽暟鎹紝涓嶈 localStorage 缂撳瓨
   originalData = JSON.parse(JSON.stringify(DATA));
 }
 
@@ -498,19 +501,19 @@ function saveToLocal() {
   localStorage.setItem('sa_dashboard_data', JSON.stringify(DATA));
 }
 
-var statusMap = {"需求已上线":"badge-online","需求开发中":"badge-dev","需求确认中":"badge-confirm","需求已接收":"badge-received","需求拒绝":"badge-rejected","需求已合并":"badge-merged"};
+var statusMap = {"闇€姹傚凡涓婄嚎":"badge-online","闇€姹傚紑鍙戜腑":"badge-dev","闇€姹傜‘璁や腑":"badge-confirm","闇€姹傚凡鎺ユ敹":"badge-received","闇€姹傛嫆缁?:"badge-rejected","闇€姹傚凡鍚堝苟":"badge-merged"};
 var priMap = {"P0":"pri-p0","P1":"pri-p1","P2":"pri-p2","P3":"pri-p3"};
 
 function countBy(arr, idx) { var m = {}; arr.forEach(function(r) { var v = r[idx] || "-"; m[v] = (m[v]||0)+1; }); return Object.entries(m).sort(function(a,b){return b[1]-a[1];}); }
 
 function renderSummary(data) {
   var total = data.length;
-  var online = data.filter(function(r){return r[3]==="需求已上线"||r[3]==="Live";}).length;
-  var dev = data.filter(function(r){return r[3]==="需求开发中"||r[3]==="In Development";}).length;
-  var received = data.filter(function(r){return r[3]==="需求已接收"||r[3]==="Received";}).length;
-  var confirm = data.filter(function(r){return r[3]==="需求确认中"||r[3]==="Confirming";}).length;
-  var rejected = data.filter(function(r){return r[3]==="需求拒绝"||r[3]==="Rejected";}).length;
-  var merged = data.filter(function(r){return r[3]==="需求已合并"||r[3]==="Merged";}).length;
+  var online = data.filter(function(r){return r[3]==="闇€姹傚凡涓婄嚎"||r[3]==="Live";}).length;
+  var dev = data.filter(function(r){return r[3]==="闇€姹傚紑鍙戜腑"||r[3]==="In Development";}).length;
+  var received = data.filter(function(r){return r[3]==="闇€姹傚凡鎺ユ敹"||r[3]==="Received";}).length;
+  var confirm = data.filter(function(r){return r[3]==="闇€姹傜‘璁や腑"||r[3]==="Confirming";}).length;
+  var rejected = data.filter(function(r){return r[3]==="闇€姹傛嫆缁?||r[3]==="Rejected";}).length;
+  var merged = data.filter(function(r){return r[3]==="闇€姹傚凡鍚堝苟"||r[3]==="Merged";}).length;
   document.getElementById("summaryRow").innerHTML =
     '<div class="summary-card"><div class="num num-blue">'+total+'</div><div class="label">'+t('sumTotal')+'</div></div>'+
     '<div class="summary-card"><div class="num num-green">'+online+'</div><div class="label">'+t('sumOnline')+'</div></div>'+
@@ -548,7 +551,7 @@ function populateFilters() {
   var sSel = document.getElementById("filterStatus");
   var pSel = document.getElementById("filterPriority");
 
-  // 保留第一个 option（全部），重置后面的
+  // 淇濈暀绗竴涓?option锛堝叏閮級锛岄噸缃悗闈㈢殑
   while (dSel.children.length > 1) dSel.removeChild(dSel.lastChild);
   while (sSel.children.length > 1) sSel.removeChild(sSel.lastChild);
   while (pSel.children.length > 1) pSel.removeChild(pSel.lastChild);
@@ -568,12 +571,12 @@ function populateFilters() {
 function renderTable(data) {
   var displayData = getDisplayData();
 
-  // data 是过滤后的原始 DATA 子集，需要找到在 displayData 中对应的行
+  // data 鏄繃婊ゅ悗鐨勫師濮?DATA 瀛愰泦锛岄渶瑕佹壘鍒板湪 displayData 涓搴旂殑琛?
   var tbody = document.getElementById("tableBody");
   var html = "";
   for (var i = 0; i < data.length; i++) {
     var r = data[i];
-    // 找到在原始 DATA 中的索引
+    // 鎵惧埌鍦ㄥ師濮?DATA 涓殑绱㈠紩
     var origIdx = DATA.indexOf(r);
     var dr = displayData[origIdx] || r;
 
@@ -622,7 +625,7 @@ function applyFilters() {
     return true;
   });
 
-  // 对过滤后的数据应用翻译用于图表和摘要
+  // 瀵硅繃婊ゅ悗鐨勬暟鎹簲鐢ㄧ炕璇戠敤浜庡浘琛ㄥ拰鎽樿
   var displayFiltered = filtered.map(function(r) {
     var idx = DATA.indexOf(r);
     return [trDomain(r[0]), trDesc(r[1]), r[2], trStatus(r[3]), r[4], trBrand(r[5]), r[6], trSystem(r[7]), trProgress(r[8])];
@@ -633,7 +636,7 @@ function applyFilters() {
   renderTable(filtered);
 }
 
-// 编辑功能
+// 缂栬緫鍔熻兘
 function toggleEdit() {
   document.getElementById("passwordModal").classList.add("active");
   document.getElementById("passwordInput").focus();
@@ -734,7 +737,7 @@ function showStatus(msg, type) {
   }, 5000);
 }
 
-// 初始化
+// 鍒濆鍖?
 try {
   loadData();
   applyLang();
