@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -97,7 +97,7 @@ tbody tr:hover { background: #f8f9ff; }
 <div class="header">
   <div>
     <h1 id="pageTitle">南非IT需求进度看板 <span class="edit-indicator" id="editModeLabel">编辑模式</span></h1>
-    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-14 19:10</span></p>
+    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-15 09:50</span></p>
   </div>
   <div class="header-actions">
     <button class="btn lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
@@ -438,7 +438,7 @@ function applyLang() {
   var pageTitleEl = document.getElementById('pageTitle');
   pageTitleEl.innerHTML = t('pageTitle') + ' <span class="edit-indicator" id="editModeLabel">' + t('editMode') + '</span>';
 
-  document.getElementById('subtitle').innerHTML = t('subtitle') + '<span id="syncTime">2026-10-14 18:04</span>';
+  document.getElementById('subtitle').innerHTML = t('subtitle') + '<span id="syncTime">' + (document.getElementById('syncTime') ? document.getElementById('syncTime').textContent : '-') + '</span>';
 
   document.getElementById('editBtn').textContent = t('edit');
   document.getElementById('saveBtn').textContent = t('save');
@@ -746,4 +746,3 @@ try {
 </script>
 </body>
 </html>
-
