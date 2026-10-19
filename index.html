@@ -587,13 +587,15 @@ function loadLikes() {
 }
 
 // ===== Init =====
-try { renderStats(); } catch(e) { console.error('renderStats:', e); }
-try { renderCards('achievementsContainer', ACHIEVEMENTS); } catch(e) { console.error('renderCards achievements:', e); }
-try { renderCards('progressContainer', IN_PROGRESS); } catch(e) { console.error('renderCards progress:', e); }
-try { document.getElementById('onlineCount').textContent = ACHIEVEMENTS.length; } catch(e) {}
-try { document.getElementById('progressCount').textContent = IN_PROGRESS.length; } catch(e) {}
-try { renderReqList(); } catch(e) { console.error('renderReqList:', e); }
-try { loadLikes(); } catch(e) { console.error('loadLikes:', e); }
+window.addEventListener('DOMContentLoaded', function() {
+  try { renderStats(); } catch(e) { console.error('renderStats:', e); }
+  try { renderCards('achievementsContainer', ACHIEVEMENTS); } catch(e) { console.error('renderCards achievements:', e); }
+  try { renderCards('progressContainer', IN_PROGRESS); } catch(e) { console.error('renderCards progress:', e); }
+  try { document.getElementById('onlineCount').textContent = ACHIEVEMENTS.length; } catch(e) {}
+  try { document.getElementById('progressCount').textContent = IN_PROGRESS.length; } catch(e) {}
+  try { renderReqList(); } catch(e) { console.error('renderReqList:', e); }
+  try { loadLikes(); } catch(e) { console.error('loadLikes:', e); }
+});
 </script>
 </body>
 </html>
