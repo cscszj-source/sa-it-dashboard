@@ -591,7 +591,7 @@ function submitRequirement(e) {
   };
   btn.disabled = true; btn.innerHTML = '<span>⏳</span> Submitting...';
   statusEl.className = 'submit-status show syncing'; statusEl.textContent = '🚀 Submitting your wish and syncing to Feishu...';
-  fetch('https://afraid-hoops-grab.loca.lt/api/submit', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(reqData) })
+  fetch('https://hot-buckets-shop.loca.lt/api/submit', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(reqData) })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.ok) {
@@ -608,7 +608,7 @@ function submitRequirement(e) {
 }
 
 function renderReqList() {
-  fetch('https://afraid-hoops-grab.loca.lt/api/requirements')
+  fetch('https://hot-buckets-shop.loca.lt/api/requirements')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var list = data.requirements || [];
@@ -650,7 +650,7 @@ function toggleLike(likeKey) {
   if (!btn) return;
   var countEl = btn.querySelector('.like-count');
   var isLiked = btn.classList.contains('liked');
-  fetch('https://afraid-hoops-grab.loca.lt/api/like', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({key: likeKey, action: isLiked ? 'unlike' : 'like'}) })
+  fetch('https://hot-buckets-shop.loca.lt/api/like', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({key: likeKey, action: isLiked ? 'unlike' : 'like'}) })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.ok) {
@@ -663,7 +663,7 @@ function toggleLike(likeKey) {
 }
 
 function loadLikes() {
-  fetch('https://afraid-hoops-grab.loca.lt/api/likes')
+  fetch('https://hot-buckets-shop.loca.lt/api/likes')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var likes = data.likes || {};
