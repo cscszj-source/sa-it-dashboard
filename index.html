@@ -550,40 +550,51 @@ function renderReqList() {
 function showToast(msg, type) { var t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show' + (type === 'error' ? ' error' : ''); setTimeout(function() { t.classList.remove('show'); }, 3000); }
 function escapeHtml(text) { if (!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-// ===== Like Functionality (localStorage) =====
-var LIKE_KEY = 'sa_it_likes';
-var MY_LIKE_KEY = 'sa_it_my_likes';
-function getLikes() { return JSON.parse(localStorage.getItem(LIKE_KEY) || '{}'); }
-function getMyLikes() { return JSON.parse(localStorage.getItem(MY_LIKE_KEY) || '[]'); }
+// ===== Like Functionality (global via GitHub raw + localStorage dedup) =====
+var LIKE_KEY = 'sa_it_my_likes';
+var LIKES_RAW_URL = 'https://raw.githubusercontent.com/cscszj-source/sa-it-dashboard/main/likes.json';
+function getMyLikes() { return JSON.parse(localStorage.getItem(LIKE_KEY) || '[]'); }
+function setMyLikes(likes) { localStorage.setItem(LIKE_KEY, JSON.stringify(likes)); }
 function toggleLike(likeKey) {
   var btn = document.getElementById('like-'+likeKey);
   if (!btn) return;
   var countEl = btn.querySelector('.like-count');
-  var likes = getLikes();
   var myLikes = getMyLikes();
   var isLiked = myLikes.indexOf(likeKey) >= 0;
+  var currentCount = parseInt(countEl.textContent) || 0;
   if (isLiked) {
     myLikes = myLikes.filter(function(k) { return k !== likeKey; });
-    likes[likeKey] = Math.max(0, (likes[likeKey] || 0) - 1);
+    countEl.textContent = Math.max(0, currentCount - 1);
     btn.classList.remove('liked'); btn.querySelector('.like-icon').textContent = '👍';
   } else {
     myLikes.push(likeKey);
-    likes[likeKey] = (likes[likeKey] || 0) + 1;
+    countEl.textContent = currentCount + 1;
     btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️';
   }
-  localStorage.setItem(LIKE_KEY, JSON.stringify(likes));
-  localStorage.setItem(MY_LIKE_KEY, JSON.stringify(myLikes));
-  countEl.textContent = likes[likeKey];
+  setMyLikes(myLikes);
 }
 function loadLikes() {
-  var likes = getLikes();
-  var myLikes = getMyLikes();
-  document.querySelectorAll('.like-btn').forEach(function(btn) {
-    var id = btn.id.replace('like-', '');
-    var count = likes[id] || 0;
-    btn.querySelector('.like-count').textContent = count;
-    if (myLikes.indexOf(id) >= 0) { btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️'; }
-  });
+  fetch(LIKES_RAW_URL + '?t=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(globalLikes) {
+      var myLikes = getMyLikes();
+      document.querySelectorAll('.like-btn').forEach(function(btn) {
+        var id = btn.id.replace('like-', '');
+        var baseCount = globalLikes[id] || 0;
+        var isLiked = myLikes.indexOf(id) >= 0;
+        var count = baseCount;
+        if (isLiked && baseCount === 0) count = 1;
+        btn.querySelector('.like-count').textContent = count;
+        if (isLiked) { btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️'; }
+      });
+    })
+    .catch(function() {
+      var myLikes = getMyLikes();
+      document.querySelectorAll('.like-btn').forEach(function(btn) {
+        var id = btn.id.replace('like-', '');
+        if (myLikes.indexOf(id) >= 0) { btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️'; btn.querySelector('.like-count').textContent = '1'; }
+      });
+    });
 }
 
 // ===== Init =====
