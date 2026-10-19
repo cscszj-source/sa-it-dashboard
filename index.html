@@ -315,7 +315,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <span class="thank-name">👤 Michayla</span>
         <span class="thank-name">👤 Onela Mtilwa</span>
         <span class="thank-name">👤 Hu Huiying</span>
-        <span class="thank-name">👤 Zhang Houbao</span>
+        <span class="thank-name">👤 Zhang Houbei</span>
         <span class="thank-name">👤 Hua Shujun</span>
         <span class="thank-name">👤 Li Peng</span>
         <span class="thank-name">👤 Shang Yingying</span>
@@ -398,7 +398,7 @@ var IN_PROGRESS = [
   {domain:"Sales Domain", title:"Dealer Training Certification Labeling", brand:"SA Geely", proposer:"Hu Huiying / Xue Jiahao", priority:"P1", status:"Received", progress:"Discussed with business and PM. Preliminary schedule: early November."},
   {domain:"Sales Domain", title:"Vehicle Registration System Integration", brand:"SA Geely", proposer:"Xue Jiahao", priority:"P2", status:"Confirming", progress:"Product and service provider discussing feasibility. Pending vehicle registration system API."},
   {domain:"Sales Domain", title:"Online PR Order Generation for Dealer Procurement", brand:"SA Geely", proposer:"Wen Huihao", priority:"P1", status:"Received", progress:"Currently manual. October fully scheduled, expected November."},
-  {domain:"Sales Domain", title:"Riddara Brand FOC Order Support", brand:"SA Geely", proposer:"Michayla / Zhang Houbao", priority:"P1", status:"Received", progress:"Pending mid-October requirement analysis. Product: Zhu Jialin, Lv Qian. 10.22 version launch planned."},
+  {domain:"Sales Domain", title:"Riddara Brand FOC Order Support", brand:"SA Geely", proposer:"Michayla / Zhang Houbei", priority:"P1", status:"Received", progress:"Pending mid-October requirement analysis. Product: Zhu Jialin, Lv Qian. 10.22 version launch planned."},
   {domain:"After-Sales Domain", title:"Proton System Integration for Parts & After-Sales", brand:"SA Geely", proposer:"Han Siguo", priority:"P1", status:"Confirming", progress:"Proton currently only has SAP. Pending Proton system launch plan. Proton requires 9.30 deployment. ACOTECH no progress."},
   {domain:"After-Sales Domain", title:"SA Local C-End Accessory Mall", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", status:"Confirming", progress:"New model — need to clarify business logic and transaction flow with HQ. Full IT capability planned: product, C-end UI, fulfillment, logistics, payment, finance."},
   {domain:"After-Sales Domain", title:"After-Sales Business Management BI Dashboard", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", status:"Confirming", progress:"Basic version available next week. Major revision planned around December, aligning requirements with HQ."},
@@ -587,13 +587,13 @@ function loadLikes() {
 }
 
 // ===== Init =====
-renderStats();
-renderCards('achievementsContainer', ACHIEVEMENTS);
-renderCards('progressContainer', IN_PROGRESS);
-document.getElementById('onlineCount').textContent = ACHIEVEMENTS.length;
-document.getElementById('progressCount').textContent = IN_PROGRESS.length;
-renderReqList();
-loadLikes();
+try { renderStats(); } catch(e) { console.error('renderStats:', e); }
+try { renderCards('achievementsContainer', ACHIEVEMENTS); } catch(e) { console.error('renderCards achievements:', e); }
+try { renderCards('progressContainer', IN_PROGRESS); } catch(e) { console.error('renderCards progress:', e); }
+try { document.getElementById('onlineCount').textContent = ACHIEVEMENTS.length; } catch(e) {}
+try { document.getElementById('progressCount').textContent = IN_PROGRESS.length; } catch(e) {}
+try { renderReqList(); } catch(e) { console.error('renderReqList:', e); }
+try { loadLikes(); } catch(e) { console.error('loadLikes:', e); }
 </script>
 </body>
 </html>
