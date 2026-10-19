@@ -438,7 +438,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
 <div class="footer">
   <p>2026 SA IT Annual Review & 2027 IT Wish List | Maintained by IT Team</p>
-  <p style="margin-top:4px;">Feishu Spreadsheet: <a href="https://geely.feishu.cn/sheets/M7ZpsgfHFhYod2tO1wXcx9nan0e" target="_blank" style="color:#1a73e8;">SA IT Requirement Collection 2026</a></p>
+  <p style="margin-top:4px;">Submit your wish via <a href="https://geely.feishu.cn/share/base/form/vewqaj0dYW" target="_blank" style="color:#1a73e8;">Feishu Form</a> | View <a href="https://geely.feishu.cn/base/DaxQb8vBgaBs8wsAJgWcIq18nUb" target="_blank" style="color:#1a73e8;">Feishu Base</a></p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -578,7 +578,7 @@ function viewImageByUrl(url) { document.getElementById('modalImage').src = url; 
 function closeImageModal() { document.getElementById('imageModal').classList.remove('active'); }
 
 // ===== Submit (localStorage + Feishu link) =====
-var FEISHU_SHEET_URL = 'https://geely.feishu.cn/sheets/M7ZpsgfHFhYod2tO1wXcx9nan0e';
+var FEISHU_SHEET_URL = 'https://geely.feishu.cn/share/base/form/vewqaj0dYW';
 function submitRequirement(e) {
   e.preventDefault();
   var name = document.getElementById('r_name').value.trim();
@@ -596,10 +596,10 @@ function submitRequirement(e) {
   localStorage.setItem('sa_it_wishes', JSON.stringify(list));
   var statusEl = document.getElementById('submitStatus');
   statusEl.className = 'submit-status show success';
-  statusEl.innerHTML = '✅ Your wish has been saved! Please also submit it to our <a href="' + FEISHU_SHEET_URL + '" target="_blank" style="color:#667eea;font-weight:700;">Feishu Spreadsheet</a> for formal tracking. 🎉';
+  statusEl.innerHTML = '✅ Ready to submit! Click here to open the <a href="' + FEISHU_SHEET_URL + '" target="_blank" style="color:#667eea;font-weight:700;">Feishu Form</a> and fill in your wish. Your data will be saved directly to our system. 🎉';
   document.getElementById('reqForm').reset(); clearImagePreviews(); renderReqList();
   setTimeout(function() { statusEl.className = 'submit-status'; }, 8000);
-  showToast('Wish saved! 🎉');
+  showToast('Click the Feishu Form link to submit! 🎉');
 }
 
 function renderReqList() {
