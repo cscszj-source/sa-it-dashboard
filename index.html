@@ -588,6 +588,8 @@ function loadLikes() {
 
 // ===== Init =====
 function initPage() {
+  if (window._initDone) return;
+  window._initDone = true;
   try { renderStats(); } catch(e) { console.error('renderStats:', e); }
   try { renderCards('achievementsContainer', ACHIEVEMENTS); } catch(e) { console.error('renderCards achievements:', e); }
   try { renderCards('progressContainer', IN_PROGRESS); } catch(e) { console.error('renderCards progress:', e); }
@@ -602,5 +604,6 @@ if (document.readyState === 'loading') {
   initPage();
 }
 </script>
+<script>initPage();</script>
 </body>
 </html>
