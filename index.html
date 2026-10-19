@@ -1,738 +1,678 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南非IT需求进度看板</title>
+<title>2027 SA IT Wish List — Requirement Collection</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; }
-.header { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; }
-.header h1 { font-size: 26px; font-weight: 600; }
-.header p { font-size: 14px; opacity: 0.85; margin-top: 6px; }
-.header-actions { display: flex; gap: 10px; align-items: center; }
-.btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
-.btn-primary { background: white; color: #1a73e8; }
-.btn-primary:hover { background: #f0f0f0; }
-.btn-success { background: #0d9f4f; color: white; }
-.btn-success:hover { background: #0b8a43; }
-.btn-warning { background: #e8850a; color: white; }
-.btn-warning:hover { background: #d47808; }
-.btn-danger { background: #d93025; color: white; }
-.btn-danger:hover { background: #c5221f; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.lang-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
-.lang-btn:hover { background: rgba(255,255,255,0.35); }
-.lang-btn.active-lang { background: white; color: #1a73e8; }
-.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-.summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
-.summary-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
-.summary-card .num { font-size: 36px; font-weight: 700; }
-.summary-card .label { font-size: 13px; color: #666; margin-top: 4px; }
-.num-blue { color: #1a73e8; }
-.num-green { color: #0d9f4f; }
-.num-orange { color: #e8850a; }
-.num-red { color: #d93025; }
-.num-purple { color: #7b1fa2; }
-.num-teal { color: #00897b; }
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-.chart-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.chart-card h3 { font-size: 15px; color: #444; margin-bottom: 16px; }
-.bar-group { margin-bottom: 10px; display: flex; align-items: center; }
-.bar-label { width: 130px; font-size: 13px; color: #555; flex-shrink: 0; text-align: right; padding-right: 12px; }
-.bar-track { flex: 1; height: 26px; background: #f0f0f0; border-radius: 13px; overflow: hidden; position: relative; }
-.bar-fill { height: 100%; border-radius: 13px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; color: white; font-weight: 600; min-width: 30px; transition: width 0.6s ease; }
-.filter-bar { background: white; border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.filter-bar label { font-size: 13px; color: #666; font-weight: 500; }
-.filter-bar select { padding: 6px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; background: white; }
-.filter-bar input { padding: 6px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; width: 220px; }
-.table-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th { background: #f8f9fa; padding: 12px 10px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e8eaed; white-space: nowrap; }
-tbody td { padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
-tbody tr:hover { background: #f8f9ff; }
-.req-desc { max-width: 260px; line-height: 1.5; }
-.progress-cell { max-width: 300px; font-size: 12px; color: #555; line-height: 1.5; }
-.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; white-space: nowrap; }
-.badge-online { background: #e6f4ea; color: #137333; }
+:root {
+  --primary: #1a73e8; --primary-dark: #0d47a1; --green: #0d9f4f;
+  --orange: #e8850a; --red: #d93025; --purple: #7b1fa2; --teal: #00897b;
+  --bg: #f0f2f5; --card-bg: #ffffff; --text: #333333;
+  --text-secondary: #666666; --border: #e8eaed;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08); --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+  --radius: 12px; --gradient-wish: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #00897b 100%); color: white; padding: 48px 40px; position: relative; overflow: hidden; }
+.header::before { content: ''; position: absolute; top: -50%; right: -10%; width: 500px; height: 500px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+.header::after { content: ''; position: absolute; bottom: -30%; left: 20%; width: 300px; height: 300px; background: rgba(255,255,255,0.03); border-radius: 50%; }
+.header-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+.header p { font-size: 15px; opacity: 0.9; max-width: 700px; }
+.header-meta { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+.header-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; opacity: 0.85; }
+.header-meta-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #4caf50; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+.section { margin-bottom: 48px; }
+.section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.section-title h2 { font-size: 24px; font-weight: 700; color: var(--text); }
+.section-title .bar { width: 4px; height: 28px; background: var(--primary); border-radius: 2px; }
+.section-title .count { background: var(--primary); color: white; padding: 2px 12px; border-radius: 14px; font-size: 13px; font-weight: 600; }
+.section-title.wish .bar { background: #667eea; }
+.section-title.wish .count { background: #667eea; }
+
+/* Stats */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+.stat-card { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.stat-icon.blue { background: #e8f0fe; color: #1a73e8; }
+.stat-icon.green { background: #e6f4ea; color: #0d9f4f; }
+.stat-icon.orange { background: #fef7e0; color: #e8850a; }
+.stat-icon.purple { background: #f3e8fd; color: #7b1fa2; }
+.stat-icon.teal { background: #e0f2f1; color: #00897b; }
+.stat-info .num { font-size: 28px; font-weight: 700; line-height: 1.2; }
+.stat-info .label { font-size: 13px; color: var(--text-secondary); }
+
+/* Domain Groups */
+.domain-group { margin-bottom: 32px; }
+.domain-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.domain-header h3 { font-size: 18px; font-weight: 600; }
+.domain-header .tag { font-size: 12px; color: var(--text-secondary); background: #f0f0f0; padding: 2px 10px; border-radius: 10px; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.achievement-card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); border-left: 4px solid var(--primary); transition: transform 0.2s, box-shadow 0.2s; }
+.achievement-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.achievement-card.green { border-left-color: var(--green); }
+.achievement-card.orange { border-left-color: var(--orange); }
+.achievement-card.purple { border-left-color: var(--purple); }
+.achievement-card.teal { border-left-color: var(--teal); }
+.achievement-card.red { border-left-color: var(--red); }
+.card-title { font-size: 15px; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+.card-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.card-meta .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.badge-brand { background: #e8f0fe; color: #1a73e8; }
+.badge-proposer { background: #f0f0f0; color: #555; }
+.badge-priority { background: #fef7e0; color: #b06000; }
+.badge-date { background: #e6f4ea; color: #137333; }
 .badge-dev { background: #fef7e0; color: #b06000; }
-.badge-confirm { background: #e8f0fe; color: #1967d2; }
 .badge-received { background: #f3e8fd; color: #7b1fa2; }
-.badge-rejected { background: #fce8e6; color: #c5221f; }
-.badge-merged { background: #e0f2f1; color: #00695c; }
-.pri { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-.pri-p0 { background: #fce8e6; color: #c5221f; }
-.pri-p1 { background: #fef7e0; color: #b06000; }
-.pri-p2 { background: #e8f0fe; color: #1967d2; }
-.pri-p3 { background: #f0f0f0; color: #666; }
-.domain-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: #f0f0f0; color: #555; }
-.footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
-@media (max-width: 900px) { .charts-row { grid-template-columns: 1fr; } .summary-row { grid-template-columns: repeat(3, 1fr); } }
+.badge-confirm { background: #e8f0fe; color: #1967d2; }
+.card-progress { margin-top: 10px; font-size: 12px; color: var(--text-secondary); line-height: 1.5; max-height: 60px; overflow: hidden; position: relative; }
+.card-progress::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background: linear-gradient(transparent, white); }
 
-/* 编辑模式样式 */
-.edit-mode tbody td { cursor: text; }
-.edit-mode tbody td:hover { background: #fff9c4; }
-.edit-mode tbody td[contenteditable="true"] { outline: 2px solid #1a73e8; background: #fff9c4; }
-.edit-mode tbody td[contenteditable="true"]:focus { background: #fff3cd; }
-.edit-indicator { display: none; background: #e8850a; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-left: 10px; }
-.edit-mode .edit-indicator { display: inline-block; }
+/* Like Button */
+.like-btn { display: inline-flex; align-items: center; gap: 4px; background: #f0f0f0; border: none; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #666; margin-top: 10px; }
+.like-btn:hover { background: #fce8e6; color: #d93025; transform: scale(1.05); }
+.like-btn.liked { background: #fce8e6; color: #d93025; }
+.like-btn.liked:hover { background: #f8d0d0; }
+.like-btn .like-icon { font-size: 14px; }
+.like-btn:disabled { cursor: default; opacity: 0.8; }
 
-/* 密码弹窗 */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+/* Status Section Divider */
+.status-divider { margin: 40px 0 24px; padding: 16px 20px; border-radius: var(--radius); display: flex; align-items: center; gap: 12px; }
+.status-divider.live { background: linear-gradient(135deg, #e6f4ea, #c8e6c9); }
+.status-divider.progress { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+.status-divider h2 { font-size: 20px; font-weight: 700; }
+.status-divider .divider-icon { font-size: 28px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--card-bg); border-radius: var(--radius); padding: 4px; box-shadow: var(--shadow); }
+.tab { flex: 1; padding: 14px 20px; text-align: center; cursor: pointer; border-radius: 8px; font-size: 15px; font-weight: 600; color: var(--text-secondary); transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.tab:hover { background: #f5f5f5; }
+.tab.active { background: var(--gradient-wish); color: white; }
+.tab .tab-icon { font-size: 20px; }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Wish List Hero with IT Engineer Cartoon */
+.wish-hero { background: var(--gradient-wish); border-radius: 16px; padding: 24px 40px; color: white; margin-bottom: 24px; display: flex; align-items: center; gap: 32px; position: relative; overflow: hidden; }
+.wish-hero::before { content: ''; position: absolute; top: -60%; right: -5%; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+.wish-hero-text { flex: 1; position: relative; z-index: 1; }
+.wish-hero-text h2 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.wish-hero-text p { font-size: 13px; opacity: 0.9; line-height: 1.6; }
+.wish-hero-text .emoji-row { font-size: 20px; margin-top: 10px; letter-spacing: 6px; }
+
+/* Thank You Section */
+.thank-section { background: var(--card-bg); border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow); text-align: center; }
+.thank-section h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.thank-section p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.thank-names { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.thank-name { background: var(--gradient-wish); color: white; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.2s; }
+.thank-name:hover { transform: scale(1.05); }
+.thank-footer { margin-top: 20px; font-size: 15px; color: #667eea; font-weight: 600; }
+
+/* IT Engineer Cartoon (SVG) */
+.wish-engineer { width: 140px; height: 160px; flex-shrink: 0; position: relative; z-index: 1; }
+.wish-engineer svg { width: 100%; height: 100%; }
+
+/* Form */
+.form-section { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.form-group label .req { color: var(--red); }
+.form-group label .opt { color: #999; font-weight: 400; font-size: 12px; }
+.form-group label .label-icon { font-size: 16px; }
+.form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; background: white; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
+.form-group textarea { min-height: 120px; resize: vertical; }
+
+/* Image Upload */
+.image-upload-area { border: 2px dashed #ccc; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.image-upload-area:hover { border-color: var(--primary); background: #f8faff; }
+.image-upload-area.dragover { border-color: var(--primary); background: #e8f0fe; }
+.image-upload-area p { color: var(--text-secondary); font-size: 13px; }
+.image-upload-area .icon { font-size: 36px; margin-bottom: 8px; }
+.image-preview-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+.image-preview { position: relative; width: 100px; height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+.image-preview img { width: 100%; height: 100%; object-fit: cover; }
+.image-preview .remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+
+/* Buttons */
+.form-actions { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { padding: 12px 28px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.btn-primary { background: var(--gradient-wish); color: white; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-secondary { background: #f0f0f0; color: #555; }
+.btn-secondary:hover { background: #e0e0e0; }
+
+/* Submitted */
+.req-list { margin-top: 32px; }
+.req-item { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 12px; border-left: 4px solid #667eea; transition: transform 0.2s; }
+.req-item:hover { transform: translateX(2px); }
+.req-item-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
+.req-item-title { font-size: 15px; font-weight: 600; }
+.req-item-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.req-item-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.req-item-images { display: none; }
+.req-item-time { font-size: 12px; color: #999; margin-top: 8px; }
+.req-empty { text-align: center; padding: 48px; color: #999; font-size: 15px; }
+.req-empty .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--green); color: white; padding: 14px 24px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); font-size: 14px; z-index: 9999; opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: var(--red); }
+
+/* Footer */
+.footer { text-align: center; padding: 32px; font-size: 13px; color: #999; }
+
+/* Modal */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
 .modal-overlay.active { display: flex; }
-.modal { background: white; border-radius: 12px; padding: 30px; width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-.modal h3 { margin-bottom: 20px; color: #333; }
-.modal input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 15px; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.modal-overlay img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+.modal-overlay .close { position: absolute; top: 20px; right: 20px; color: white; font-size: 28px; cursor: pointer; }
 
-/* 同步状态 */
-.sync-status { position: fixed; bottom: 20px; right: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 999; }
-.sync-status.show { display: block; }
-.sync-status.success { border-left: 4px solid #0d9f4f; }
-.sync-status.error { border-left: 4px solid #d93025; }
-.sync-status.info { border-left: 4px solid #1a73e8; }
+/* Submit Status */
+.submit-status { display: none; margin-top: 16px; padding: 12px 16px; border-radius: 8px; font-size: 13px; }
+.submit-status.show { display: block; }
+.submit-status.success { background: #e6f4ea; color: #137333; }
+.submit-status.error { background: #fce8e6; color: #c5221f; }
+.submit-status.syncing { background: #e8f0fe; color: #1967d2; }
+
+@media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .cards-grid { grid-template-columns: 1fr; } .header h1 { font-size: 24px; } .wish-hero { flex-direction: column; text-align: center; } .wish-engineer { width: 140px; height: 160px; } }
 </style>
 </head>
 <body>
+
 <div class="header">
-  <div>
-    <h1 id="pageTitle">南非IT需求进度看板 <span class="edit-indicator" id="editModeLabel">编辑模式</span></h1>
-    <p id="subtitle">数据来源: 南非需求跟进表 | 同步时间: <span id="syncTime">2026-10-12 04:09</span></p>
-  </div>
-  <div class="header-actions">
-    <button class="btn lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
-    <button class="btn btn-primary" id="editBtn" onclick="toggleEdit()">编辑</button>
-    <button class="btn btn-success" id="saveBtn" onclick="saveChanges()" style="display:none">保存</button>
-    <button class="btn btn-warning" id="syncBtn" onclick="syncToFeishu()" style="display:none">同步到飞书</button>
-    <button class="btn btn-danger" id="cancelBtn" onclick="cancelEdit()" style="display:none">取消</button>
-  </div>
-</div>
-
-<div class="container">
-  <div class="summary-row" id="summaryRow"></div>
-  <div class="charts-row">
-    <div class="chart-card"><h3 id="chartTitle1">按业务域分布</h3><div id="domainChart"></div></div>
-    <div class="chart-card"><h3 id="chartTitle2">按状态分布</h3><div id="statusChart"></div></div>
-  </div>
-  <div class="charts-row">
-    <div class="chart-card"><h3 id="chartTitle3">按优先级分布</h3><div id="priorityChart"></div></div>
-    <div class="chart-card"><h3 id="chartTitle4">按涉及品牌分布</h3><div id="brandChart"></div></div>
-  </div>
-  <div class="filter-bar">
-    <label id="filterLabel">筛选:</label>
-    <select id="filterDomain" onchange="applyFilters()"><option value="" id="filterDomainAll">全部业务域</option></select>
-    <select id="filterStatus" onchange="applyFilters()"><option value="" id="filterStatusAll">全部状态</option></select>
-    <select id="filterPriority" onchange="applyFilters()"><option value="" id="filterPriorityAll">全部优先级</option></select>
-    <input type="text" id="filterSearch" placeholder="搜索需求说明/提出人..." oninput="applyFilters()">
-  </div>
-  <div class="table-card">
-    <table id="dataTable">
-      <thead><tr id="tableHeader"><th>#</th><th>业务域</th><th>需求说明</th><th>优先级</th><th>状态</th><th>提出人</th><th>涉及品牌</th><th>产品经理</th><th>对应系统</th><th>当前进展</th></tr></thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
-  <div class="footer" id="footerText">南非IT需求进度可视化看板 | 支持编辑和反向同步</div>
-</div>
-
-<!-- 密码弹窗 -->
-<div class="modal-overlay" id="passwordModal">
-  <div class="modal">
-    <h3 id="modalTitle">输入编辑密码</h3>
-    <input type="password" id="passwordInput" placeholder="请输入密码" onkeypress="if(event.key==='Enter')checkPassword()">
-    <div class="modal-actions">
-      <button class="btn" onclick="closePasswordModal()" id="modalCancelBtn">取消</button>
-      <button class="btn btn-success" onclick="checkPassword()" id="modalConfirmBtn">确认</button>
+  <div class="header-inner">
+    <h1>🌟 2027 SA IT Wish List — Requirement Collection</h1>
+    <p>Collecting IT wishes from the South Africa subsidiary for 2027 — your input shapes our digital roadmap. Also reviewing 2026 IT achievements.</p>
+    <div class="header-meta">
+      <div class="header-meta-item"><span class="dot"></span> Data as of October 2026</div>
+      <div class="header-meta-item"><span class="dot" style="background:#ffa726"></span> Covering Geely / ZEEKR / Lynk & Co / Riddara</div>
     </div>
   </div>
 </div>
 
-<!-- 同步状态提示 -->
-<div class="sync-status" id="syncStatus"></div>
+<div class="container">
 
-<script src="dashboard_data.js"></script>
+  <div class="tabs">
+    <div class="tab" onclick="switchTab(event,'achievements')"><span class="tab-icon">🏆</span> 2026 IT Achievements</div>
+    <div class="tab active" onclick="switchTab(event,'requirements')"><span class="tab-icon">🌟</span> 2027 IT Wish List</div>
+  </div>
+
+  <!-- Tab 1: Achievements -->
+  <div class="tab-content" id="tab-achievements">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="status-divider live">
+      <span class="divider-icon">✅</span>
+      <h2>Live Projects</h2>
+      <span class="count" id="onlineCount" style="background:var(--green);color:white;padding:2px 12px;border-radius:14px;font-size:13px;font-weight:600;">0</span>
+    </div>
+    <div id="achievementsContainer"></div>
+
+    <div class="status-divider progress">
+      <span class="divider-icon">🔧</span>
+      <h2>In Progress</h2>
+      <span class="count" id="progressCount" style="background:var(--orange);color:white;padding:2px 12px;border-radius:14px;font-size:13px;font-weight:600;">0</span>
+    </div>
+    <div id="progressContainer"></div>
+  </div>
+
+  <!-- Tab 2: Wish List -->
+  <div class="tab-content active" id="tab-requirements">
+
+    <div class="wish-hero">
+      <div class="wish-hero-text">
+        <h2>🌟 2027 IT Wish List 🌟</h2>
+        <p>Tell us what IT capabilities you need next year — your wishes shape our roadmap!</p>
+        <div class="emoji-row">💡 🚀 🎯 📋 ✨ 🔧</div>
+      </div>
+      <div class="wish-engineer">
+        <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body -->
+          <ellipse cx="90" cy="170" rx="35" ry="25" fill="#5b6abf"/>
+          <!-- Neck -->
+          <rect x="82" y="130" width="16" height="20" fill="#f4c89a"/>
+          <!-- Head -->
+          <circle cx="90" cy="100" r="32" fill="#f4c89a"/>
+          <!-- Hair -->
+          <path d="M58 95 Q58 68 90 65 Q122 68 122 95 Q122 82 112 78 L100 75 L88 73 L76 76 L66 82 Z" fill="#3d3d3d"/>
+          <!-- Glasses -->
+          <circle cx="78" cy="100" r="10" fill="none" stroke="#333" stroke-width="2.5"/>
+          <circle cx="102" cy="100" r="10" fill="none" stroke="#333" stroke-width="2.5"/>
+          <line x1="88" y1="100" x2="92" y2="100" stroke="#333" stroke-width="2.5"/>
+          <line x1="68" y1="98" x2="62" y2="95" stroke="#333" stroke-width="2"/>
+          <line x1="112" y1="98" x2="118" y2="95" stroke="#333" stroke-width="2"/>
+          <!-- Eyes behind glasses -->
+          <circle cx="78" cy="100" r="3" fill="#333"/>
+          <circle cx="102" cy="100" r="3" fill="#333"/>
+          <!-- Smile -->
+          <path d="M80 112 Q90 118 100 112" fill="none" stroke="#8b5e3c" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Ears -->
+          <ellipse cx="59" cy="102" rx="4" ry="7" fill="#f4c89a"/>
+          <ellipse cx="121" cy="102" rx="4" ry="7" fill="#f4c89a"/>
+          <!-- Hoodie/Jacket -->
+          <path d="M55 150 Q55 140 65 135 L80 130 L100 130 L115 135 Q125 140 125 150 L125 195 L55 195 Z" fill="#5b6abf"/>
+          <!-- Hoodie strings -->
+          <line x1="85" y1="135" x2="83" y2="155" stroke="#4451a0" stroke-width="2"/>
+          <line x1="95" y1="135" x2="97" y2="155" stroke="#4451a0" stroke-width="2"/>
+          <!-- Laptop -->
+          <rect x="60" y="155" width="60" height="38" rx="3" fill="#2d2d2d"/>
+          <rect x="64" y="159" width="52" height="28" rx="2" fill="#1a73e8"/>
+          <!-- Code on screen -->
+          <text x="68" y="172" fill="#0f0" font-size="6" font-family="monospace">&lt;/&gt; IT</text>
+          <text x="68" y="180" fill="#0ff" font-size="5" font-family="monolo">WISH</text>
+          <!-- Laptop base -->
+          <rect x="55" y="193" width="70" height="5" rx="2" fill="#444"/>
+          <!-- Arms -->
+          <path d="M55 152 Q40 160 45 175 Q50 180 58 178" fill="none" stroke="#5b6abf" stroke-width="12" stroke-linecap="round"/>
+          <path d="M125 152 Q140 160 135 175 Q130 180 122 178" fill="none" stroke="#5b6abf" stroke-width="12" stroke-linecap="round"/>
+          <!-- Hands -->
+          <circle cx="50" cy="178" r="6" fill="#f4c89a"/>
+          <circle cx="130" cy="178" r="6" fill="#f4c89a"/>
+          <!-- Gear icon floating -->
+          <g transform="translate(140,50)">
+            <circle cx="0" cy="0" r="10" fill="#ffb74d" opacity="0.9"/>
+            <circle cx="0" cy="0" r="5" fill="#fff"/>
+            <rect x="-2" y="-13" width="4" height="6" fill="#ffb74d" opacity="0.9"/>
+            <rect x="-2" y="7" width="4" height="6" fill="#ffb74d" opacity="0.9"/>
+            <rect x="-13" y="-2" width="6" height="4" fill="#ffb74d" opacity="0.9"/>
+            <rect x="7" y="-2" width="6" height="4" fill="#ffb74d" opacity="0.9"/>
+          </g>
+          <!-- Star sparkles -->
+          <text x="35" y="60" fill="#ffd54f" font-size="14" opacity="0.8">✦</text>
+          <text x="150" y="120" fill="#ffd54f" font-size="10" opacity="0.7">✦</text>
+          <text x="25" y="130" fill="#fff" font-size="8" opacity="0.5">✦</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="thank-section">
+      <h3>🙏 Thank You to Our 2026 Business Partners</h3>
+      <p>These colleagues collaborated with IT throughout 2026 to deliver impactful digital solutions. We look forward to your continued support — and welcome more colleagues to join us in 2027!</p>
+      <div class="thank-names">
+        <span class="thank-name">👤 Deng Boyan</span>
+        <span class="thank-name">👤 Xue Jiahao</span>
+        <span class="thank-name">👤 Han Siguo</span>
+        <span class="thank-name">👤 Nomfundo</span>
+        <span class="thank-name">👤 Zheng Yiding</span>
+        <span class="thank-name">👤 Sun Chao</span>
+        <span class="thank-name">👤 Xane</span>
+        <span class="thank-name">👤 Wen Huihao</span>
+        <span class="thank-name">👤 Daniel Tau</span>
+        <span class="thank-name">👤 Michayla</span>
+        <span class="thank-name">👤 Onela Mtilwa</span>
+        <span class="thank-name">👤 Hu Huiying</span>
+        <span class="thank-name">👤 Zhang Houbao</span>
+        <span class="thank-name">👤 Hua Shujun</span>
+        <span class="thank-name">👤 Li Peng</span>
+        <span class="thank-name">👤 Shang Yingying</span>
+        <span class="thank-name">👤 Shi Hongmei</span>
+        <span class="thank-name">👤 Roberto</span>
+        <span class="thank-name">👤 Adrian Naidoo</span>
+      </div>
+      <div class="thank-footer">🚀 Let's keep building better IT systems together in 2027! 🚀</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title wish">
+        <div class="bar"></div>
+        <h2>📝 Submit Your IT Wish</h2>
+      </div>
+      <p style="margin-bottom:20px;color:#666;font-size:14px;">Only <strong>Name</strong> and <strong>Wish Description</strong> are required. All other fields are optional. Submissions are automatically synced to Feishu. 🎉</p>
+
+      <div class="form-section">
+        <form id="reqForm" onsubmit="submitRequirement(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label><span class="label-icon">👤</span> Name <span class="req">*</span></label>
+              <input type="text" id="r_name" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label><span class="label-icon">🚗</span> Brand <span class="opt">(optional)</span></label>
+              <select id="r_brand">
+                <option value="">— Select —</option>
+                <option value="SA Geely">SA Geely</option>
+                <option value="SA ZEEKR">SA ZEEKR</option>
+                <option value="SA Lynk & Co">SA Lynk & Co</option>
+                <option value="Multi-Brand">Multi-Brand</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><span class="label-icon">📊</span> Business Domain <span class="opt">(optional)</span></label>
+              <select id="r_domain">
+                <option value="">— Select —</option>
+                <option value="User Domain">User Domain</option>
+                <option value="Sales Domain">Sales Domain</option>
+                <option value="After-Sales Domain">After-Sales Domain</option>
+                <option value="Logistics Domain">Logistics Domain</option>
+                <option value="Finance Domain">Finance Domain</option>
+                <option value="IT Operations">IT Operations</option>
+                <option value="BI Domain">BI Domain</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><span class="label-icon">⚡</span> Priority <span class="opt">(optional)</span></label>
+              <select id="r_priority">
+                <option value="">— Select —</option>
+                <option value="P0">🔴 P0 - Critical</option>
+                <option value="P1">🟠 P1 - High</option>
+                <option value="P2">🟡 P2 - Medium</option>
+                <option value="P3">🟢 P3 - Low</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><span class="label-icon">📅</span> Expected Deadline <span class="opt">(optional)</span></label>
+              <select id="r_deadline">
+                <option value="">— Select —</option>
+                <option value="2027-01">January 2027</option>
+                <option value="2027-02">February 2027</option>
+                <option value="2027-03">March 2027</option>
+                <option value="2027-04">April 2027</option>
+                <option value="2027-05">May 2027</option>
+                <option value="2027-06">June 2027</option>
+                <option value="2027-07">July 2027</option>
+                <option value="2027-08">August 2027</option>
+                <option value="2027-09">September 2027</option>
+                <option value="2027-10">October 2027</option>
+                <option value="2027-11">November 2027</option>
+                <option value="2027-12">December 2027</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label><span class="label-icon">✨</span> Wish Description <span class="req">*</span></label>
+              <textarea id="r_desc" required placeholder="Describe your IT wish in detail: business scenario, expected functionality, current pain points, what would make your life easier..."></textarea>
+            </div>
+            <div class="form-group full">
+              <label><span class="label-icon">📧</span> Contact <span class="opt">(optional)</span></label>
+              <input type="text" id="r_contact" placeholder="Email or WeCom ID for follow-up">
+            </div>
+            <div class="form-group full">
+              <label><span class="label-icon">📸</span> Attach Images <span class="opt">(optional)</span></label>
+              <div class="image-upload-area" id="uploadArea" onclick="document.getElementById('r_images').click()">
+                <div class="icon">📎</div>
+                <p>Click to select images, or drag and drop images here</p>
+                <p style="font-size:11px;color:#aaa;margin-top:4px;">Supports: JPG, PNG, GIF, WEBP (max 5MB per image)</p>
+              </div>
+              <input type="file" id="r_images" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
+              <div class="image-preview-container" id="imagePreview"></div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn"><span>🚀</span> Submit Wish</button>
+            <button type="reset" class="btn btn-secondary" onclick="clearImagePreviews()">🗑️ Clear Form</button>
+          </div>
+          <div class="submit-status" id="submitStatus"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title wish">
+        <div class="bar"></div>
+        <h2>📦 Submitted Wishes</h2>
+        <span class="count" id="submittedCount">0</span>
+      </div>
+      <div class="req-list" id="reqList"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="imageModal" onclick="closeImageModal()">
+  <span class="close">&times;</span>
+  <img id="modalImage" src="">
+</div>
+
+<div class="footer">
+  <p>2026 SA IT Annual Review & 2027 IT Wish List | Maintained by IT Team</p>
+  <p style="margin-top:4px;">Feishu Spreadsheet: <a href="https://geely.feishu.cn/sheets/M7ZpsgfHFhYod2tO1wXcx9nan0e" target="_blank" style="color:#1a73e8;">SA IT Requirement Collection 2026</a></p>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-var originalData = [];
-var isEditMode = false;
-var EDIT_PASSWORD = "123456";
-var currentLang = localStorage.getItem('sa_dashboard_lang') || 'zh';
+// ===== Live Projects (已上线) =====
+var ACHIEVEMENTS = [
+  {domain:"User Domain", title:"Embedded Financial Application & Calculator on Official Website", brand:"SA Geely", proposer:"Deng Boyan", priority:"P1", date:"2026.07", progress:"Embedded financial application entry page and calculator on the Geely official website."},
+  {domain:"User Domain", title:"Lead Capture Integration with CMS System", brand:"SA Geely", proposer:"Xue Jiahao", priority:"P1", date:"2026.07", progress:"Embedded lead capture entry on official website with CMS integration."},
+  {domain:"User Domain", title:"After-Sales Service & Dealer Network Module on Website", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", date:"2026.07", progress:"Service network, manual download, accessory display, and online consultation modules launched."},
+  {domain:"User Domain", title:"Riddara Brand Pages & HR Recruitment Module", brand:"SA Geely", proposer:"Nomfundo", priority:"P1", date:"2026.07", progress:"Added Riddara brand model pages and HR recruitment module to the official website."},
+  {domain:"User Domain", title:"ZEEKR Official Website Launch in South Africa", brand:"SA ZEEKR", proposer:"Zheng Yiding", priority:"P2", date:"2026.09", progress:"ZEEKR website preview page launched on Sep 16, preparing for ZEEKR vehicle arrival in SA."},
+  {domain:"User Domain", title:"Geely Website Contact Us Page & Dealer Map Optimization", brand:"SA Geely", proposer:"Nomfundo", priority:"P1", date:"2026.07", progress:"Completed Contact Us page with vehicle models, updated dealer network map, optimized exterior color display."},
+  {domain:"Sales Domain", title:"Lynk & Co Africa Transit Trade Order Support", brand:"SA Geely", proposer:"Sun Chao", priority:"P0", date:"2026.08", progress:"Enabled transit trade ordering via Hong Kong company. Marketing system Aug 13, SAP Aug 20, Warehouse Aug 25."},
+  {domain:"Sales Domain", title:"Riddara After-Sales Warranty & Factory System Integration", brand:"SA Geely", proposer:"Deng Boyan / Xue Jiahao", priority:"P1", date:"2026.09", progress:"VIN data import plugin launched Sep 10. Riddara after-sales warranty verified and operational."},
+  {domain:"Sales Domain", title:"Internal Vehicle Type Support & OTD Allocation Control", brand:"SA Geely", proposer:"Xane", priority:"P1", date:"2026.09", progress:"Supported internal vehicles (Company/Marketing/Fleet Cars) through OTD flow with reporting."},
+  {domain:"Sales Domain", title:"Proton Offline Production Vehicle Import to Marketing System", brand:"SA Geely", proposer:"Wen Huihao", priority:"P1", date:"2026.10", progress:"1,380 historical Proton factory production orders imported. Temporary solution completed."},
+  {domain:"After-Sales Domain", title:"New Service Package Warranty Type", brand:"SA Geely", proposer:"Han Siguo / Daniel Tau", priority:"P1", date:"2026.07", progress:"Added service package warranty type with no HQ claims and differentiated parts markup. Launched Jul 7."},
+  {domain:"After-Sales Domain", title:"Store Tax ID Field on Invoices", brand:"SA Geely", proposer:"Michayla", priority:"P2", date:"2026.07", progress:"Added store tax ID field on invoices to meet South African tax compliance requirements."},
+  {domain:"After-Sales Domain", title:"Auto-Fill Claim Invoice Content", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", date:"2026.07", progress:"Claim invoice download now auto-fills invoice content, reducing manual operations."},
+  {domain:"After-Sales Domain", title:"After-Sales System Support for Riddara Brand", brand:"SA Geely", proposer:"Han Siguo", priority:"P1", date:"2026.07", progress:"After-sales system fully supports Riddara brand warranty, claims, and parts operations."},
+  {domain:"After-Sales Domain", title:"Repair Service Claim to Warranty Claim Transfer Optimization", brand:"SA Geely", proposer:"Daniel", priority:"P1", date:"2026.08", progress:"Resolved repair service claims transfer issue. Short-term via market activity claim type; long-term planned."},
+  {domain:"After-Sales Domain", title:"Appointment Work Order Board & Repair Progress Dashboard", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", date:"2026.10", progress:"Appointment work order board and repair progress dashboard launched Oct 13."},
+  {domain:"Logistics Domain", title:"Parts Inventory Reconciliation & 3PL Settlement", brand:"SA Geely", proposer:"Han Siguo / Li Peng", priority:"P1", date:"2026.07", progress:"April inventory count results processed. Warehouse and SAP both reconciled, SAP posted."},
+  {domain:"Finance Domain", title:"Vehicle Invoice Systemization", brand:"SA Geely", proposer:"Shang Yingying", priority:"P1", date:"2026.07", progress:"Resolved manual vehicle invoice issue. Implemented system-based invoice processing."},
+  {domain:"IT Operations", title:"Local IT Work Standards & System Training", brand:"SA Geely", proposer:"Roberto", priority:"P2", date:"2026.07", progress:"Published IT training plan and work standards to enhance local IT team capabilities."},
+];
 
-/* ====== I18N: UI 文本翻译 ====== */
-var I18N = {
-  zh: {
-    pageTitle: "南非IT需求进度看板",
-    editMode: "编辑模式",
-    subtitle: "数据来源: 南非需求跟进表 | 同步时间: ",
-    edit: "编辑",
-    save: "保存",
-    syncToFeishu: "同步到飞书",
-    cancel: "取消",
-    chartTitle1: "按业务域分布",
-    chartTitle2: "按状态分布",
-    chartTitle3: "按优先级分布",
-    chartTitle4: "按涉及品牌分布",
-    filterLabel: "筛选:",
-    filterDomainAll: "全部业务域",
-    filterStatusAll: "全部状态",
-    filterPriorityAll: "全部优先级",
-    filterSearchPh: "搜索需求说明/提出人...",
-    thIndex: "#",
-    thDomain: "业务域",
-    thDesc: "需求说明",
-    thPriority: "优先级",
-    thStatus: "状态",
-    thProposer: "提出人",
-    thBrand: "涉及品牌",
-    thPM: "产品经理",
-    thSystem: "对应系统",
-    thProgress: "当前进展",
-    footer: "南非IT需求进度可视化看板 | 支持编辑和反向同步",
-    modalTitle: "输入编辑密码",
-    modalPwdPh: "请输入密码",
-    modalCancel: "取消",
-    modalConfirm: "确认",
-    pwdError: "密码错误！",
-    sumTotal: "总需求数",
-    sumOnline: "已上线",
-    sumDev: "开发中",
-    sumReceived: "已接收",
-    sumConfirm: "确认中",
-    sumRejected: "已拒绝",
-    sumMerged: "已合并",
-    editModeEnter: "已进入编辑模式，可以直接修改表格内容",
-    cancelEditConfirm: "确定要取消编辑吗？未保存的修改将丢失。",
-    saveLocalOk: "修改已保存到本地",
-    noChanges: "没有检测到修改",
-    syncExportOk: "修改记录已导出，请运行同步脚本上传到飞书",
-    fieldDomain: "业务域",
-    fieldDesc: "需求说明",
-    fieldPriority: "优先级",
-    fieldStatus: "状态",
-    fieldProposer: "提出人",
-    fieldBrand: "涉及品牌",
-    fieldPM: "产品经理",
-    fieldSystem: "对应系统",
-    fieldProgress: "当前进展",
-    fieldUnknown: "未知字段"
-  },
-  en: {
-    pageTitle: "South Africa IT Requirement Dashboard",
-    editMode: "Edit Mode",
-    subtitle: "Data Source: SA Requirement Tracking Sheet | Sync Time: ",
-    edit: "Edit",
-    save: "Save",
-    syncToFeishu: "Sync to Feishu",
-    cancel: "Cancel",
-    chartTitle1: "By Business Domain",
-    chartTitle2: "By Status",
-    chartTitle3: "By Priority",
-    chartTitle4: "By Brand",
-    filterLabel: "Filter:",
-    filterDomainAll: "All Domains",
-    filterStatusAll: "All Status",
-    filterPriorityAll: "All Priorities",
-    filterSearchPh: "Search description/proposer...",
-    thIndex: "#",
-    thDomain: "Domain",
-    thDesc: "Description",
-    thPriority: "Priority",
-    thStatus: "Status",
-    thProposer: "Proposer",
-    thBrand: "Brand",
-    thPM: "Product Manager",
-    thSystem: "System",
-    thProgress: "Progress",
-    footer: "South Africa IT Requirement Dashboard | Edit & Reverse Sync Supported",
-    modalTitle: "Enter Edit Password",
-    modalPwdPh: "Enter password",
-    modalCancel: "Cancel",
-    modalConfirm: "Confirm",
-    pwdError: "Wrong password!",
-    sumTotal: "Total",
-    sumOnline: "Live",
-    sumDev: "In Dev",
-    sumReceived: "Received",
-    sumConfirm: "Confirming",
-    sumRejected: "Rejected",
-    sumMerged: "Merged",
-    editModeEnter: "Edit mode activated. You can now modify table content directly.",
-    cancelEditConfirm: "Are you sure you want to cancel editing? Unsaved changes will be lost.",
-    saveLocalOk: "Changes saved locally",
-    noChanges: "No changes detected",
-    syncExportOk: "Change records exported. Please run sync script to upload to Feishu.",
-    fieldDomain: "Domain",
-    fieldDesc: "Description",
-    fieldPriority: "Priority",
-    fieldStatus: "Status",
-    fieldProposer: "Proposer",
-    fieldBrand: "Brand",
-    fieldPM: "Product Manager",
-    fieldSystem: "System",
-    fieldProgress: "Progress",
-    fieldUnknown: "Unknown Field"
-  }
-};
+// ===== In-Progress Projects (开发中/已接收/确认中) =====
+var IN_PROGRESS = [
+  {domain:"User Domain", title:"App & Website Service Appointment Capability", brand:"SA Geely", proposer:"Han Siguo", priority:"P1", status:"In Development", progress:"ZEEKR app capability available; Geely needs fusion version. Service appointment UAT end of Oct, launch end of October."},
+  {domain:"User Domain", title:"Recruitment Page on Geely Website", brand:"SA Geely", proposer:"Onela Mtilwa", priority:"P2", status:"Confirming", progress:"Three pages: overview, position detail, application form. Reference: Geely UK website."},
+  {domain:"User Domain", title:"Google Analytics Tracking on Official Website", brand:"SA Geely", proposer:"Onela Mtilwa", priority:"P2", status:"Confirming", progress:"Preliminary requirement discussion completed. Need business to provide GTM container ID and DataLayer."},
+  {domain:"Sales Domain", title:"African Distributor Cross-Country Vehicle Purchasing", brand:"SA Geely & ZEEKR & Lynk & Co", proposer:"Xue Jiahao / Sun Chao", priority:"P1", status:"In Development", progress:"Geely launched 8.27. ZEEKR & Lynk & Co planned before end of October. Pending scheduling."},
+  {domain:"Sales Domain", title:"South Africa Key Account Orders", brand:"SA Geely", proposer:"Wen Huihao", priority:"P1", status:"In Development", progress:"Overall key account solution launched 10.22. Next: ZEEKR & Lynk key account solution."},
+  {domain:"Sales Domain", title:"Dealer Training Certification Labeling", brand:"SA Geely", proposer:"Hu Huiying / Xue Jiahao", priority:"P1", status:"Received", progress:"Discussed with business and PM. Preliminary schedule: early November."},
+  {domain:"Sales Domain", title:"Vehicle Registration System Integration", brand:"SA Geely", proposer:"Xue Jiahao", priority:"P2", status:"Confirming", progress:"Product and service provider discussing feasibility. Pending vehicle registration system API."},
+  {domain:"Sales Domain", title:"Online PR Order Generation for Dealer Procurement", brand:"SA Geely", proposer:"Wen Huihao", priority:"P1", status:"Received", progress:"Currently manual. October fully scheduled, expected November."},
+  {domain:"Sales Domain", title:"Riddara Brand FOC Order Support", brand:"SA Geely", proposer:"Michayla / Zhang Houbao", priority:"P1", status:"Received", progress:"Pending mid-October requirement analysis. Product: Zhu Jialin, Lv Qian. 10.22 version launch planned."},
+  {domain:"After-Sales Domain", title:"Proton System Integration for Parts & After-Sales", brand:"SA Geely", proposer:"Han Siguo", priority:"P1", status:"Confirming", progress:"Proton currently only has SAP. Pending Proton system launch plan. Proton requires 9.30 deployment. ACOTECH no progress."},
+  {domain:"After-Sales Domain", title:"SA Local C-End Accessory Mall", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", status:"Confirming", progress:"New model — need to clarify business logic and transaction flow with HQ. Full IT capability planned: product, C-end UI, fulfillment, logistics, payment, finance."},
+  {domain:"After-Sales Domain", title:"After-Sales Business Management BI Dashboard", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", status:"Confirming", progress:"Basic version available next week. Major revision planned around December, aligning requirements with HQ."},
+  {domain:"After-Sales Domain", title:"Back Order Cancel Operation Logging", brand:"SA Geely", proposer:"Michayla Thomas", priority:"P2", status:"Confirming", progress:"Business raised requirement Aug 21. Confirmed mid-November launch."},
+  {domain:"After-Sales Domain", title:"Claim Type Repair Work Order Invoicing", brand:"SA Geely", proposer:"Han Siguo / Daniel Tau", priority:"P1", status:"Received", progress:"SA market practice: claim type repair work orders need invoices for customer signature. iRepair needs invoicing support."},
+  {domain:"After-Sales Domain", title:"Settlement Order Claim Type Query Filter", brand:"SA Geely", proposer:"Han Siguo / Daniel Tau", priority:"P2", status:"Received", progress:"Add query filter to distinguish market activity claims from regular claims — payments go to different dealer accounts."},
+  {domain:"After-Sales Domain", title:"Vehicle Search Aggregate Page", brand:"SA Geely", proposer:"Han Siguo / Daniel Tau", priority:"P2", status:"Received", progress:"After-sales aggregate vehicle search: vehicle info, warranty, work orders (hide prices), claims, quality activities, notifications."},
+  {domain:"After-Sales Domain", title:"QB Popup Hyperlink in iRepair", brand:"SA Geely", proposer:"Han Siguo / Daniel Tau", priority:"P2", status:"Received", progress:"Add hyperlinks to QB popup order numbers for service advisors and technicians to click and view details."},
+  {domain:"After-Sales Domain", title:"Case-Insensitive Vehicle Model Search in Knowledge Base", brand:"SA Geely", proposer:"Han Siguo", priority:"P2", status:"Received", progress:"Vehicle series supports manual input with case-insensitive fuzzy search."},
+  {domain:"After-Sales Domain", title:"Workshop PO Cancellation Function", brand:"SA Geely", proposer:"Michayla", priority:"P3", status:"Received", progress:"Solve the problem of only being able to fix via data refresh."},
+  {domain:"After-Sales/Logistics", title:"SA Parts FOC Free Order Consolidation", brand:"SA Geely", proposer:"Hua Shujun", priority:"P1", status:"Confirming", progress:"Logistics plans to enable wave picking workflow. Launch planned 11.26."},
+  {domain:"Finance Domain", title:"SA Dealer Credit Limit", brand:"SA Geely", proposer:"Shang Yingying / Xue Jiahao", priority:"P2", status:"Received", progress:"Wesbank interface connected. Promoting SA request document auto-generation and credit check threshold detection."},
+  {domain:"Finance Domain", title:"Dealer Reconciliation Function", brand:"SA Geely", proposer:"Shang Yingying", priority:"P2", status:"Received", progress:"Issue identified as lock/release detail calculation difference. Fix expected Nov 21."},
+  {domain:"Finance Domain", title:"SA Parts Return Order SAP Integration", brand:"SA Geely", proposer:"Han Siguo / Michayla Thomas", priority:"P1", status:"Received", progress:"Need iParts-SAP API integration. Switch from old ZSDI_SALE_ORDER to new ZSDI003_OTD_SALES_O standard API."},
+  {domain:"BI Domain", title:"BI Lead Report — CMS to CRM Integration", brand:"SA Geely", proposer:"Shi Hongmei / Zheng Yiding", priority:"P2", status:"Received", progress:"Registered open platform with CMS's Leigh. CRM and BI aligning required data."},
+];
 
-function t(key) { return I18N[currentLang][key] || key; }
+var DOMAIN_COLORS = {"User Domain":"blue","Sales Domain":"green","After-Sales Domain":"orange","Logistics Domain":"purple","Finance Domain":"teal","IT Operations":"red","BI Domain":"blue","After-Sales/Logistics":"orange"};
+var DOMAIN_ICONS = {"User Domain":"🌐","Sales Domain":"💰","After-Sales Domain":"🔧","Logistics Domain":"📦","Finance Domain":"💼","IT Operations":"🖥️","BI Domain":"📈","After-Sales/Logistics":"🔧📦"};
+var STATUS_COLORS = {"In Development":"dev","Received":"received","Confirming":"confirm"};
+var STATUS_ICONS = {"In Development":"🔨","Received":"📥","Confirming":"🔍"};
 
-/* ====== 数据字段翻译映射 ====== */
-var DOMAIN_EN = {
-  "用户域": "User Domain",
-  "销售域": "Sales Domain",
-  "售后域": "After-Sales Domain",
-  "售后域/物流域": "After-Sales/Logistics",
-  "物流域": "Logistics Domain",
-  "财务域": "Finance Domain",
-  "IT运维": "IT Operations",
-  "BI域": "BI Domain"
-};
-
-var STATUS_EN = {
-  "需求已上线": "Live",
-  "需求开发中": "In Development",
-  "需求确认中": "Confirming",
-  "需求已接收": "Received",
-  "需求拒绝": "Rejected",
-  "需求已合并": "Merged"
-};
-
-var BRAND_EN = {
-  "南非吉利": "SA Geely",
-  "南非极氪": "SA ZEEKR",
-  "南非吉利&极氪&领克": "SA Geely & ZEEKR & Lynk & Co"
-};
-
-var SYSTEM_EN = {
-  "官网": "Website",
-  "OTD": "OTD",
-  "OTD/OTWB/SAP等": "OTD/OTWB/SAP",
-  "OTD/SAP等": "OTD/SAP",
-  "索赔": "Warranty Claim",
-  "备件/索赔/维修等": "Parts/Claim/Repair",
-  "SAP": "SAP"
-};
-
-/* ====== 自由文本翻译映射（描述 & 进展） ====== */
-var DESC_EN = {
-  "官网嵌入金融申请入口页及金融计算器。": "Embed financial application entry page and financial calculator on the official website.",
-  "官网嵌入留资入口并打通CMS系统。": "Embed lead capture entry on official website and integrate with CMS system.",
-  "官网增加售后服务及网点模块。\n包括服务网络，手册下载，精品件展示，在线咨询应答等。": "Add after-sales service and dealer network module to official website. Including service network, manual download, accessory display, online consultation, etc.",
-  "增加雷达品牌车型官网页面，以及HR招聘模块。": "Add Riddara brand model pages to official website, plus HR recruitment module.",
-  "南非极氪官网": "South Africa ZEEKR Official Website",
-  "吉利官网“联系我们”页面补齐车型；经销商网点地图更新；外饰颜色呈现方式调整": "Geely website 'Contact Us' page add vehicle models; dealer network map update; exterior color display adjustment",
-  "app、官网的服务预约能力": "App and website service appointment capability",
-  "增加求职页面": "Add recruitment page",
-  "官网增加GA埋点分析": "Add Google Analytics tracking to official website",
-  "非洲总代国家向南非购买整车。": "African distributor countries purchase vehicles from South Africa.",
-  "领克非洲转口贸易下单支持。\n预计7月下旬支持通过香港公司转口贸易。": "Lynk & Co Africa transit trade order support. Expected to support transit trade via Hong Kong company by late July.",
-  "南非大客户订单。": "South Africa key account orders.",
-  "支持远程品牌销售。": "Support remote brand sales.",
-  "雷达车支持售后维保并对接生产工厂系统。": "Riddara vehicle support after-sales warranty and integration with production factory system.",
-  "区域经销商向南非下单（阿尔及利亚模式）": "Regional dealer orders to South Africa (Algeria model)",
-  "支持车辆类型为“内部车”，同时内部车不可被OTD配车。": "Support vehicle type 'internal vehicle', and internal vehicles cannot be allocated by OTD.",
-  "渠道网发支持子公司员工给属地门店网点员工标识“培训认证”": "Channel network support for subsidiary employees to mark 'training certification' for local dealership staff",
-  "对接南非车辆注册系统，在做零售上报同时完成车辆注册。": "Integrate with South Africa vehicle registration system, complete registration during retail reporting.",
-  "支持在线生成PR单的经销商向子公司采购PI\\CI\\PL": "Support online PR order generation for dealer-to-subsidiary PI/CI/PL procurement",
-  "Riddara品牌支持FOC订单": "Riddara brand support FOC (free of charge) orders",
-  "宝腾线下单生产车辆导入营销服": "Proton offline production vehicle import to marketing & service system",
-  "增加一种保修类型-服务包，要求不向总部索赔，且备件加价会和给总部索赔类型的加价百分比有区别。": "Add warranty type - service package, no claim to HQ, and parts markup differs from HQ claim type markup percentage.",
-  "发票增加门店税号字段。": "Add store tax ID field on invoices.",
-  "索赔发票下载时要求自动填充发票内容。": "Claim invoice download auto-fill invoice content.",
-  "售后支持雷达品牌。": "After-sales support for Riddara brand.",
-  "备件、售后对接宝腾系统。\n目前是自闭环方案，备件订单和售后索赔都线下通知宝腾。": "Parts and after-sales integration with Proton system. Currently self-loop solution, parts orders and claims notified to Proton offline.",
-  "维修服务索赔无法转移到保修索赔的优化": "Repair service claim transfer to warranty claim optimization",
-  "南非当地C端精品商城": "South Africa local C-end accessory mall",
-  "预约工单看板、维修进度看板": "Appointment work order board, repair progress board",
-  "售后经营管理BI看板": "After-sales business management BI dashboard",
-  "back order的Status Tracking里面记录申请取消的操作日志": "Back order Status Tracking - record cancel operation logs",
-  "索赔类型的维修工单需要支持系统开发票": "Claim type repair work order needs system invoice support",
-  "结算单创建增加索赔类型查询条件": "Settlement order creation add claim type query filter",
-  "车辆检索聚合页面": "Vehicle search aggregate page",
-  "开单QB弹窗支持超链接": "QB popup in order creation support hyperlinks",
-  "智库需要支持大小写手输查询车型": "Knowledge base needs case-insensitive vehicle model search",
-  "workshop PO取消功能": "Workshop PO cancellation function",
-  "南非备件FOC免费订单合并作业需求": "South Africa parts FOC free order consolidation work requirement",
-  "4月份盘点结果，其中一部分备件盘亏并由三方物流支付": "April inventory count results - some parts shortfall paid by 3PL",
-  "南非经销商信用额度需求。": "South Africa dealer credit limit requirement.",
-  "经销商对账功能。": "Dealer reconciliation function.",
-  "支持南非备件return order在财务侧sap系统进销存及记账。": "Support SA parts return order in finance SAP system inventory and accounting.",
-  "南非整车发票问题。目前都是手工开的。": "SA vehicle invoice issue. Currently all manually issued.",
-  "属地IT工作规范与系统培训支持。": "Local IT work standards and system training support.",
-  "BI线索报表，需要CMS对接CRM": "BI lead report, needs CMS to CRM integration"
-};
-
-var PROGRESS_EN = {
-  "7.7已上线并培训完成； 8月版本完成。": "Online since 7.7, training completed; August version done.",
-  "7.7上线。": "Online since 7.7.",
-  "开发中，计划7月底上线。": "In development, planned online by end of July.",
-  "发布培训计划及工作规范。": "Published training plan and work standards.",
-  "详见0716 Nomfundo邮件。": "See 0716 Nomfundo email for details.",
-  "2026.5已上线": "Online since May 2026",
-  "2026.6已上线": "Online since June 2026",
-  "2026.7月中": "Mid July 2026",
-  "7.23上线": "Online since 7.23",
-  "郑一丁目前跟进中，预计10.30极氪车入驻南非。 对接海霞团队刘小雨。 0904更新：官网预热页9/14 上线  9/10提测。 0914更新：官网预热页9/16上线。": "Zheng Yiding following up, ZEEKR vehicles expected in SA by 10.30. Connecting Haixia team Liu Xiaoyu. 0904 update: Preview page launched 9/14, submitted for testing 9/10. 0914 update: Preview page launched 9/16.",
-  "app：极氪能力已有；吉利需要融合版本上线后才支持开发，从融合完毕到支持app预约还要1个月； 官网：极氪、吉利都暂无。0727已和业务沟通确认暂不做官网。 服务预约能力吉利计划9月底uat，10月中旬上线。 0915更新：方案变更，10月底发布。": "App: ZEEKR capability available; Geely needs fusion version launch before dev support, ~1 month from fusion to app appointment. Website: neither available. 0727 confirmed no website for now. Geely service appointment UAT end of Sept, launch mid-Oct. 0915 update: Plan changed, launch end of October.",
-  "求职页面，三个页面：整体介绍页，岗位详情页，申请岗位也表单。参考吉利英国官网。": "Recruitment page: three pages - overview, position detail, application form. Reference: Geely UK website.",
-  "7.31完成初步需求沟通，需要业务提供相关GTM container ID和DataLayer。待业务回复。": "7.31 completed preliminary requirement discussion, need business to provide GTM container ID and DataLayer. Awaiting business response.",
-  "目前都是手工生成的，需要支持系统自动处理。 0915：10月份已排满，预计11月份。": "Currently all manually generated, need system auto-processing support. 0915: October fully scheduled, expected November.",
-  "待10月中旬需求分析，产品：朱佳琳、吕倩。": "Pending requirement analysis mid-October, product: Zhu Jialin, Lyu Qian.",
-  "1380台历史宝腾工厂生产订单导入，10.7完成IT侧需求同步，待俞海波团队提供解决方案。": "1380 historical Proton factory production orders import, 10.7 completed IT side requirement sync, pending Yu Haibo team to provide solution.",
-  "目前宝腾只有SAP没有别的系统。 待宝腾给出系统上线计划后再制定接入计划。 目前宝腾要求9.30实施部署完成。ACOTECH 暂无进展。": "Currently Proton only has SAP, no other system. Pending Proton to provide system online plan before making integration plan. Currently Proton requires 9.30 implementation deployment completion. ACOTECH no progress.",
-  "UI需要设计，计划9月底。 0920更新：李晓庆回复1013上线。": "UI needs design, planned end of Sept. 0920 update: Li Xiaoqing replied online 1013.",
-  "0821业务提出需求，这样她就能告诉申请的那个人不要这么做。待产品评估。---应俊俊 0826确认11月中旬上线。": "0821 business raised requirement, this way she can tell the applicant not to do this. Pending product evaluation. --- Ying Junjun. 0826 confirmed online mid-November.",
-  "南非市场惯例是索赔类型的维修工单，也需要开发票给客户签字确认，经销商再拿着这个发票来索赔系统上传并索赔，所以需要iRepair系统也支持索赔类型工单开票 权荣民跟进中": "SA market practice is claim-type repair work orders also need to issue invoice for customer signature confirmation, dealer then takes this invoice to claim system to upload and claim, so need iRepair system to also support claim-type work order invoicing. Quan Rongmin following up.",
-  "在创建结算单的时候增加一个查询条件，可以按照索赔单的索赔类型来筛选，业务需要区分市场活动索赔和常规索赔，因为需要打款到不同的经销商账户": "When creating settlement, add a query condition to filter by claim type from claim order, business needs to distinguish market activity claims and regular claims, because need to pay to different dealer accounts",
-  "需要提供一个售后整体的聚合查询车辆的页面，可以查看车辆信息、保修时间、历史工单记录（屏蔽价格只展示工项）、历史索赔记录（屏蔽价格只展示工项）、涉及质量活动、通知公告等信息": "Need to provide an after-sales overall aggregated vehicle search page, can view vehicle information, warranty time, historical work order records (hide price only show work items), historical claim records (hide price only show work items), involved quality activities, notification announcements and other information",
-  "在iRepair开单时QB弹窗的单号上可以增加超链接，方便服务顾问和技师点击跳转查看详情 权荣民跟进中": "When creating work order in iRepair, can add hyperlink on QB popup order number, convenient for service advisor and technician to click and jump to view details. Quan Rongmin following up.",
-  "车系支持手输，不区分大小写模糊查询。 具体页面参考附件截图。": "Vehicle series supports manual input, case-insensitive fuzzy query. Specific page reference attached screenshot.",
-  "解决遇到类似情况只能刷数据的问题，": "Solve the problem of only being able to fix via data refresh in similar situations.",
-  "0915更新：让罗涛和梁俊杰评估业务诉求。看是否有办法让仓库业务不要重复关单动作。": "0915 update: let Luo Tao and Liang Junjie evaluate business requirements. See if there is a way to avoid warehouse business repeating order closure actions.",
-  "现在清单还有一些疑问等李朋和你们完全确认好会发邮件出来，然后it这边有一套现成的方案可以手动处理完成otwb/SAP库存扣减和财务收款。 0721已对完，仓库和SAP同时盘亏，且SAP过账。后续业务和财务操作有问题再联系IT。": "Now the list still has some questions, waiting for Li Peng to fully confirm with you then will send email, then IT side has a ready-made solution that can manually process to complete otwb/SAP inventory deduction and financial collection. 0721 already confirmed, warehouse and SAP simultaneously had shortage, and SAP posted. If subsequent business and financial operations have issues, contact IT.",
-  "财务需求，财务bp王娟负责跟进。预计7.23上线。 We require the final template to replicate this exact grid, section placement and data field alignment. 1.    Order no. 2.    Payment terms. 3.    Legacy code.  4.    Model code. 5.    Models. 6.    Engine/Motor number.": "Finance requirement, BP Wang Juan following up. Expected 7.23 launch. We require the final template to replicate this exact grid, section placement and data field alignment. 1. Order no. 2. Payment terms. 3. Legacy code. 4. Model code. 5. Models. 6. Engine/Motor number.",
-  "0909更新：和CMS的Leigh沟通了，先注册开放平台。同时CRM和BI侧对齐需要的数据信息。": "0909 update: Communicated with CMS's Leigh, registered open platform first. CRM and BI aligning required data.",
-  "0728进展：8月份需求没有排进去，待组织和产品的会议重新聊一下，建议找王涛沟通下，有类似的功能。 0730，涉及信用查询是否cover订单，信用金额锁定/解锁，信用额度下单起款。由黄小鸥发出邮件说明。 0804更新，根据南非商老师那边回复的邮件，小鸥会先推进南非请款文件的自动生成和额度检查接口的临界值探测。 请款文件的话，目前我们跟wesbank的接口已经通了，正在跟OTD订单中心确认南非这边需要的字段是否可以提供，如果没问题的话就可以跟订单中心安排协同排期了 0909更新：待信用池方案出来以后排期，当前预估计划10月版本。 0918更新：金融小鸥反馈目前待评审，计划11月初和isales功能一起上线。": "0728 progress: August requirements not scheduled, pending organization and product meeting to re-discuss, suggest finding Wang Tao to communicate, has similar functionality. 0730, involves credit query whether covers orders, credit amount lock/unlock, credit limit order placement. Huang Xiaoou to send email explanation. 0804 update, according to SA business teacher email reply, Xiaoou will first promote SA payment document auto-generation and limit check interface threshold detection. For payment documents, currently our interface with wesbank is connected, confirming with OTD order center SA side needed fields whether can provide, if no problem can arrange collaborative scheduling with order center. 0909 update: pending credit pool solution出来后 scheduling, currently estimated plan October version. 0918 update: Finance Xiaoou feedback currently pending review, planned early November online with isales function.",
-  "财务需求，财务bp王娟负责跟进。 0728最新沟通结论：王娟负责跟进，墨西哥，中东，南非都有这个诉求，计划先用BI工具满足需求，预计本周内组织会议沟通讨论。 0827更新：待fund功能修复且return order功能用起来--高坚洛。十月底。": "Financial requirement, financial BP Wang Juan responsible for following up. 0728 latest communication conclusion: Wang Juan responsible for following up, Mexico, Middle East, SA all have this requirement, plan to first use BI tool to meet requirements, expected to organize meeting for communication and discussion this week. 0827 update: waiting for fund function fix and return order function to be used -- Gao Jianlu. End of October.",
-  "现在南非备件的退货业务在业务端能用，但是业财结合部分暂时不可用。 援引产品王楠的描述： 需要给一个需求让iParts和SAP调通接口，对齐业务逻辑。 因为南非上线较早，使用的是SAP的一个老接口来推送销售单的，现在因为全球统一方案的原因，需要将老的销售单接口ZSDI_SALE_ORDER切换到SAP侧最新的标准销售单接口：ZSDI003_OTD_SALES_O": "Currently SA parts return order business can be used on business side, but business-finance integration part temporarily unavailable. Quoting product Wang Nan description: need to give a requirement to let iParts and SAP connect interface, align business logic. Because SA went online earlier, using an old SAP interface to push sales orders, now because of global unified solution reasons, need to switch old sales order interface ZSDI_SALE_ORDER to SAP side latest standard sales order interface: ZSDI003_OTD_SALES_O"
-};
-
-/* ====== 翻译辅助函数 ====== */
-function trDomain(v) { return currentLang === 'en' ? (DOMAIN_EN[v] || v) : v; }
-function trStatus(v) { return currentLang === 'en' ? (STATUS_EN[v] || v) : v; }
-function trBrand(v) { return currentLang === 'en' ? (BRAND_EN[v] || v) : v; }
-function trSystem(v) { return currentLang === 'en' ? (SYSTEM_EN[v] || v) : v; }
-function trDesc(v) { return currentLang === 'en' ? (DESC_EN[v] || v) : v; }
-function trProgress(v) { return currentLang === 'en' ? (PROGRESS_EN[v] || v) : v; }
-
-/* 获取当前语言的显示数据（不影响原始 DATA） */
-function getDisplayData() {
-  return DATA.map(function(r) {
-    return [
-      trDomain(r[0]),
-      trDesc(r[1]),
-      r[2], // priority 保持不变
-      trStatus(r[3]),
-      r[4], // proposer 保持不变
-      trBrand(r[5]),
-      r[6], // PM 保持不变
-      trSystem(r[7]),
-      trProgress(r[8])
-    ];
-  });
+function renderStats() {
+  var allItems = ACHIEVEMENTS.concat(IN_PROGRESS);
+  var domains = {}; allItems.forEach(function(a) { domains[a.domain] = (domains[a.domain]||0)+1; });
+  var domainCount = Object.keys(domains).length;
+  var brandCount = new Set(allItems.map(function(a){return a.brand;})).size;
+  var html = '';
+  html += '<div class="stat-card"><div class="stat-icon blue">📊</div><div class="stat-info"><div class="num">'+ACHIEVEMENTS.length+'</div><div class="label">✅ Live Projects</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon orange">🔧</div><div class="stat-info"><div class="num">'+IN_PROGRESS.length+'</div><div class="label">🔨 In Progress</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon green">🏢</div><div class="stat-info"><div class="num">'+domainCount+'</div><div class="label">Business Domains</div></div></div>';
+  html += '<div class="stat-card"><div class="stat-icon purple">👥</div><div class="stat-info"><div class="num">'+new Set(allItems.map(function(a){return a.proposer;})).size+'</div><div class="label">Business Requesters</div></div></div>';
+  document.getElementById('statsRow').innerHTML = html;
 }
 
-/* ====== 应用语言到静态 UI ====== */
-function applyLang() {
-  document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-  document.title = t('pageTitle');
-
-  var pageTitleEl = document.getElementById('pageTitle');
-  pageTitleEl.innerHTML = t('pageTitle') + ' <span class="edit-indicator" id="editModeLabel">' + t('editMode') + '</span>';
-
-  document.getElementById('subtitle').innerHTML = t('subtitle') + '<span id="syncTime">' + (document.getElementById('syncTime') ? document.getElementById('syncTime').textContent : '-') + '</span>';
-
-  document.getElementById('editBtn').textContent = t('edit');
-  document.getElementById('saveBtn').textContent = t('save');
-  document.getElementById('syncBtn').textContent = t('syncToFeishu');
-  document.getElementById('cancelBtn').textContent = t('cancel');
-
-  document.getElementById('chartTitle1').textContent = t('chartTitle1');
-  document.getElementById('chartTitle2').textContent = t('chartTitle2');
-  document.getElementById('chartTitle3').textContent = t('chartTitle3');
-  document.getElementById('chartTitle4').textContent = t('chartTitle4');
-
-  document.getElementById('filterLabel').textContent = t('filterLabel');
-  document.getElementById('filterDomainAll').textContent = t('filterDomainAll');
-  document.getElementById('filterStatusAll').textContent = t('filterStatusAll');
-  document.getElementById('filterPriorityAll').textContent = t('filterPriorityAll');
-  document.getElementById('filterSearch').placeholder = t('filterSearchPh');
-
-  var ths = document.getElementById('tableHeader').children;
-  ths[0].textContent = t('thIndex');
-  ths[1].textContent = t('thDomain');
-  ths[2].textContent = t('thDesc');
-  ths[3].textContent = t('thPriority');
-  ths[4].textContent = t('thStatus');
-  ths[5].textContent = t('thProposer');
-  ths[6].textContent = t('thBrand');
-  ths[7].textContent = t('thPM');
-  ths[8].textContent = t('thSystem');
-  ths[9].textContent = t('thProgress');
-
-  document.getElementById('footerText').textContent = t('footer');
-  document.getElementById('modalTitle').textContent = t('modalTitle');
-  document.getElementById('passwordInput').placeholder = t('modalPwdPh');
-  document.getElementById('modalCancelBtn').textContent = t('modalCancel');
-  document.getElementById('modalConfirmBtn').textContent = t('modalConfirm');
-
-  var langBtn = document.getElementById('langBtn');
-  langBtn.textContent = currentLang === 'zh' ? 'EN' : '中文';
-  langBtn.className = currentLang === 'en' ? 'btn lang-btn active-lang' : 'btn lang-btn';
-}
-
-/* ====== 语言切换 ====== */
-function toggleLang() {
-  currentLang = currentLang === 'zh' ? 'en' : 'zh';
-  localStorage.setItem('sa_dashboard_lang', currentLang);
-  applyLang();
-  populateFilters();
-  applyFilters();
-}
-
-/* ====== 核心逻辑 ====== */
-function loadData() {
-  // 始终使用脚本注入的飞书数据，不读 localStorage 缓存
-  originalData = JSON.parse(JSON.stringify(DATA));
-}
-
-function saveToLocal() {
-  localStorage.setItem('sa_dashboard_data', JSON.stringify(DATA));
-}
-
-var statusMap = {"需求已上线":"badge-online","需求开发中":"badge-dev","需求确认中":"badge-confirm","需求已接收":"badge-received","需求拒绝":"badge-rejected","需求已合并":"badge-merged"};
-var priMap = {"P0":"pri-p0","P1":"pri-p1","P2":"pri-p2","P3":"pri-p3"};
-
-function countBy(arr, idx) { var m = {}; arr.forEach(function(r) { var v = r[idx] || "-"; m[v] = (m[v]||0)+1; }); return Object.entries(m).sort(function(a,b){return b[1]-a[1];}); }
-
-function renderSummary(data) {
-  var total = data.length;
-  var online = data.filter(function(r){return r[3]==="需求已上线"||r[3]==="Live";}).length;
-  var dev = data.filter(function(r){return r[3]==="需求开发中"||r[3]==="In Development";}).length;
-  var received = data.filter(function(r){return r[3]==="需求已接收"||r[3]==="Received";}).length;
-  var confirm = data.filter(function(r){return r[3]==="需求确认中"||r[3]==="Confirming";}).length;
-  var rejected = data.filter(function(r){return r[3]==="需求拒绝"||r[3]==="Rejected";}).length;
-  var merged = data.filter(function(r){return r[3]==="需求已合并"||r[3]==="Merged";}).length;
-  document.getElementById("summaryRow").innerHTML =
-    '<div class="summary-card"><div class="num num-blue">'+total+'</div><div class="label">'+t('sumTotal')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-green">'+online+'</div><div class="label">'+t('sumOnline')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-orange">'+dev+'</div><div class="label">'+t('sumDev')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-purple">'+received+'</div><div class="label">'+t('sumReceived')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-blue">'+confirm+'</div><div class="label">'+t('sumConfirm')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-red">'+rejected+'</div><div class="label">'+t('sumRejected')+'</div></div>'+
-    '<div class="summary-card"><div class="num num-teal">'+merged+'</div><div class="label">'+t('sumMerged')+'</div></div>';
-}
-
-function renderBarChart(containerId, entries, colors) {
-  var max = Math.max.apply(null, entries.map(function(e){return e[1];})) || 1;
-  var el = document.getElementById(containerId);
-  var html = "";
-  for (var i = 0; i < entries.length; i++) {
-    var label = entries[i][0], count = entries[i][1];
-    var pct = (count/max*100).toFixed(0);
-    var color = colors[i % colors.length];
-    html += '<div class="bar-group"><div class="bar-label">'+label+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'">'+count+'</div></div></div>';
-  }
-  el.innerHTML = html;
-}
-
-var barColors = ["#1a73e8","#0d9f4f","#e8850a","#d93025","#7b1fa2","#00897b","#f4511e","#6d4c41","#546e7a"];
-
-function renderCharts(data) {
-  renderBarChart("domainChart", countBy(data, 0), barColors);
-  renderBarChart("statusChart", countBy(data, 3), ["#137333","#b06000","#7b1fa2","#1967d2","#c5221f","#00695c"]);
-  renderBarChart("priorityChart", countBy(data, 2), ["#c5221f","#b06000","#1967d2","#666"]);
-  renderBarChart("brandChart", countBy(data, 5), barColors);
-}
-
-function populateFilters() {
-  var dSel = document.getElementById("filterDomain");
-  var sSel = document.getElementById("filterStatus");
-  var pSel = document.getElementById("filterPriority");
-
-  // 保留第一个 option（全部），重置后面的
-  while (dSel.children.length > 1) dSel.removeChild(dSel.lastChild);
-  while (sSel.children.length > 1) sSel.removeChild(sSel.lastChild);
-  while (pSel.children.length > 1) pSel.removeChild(pSel.lastChild);
-
-  var domains = [], statuses = [], priorities = [];
-  DATA.forEach(function(r) {
-    if (domains.indexOf(r[0])<0) domains.push(r[0]);
-    if (statuses.indexOf(r[3])<0) statuses.push(r[3]);
-    if (priorities.indexOf(r[2])<0) priorities.push(r[2]);
-  });
-  domains.sort(); statuses.sort(); priorities.sort();
-  domains.forEach(function(d) { var o = document.createElement("option"); o.value=d; o.textContent=trDomain(d); dSel.appendChild(o); });
-  statuses.forEach(function(s) { var o = document.createElement("option"); o.value=s; o.textContent=trStatus(s); sSel.appendChild(o); });
-  priorities.forEach(function(p) { var o = document.createElement("option"); o.value=p; o.textContent=p; pSel.appendChild(o); });
-}
-
-function renderTable(data) {
-  var displayData = getDisplayData();
-
-  // data 是过滤后的原始 DATA 子集，需要找到在 displayData 中对应的行
-  var tbody = document.getElementById("tableBody");
-  var html = "";
-  for (var i = 0; i < data.length; i++) {
-    var r = data[i];
-    // 找到在原始 DATA 中的索引
-    var origIdx = DATA.indexOf(r);
-    var dr = displayData[origIdx] || r;
-
-    var sc = statusMap[r[3]] || "badge-confirm";
-    var pc = priMap[r[2]] || "pri-p3";
-    var progressText = dr[8] && dr[8].length > 80 ? dr[8].substring(0,80)+"..." : (dr[8]||"-");
-
-    if (isEditMode) {
-      html += '<tr data-index="'+origIdx+'"><td>'+(i+1)+'</td>'+
-        '<td contenteditable="true" data-field="0">'+dr[0]+'</td>'+
-        '<td contenteditable="true" data-field="1" class="req-desc">'+dr[1]+'</td>'+
-        '<td contenteditable="true" data-field="2"><span class="pri '+pc+'">'+dr[2]+'</span></td>'+
-        '<td contenteditable="true" data-field="3"><span class="badge '+sc+'">'+dr[3]+'</span></td>'+
-        '<td contenteditable="true" data-field="4">'+dr[4]+'</td>'+
-        '<td contenteditable="true" data-field="5">'+dr[5]+'</td>'+
-        '<td contenteditable="true" data-field="6">'+dr[6]+'</td>'+
-        '<td contenteditable="true" data-field="7">'+dr[7]+'</td>'+
-        '<td contenteditable="true" data-field="8" class="progress-cell">'+dr[8]+'</td></tr>';
-    } else {
-      html += '<tr><td>'+(i+1)+'</td><td><span class="domain-tag">'+dr[0]+'</span></td><td class="req-desc">'+dr[1]+'</td><td><span class="pri '+pc+'">'+dr[2]+'</span></td><td><span class="badge '+sc+'">'+dr[3]+'</span></td><td>'+dr[4]+'</td><td>'+dr[5]+'</td><td>'+dr[6]+'</td><td>'+dr[7]+'</td><td class="progress-cell" title="'+dr[8]+'">'+progressText+'</td></tr>';
-    }
-  }
-  tbody.innerHTML = html;
-
-  if (isEditMode) {
-    tbody.querySelectorAll('td[contenteditable]').forEach(function(td) {
-      td.addEventListener('blur', function() {
-        var row = parseInt(this.parentElement.dataset.index);
-        var field = parseInt(this.dataset.field);
-        DATA[row][field] = this.textContent.trim();
-      });
-    });
-  }
-}
-
-function applyFilters() {
-  var d = document.getElementById("filterDomain").value;
-  var s = document.getElementById("filterStatus").value;
-  var p = document.getElementById("filterPriority").value;
-  var q = document.getElementById("filterSearch").value.toLowerCase();
-  var filtered = DATA.filter(function(r) {
-    if (d && r[0] !== d) return false;
-    if (s && r[3] !== s) return false;
-    if (p && r[2] !== p) return false;
-    if (q && r[1].toLowerCase().indexOf(q)<0 && r[4].toLowerCase().indexOf(q)<0) return false;
-    return true;
-  });
-
-  // 对过滤后的数据应用翻译用于图表和摘要
-  var displayFiltered = filtered.map(function(r) {
-    var idx = DATA.indexOf(r);
-    return [trDomain(r[0]), trDesc(r[1]), r[2], trStatus(r[3]), r[4], trBrand(r[5]), r[6], trSystem(r[7]), trProgress(r[8])];
-  });
-
-  renderSummary(displayFiltered);
-  renderCharts(displayFiltered);
-  renderTable(filtered);
-}
-
-// 编辑功能
-function toggleEdit() {
-  document.getElementById("passwordModal").classList.add("active");
-  document.getElementById("passwordInput").focus();
-}
-
-function closePasswordModal() {
-  document.getElementById("passwordModal").classList.remove("active");
-  document.getElementById("passwordInput").value = "";
-}
-
-function checkPassword() {
-  var pwd = document.getElementById("passwordInput").value;
-  if (pwd === EDIT_PASSWORD) {
-    closePasswordModal();
-    enterEditMode();
-  } else {
-    alert(t('pwdError'));
-    document.getElementById("passwordInput").value = "";
-  }
-}
-
-function enterEditMode() {
-  isEditMode = true;
-  document.body.classList.add("edit-mode");
-  document.getElementById("editBtn").style.display = "none";
-  document.getElementById("saveBtn").style.display = "inline-block";
-  document.getElementById("syncBtn").style.display = "inline-block";
-  document.getElementById("cancelBtn").style.display = "inline-block";
-  originalData = JSON.parse(JSON.stringify(DATA));
-  applyFilters();
-  showStatus(t('editModeEnter'), "info");
-}
-
-function cancelEdit() {
-  if (confirm(t('cancelEditConfirm'))) {
-    DATA = JSON.parse(JSON.stringify(originalData));
-    exitEditMode();
-  }
-}
-
-function exitEditMode() {
-  isEditMode = false;
-  document.body.classList.remove("edit-mode");
-  document.getElementById("editBtn").style.display = "inline-block";
-  document.getElementById("saveBtn").style.display = "none";
-  document.getElementById("syncBtn").style.display = "none";
-  document.getElementById("cancelBtn").style.display = "none";
-  applyFilters();
-}
-
-function saveChanges() {
-  saveToLocal();
-  showStatus(t('saveLocalOk'), "success");
-}
-
-function syncToFeishu() {
-  var fieldNames = [t('fieldDomain'),t('fieldDesc'),t('fieldPriority'),t('fieldStatus'),t('fieldProposer'),t('fieldBrand'),t('fieldPM'),t('fieldSystem'),t('fieldProgress')];
-  var changes = [];
-  for (var i = 0; i < DATA.length; i++) {
-    for (var j = 0; j < DATA[i].length; j++) {
-      if (DATA[i][j] !== originalData[i][j]) {
-        changes.push({
-          row: i + 3,
-          col: j,
-          field: fieldNames[j] || t('fieldUnknown'),
-          oldValue: originalData[i][j],
-          newValue: DATA[i][j]
-        });
+function renderCards(containerId, items) {
+  var groups = {};
+  items.forEach(function(a) { if (!groups[a.domain]) groups[a.domain] = []; groups[a.domain].push(a); });
+  var html = '';
+  for (var domain in groups) {
+    var domainItems = groups[domain]; var color = DOMAIN_COLORS[domain] || 'blue';
+    var icon = DOMAIN_ICONS[domain] || '📌';
+    html += '<div class="domain-group"><div class="domain-header"><h3>'+icon+' '+domain+'</h3><span class="tag">'+domainItems.length+' project'+(domainItems.length>1?'s':'')+'</span></div>';
+    html += '<div class="cards-grid">';
+    domainItems.forEach(function(a, idx) {
+      html += '<div class="achievement-card '+color+'"><div class="card-title">'+a.title+'</div><div class="card-meta">';
+      html += '<span class="badge badge-brand">🚗 '+a.brand+'</span><span class="badge badge-proposer">👤 '+a.proposer+'</span>';
+      html += '<span class="badge badge-priority">⚡ '+a.priority+'</span>';
+      if (a.date) html += '<span class="badge badge-date">✅ Live: '+a.date+'</span>';
+      if (a.status) {
+        var sc = STATUS_COLORS[a.status] || 'confirm';
+        var si = STATUS_ICONS[a.status] || '🔍';
+        html += '<span class="badge badge-'+sc+'">'+si+' '+a.status+'</span>';
       }
-    }
+      html += '</div><div class="card-progress">'+a.progress+'</div>';
+      var likeKey = containerId + '-' + a.domain + '-' + idx;
+      html += '<button class="like-btn" id="like-'+likeKey+'" onclick="toggleLike(\''+likeKey+'\')"><span class="like-icon">👍</span> <span class="like-count">0</span></button>';
+      html += '</div>';
+    });
+    html += '</div></div>';
   }
-  if (changes.length === 0) {
-    showStatus(t('noChanges'), "info");
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function switchTab(e, tab) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  e.currentTarget.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if (tab === 'requirements') renderReqList();
+}
+
+// ===== Image Upload =====
+var currentImages = [];
+function handleImageSelect(e) { var files = e.target.files; for (var i = 0; i < files.length; i++) { handleImageFile(files[i]); } }
+function handleImageFile(file) {
+  if (!file.type.startsWith('image/')) { showToast('Only image files are allowed', 'error'); return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('Image size must be under 5MB: ' + file.name, 'error'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) { currentImages.push({name: file.name, data: e.target.result, size: file.size}); renderImagePreviews(); };
+  reader.readAsDataURL(file);
+}
+function renderImagePreviews() {
+  var container = document.getElementById('imagePreview'); var html = '';
+  currentImages.forEach(function(img, idx) {
+    html += '<div class="image-preview"><img src="'+img.data+'" onclick="viewImage('+idx+')"><button class="remove-btn" onclick="removeImage('+idx+')">&times;</button></div>';
+  });
+  container.innerHTML = html;
+}
+function removeImage(idx) { currentImages.splice(idx, 1); renderImagePreviews(); }
+function clearImagePreviews() { currentImages = []; renderImagePreviews(); }
+var uploadArea = document.getElementById('uploadArea');
+uploadArea.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', function(e) { this.classList.remove('dragover'); });
+uploadArea.addEventListener('drop', function(e) { e.preventDefault(); this.classList.remove('dragover'); var files = e.dataTransfer.files; for (var i = 0; i < files.length; i++) { handleImageFile(files[i]); } });
+function viewImage(idx) { var img = currentImages[idx]; if (img) { document.getElementById('modalImage').src = img.data; document.getElementById('imageModal').classList.add('active'); } }
+function viewImageByUrl(url) { document.getElementById('modalImage').src = url; document.getElementById('imageModal').classList.add('active'); }
+function closeImageModal() { document.getElementById('imageModal').classList.remove('active'); }
+
+// ===== Submit (localStorage + Feishu link) =====
+var FEISHU_SHEET_URL = 'https://geely.feishu.cn/sheets/M7ZpsgfHFhYod2tO1wXcx9nan0e';
+function submitRequirement(e) {
+  e.preventDefault();
+  var name = document.getElementById('r_name').value.trim();
+  var desc = document.getElementById('r_desc').value.trim();
+  if (!name || !desc) { showToast('Please fill in Name and Wish Description', 'error'); return; }
+  var brand = document.getElementById('r_brand').value;
+  var domain = document.getElementById('r_domain').value;
+  var priority = document.getElementById('r_priority').value;
+  var deadline = document.getElementById('r_deadline').value;
+  var contact = document.getElementById('r_contact').value.trim();
+  var time = new Date().toLocaleString('en-US', {timeZone:'Asia/Shanghai'});
+  var req = { id: Date.now().toString(), name: name, brand: brand, domain: domain, priority: priority, deadline: deadline, desc: desc, contact: contact, time: time, image_count: currentImages.length };
+  var list = JSON.parse(localStorage.getItem('sa_it_wishes') || '[]');
+  list.unshift(req);
+  localStorage.setItem('sa_it_wishes', JSON.stringify(list));
+  var statusEl = document.getElementById('submitStatus');
+  statusEl.className = 'submit-status show success';
+  statusEl.innerHTML = '✅ Your wish has been saved! Please also submit it to our <a href="' + FEISHU_SHEET_URL + '" target="_blank" style="color:#667eea;font-weight:700;">Feishu Spreadsheet</a> for formal tracking. 🎉';
+  document.getElementById('reqForm').reset(); clearImagePreviews(); renderReqList();
+  setTimeout(function() { statusEl.className = 'submit-status'; }, 8000);
+  showToast('Wish saved! 🎉');
+}
+
+function renderReqList() {
+  var list = JSON.parse(localStorage.getItem('sa_it_wishes') || '[]');
+  document.getElementById('submittedCount').textContent = list.length;
+  if (list.length === 0) {
+    document.getElementById('reqList').innerHTML = '<div class="req-empty"><div class="empty-icon">🌟</div>No wishes submitted yet. Be the first to make a wish! ✨</div>';
     return;
   }
-  var exportData = {
-    timestamp: new Date().toISOString(),
-    changes: changes,
-    fullData: DATA
-  };
-  var blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'feishu_sync_' + new Date().toISOString().slice(0,19).replace(/:/g,'-') + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  showStatus(t('syncExportOk'), "success");
-  exitEditMode();
+  var html = '';
+  list.forEach(function(r) {
+    html += '<div class="req-item"><div class="req-item-header"><div class="req-item-title">💡 Wish from '+escapeHtml(r.name)+'</div></div>';
+    html += '<div class="req-item-meta">';
+    html += '<span class="badge badge-brand">👤 '+escapeHtml(r.name)+'</span>';
+    if (r.brand) html += '<span class="badge badge-brand">🚗 '+escapeHtml(r.brand)+'</span>';
+    if (r.domain) html += '<span class="badge badge-priority">📊 '+escapeHtml(r.domain)+'</span>';
+    if (r.priority) html += '<span class="badge badge-priority">⚡ '+escapeHtml(r.priority)+'</span>';
+    if (r.deadline) html += '<span class="badge badge-date">📅 '+escapeHtml(r.deadline)+'</span>';
+    if (r.image_count > 0) html += '<span class="badge badge-date">📸 '+r.image_count+' image'+(r.image_count>1?'s':'')+'</span>';
+    html += '</div><div class="req-item-desc">'+escapeHtml(r.desc)+'</div>';
+    if (r.contact) html += '<div class="req-item-desc" style="margin-top:4px;">📧 Contact: '+escapeHtml(r.contact)+'</div>';
+    html += '<div class="req-item-time">🕐 Submitted: '+escapeHtml(r.time)+'</div></div>';
+  });
+  document.getElementById('reqList').innerHTML = html;
 }
 
-function showStatus(msg, type) {
-  var el = document.getElementById("syncStatus");
-  el.textContent = msg;
-  el.className = "sync-status show " + type;
-  setTimeout(function() {
-    el.classList.remove("show");
-  }, 5000);
+function showToast(msg, type) { var t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show' + (type === 'error' ? ' error' : ''); setTimeout(function() { t.classList.remove('show'); }, 3000); }
+function escapeHtml(text) { if (!text) return ''; var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
+// ===== Like Functionality (localStorage) =====
+var LIKE_KEY = 'sa_it_likes';
+var MY_LIKE_KEY = 'sa_it_my_likes';
+function getLikes() { return JSON.parse(localStorage.getItem(LIKE_KEY) || '{}'); }
+function getMyLikes() { return JSON.parse(localStorage.getItem(MY_LIKE_KEY) || '[]'); }
+function toggleLike(likeKey) {
+  var btn = document.getElementById('like-'+likeKey);
+  if (!btn) return;
+  var countEl = btn.querySelector('.like-count');
+  var likes = getLikes();
+  var myLikes = getMyLikes();
+  var isLiked = myLikes.indexOf(likeKey) >= 0;
+  if (isLiked) {
+    myLikes = myLikes.filter(function(k) { return k !== likeKey; });
+    likes[likeKey] = Math.max(0, (likes[likeKey] || 0) - 1);
+    btn.classList.remove('liked'); btn.querySelector('.like-icon').textContent = '👍';
+  } else {
+    myLikes.push(likeKey);
+    likes[likeKey] = (likes[likeKey] || 0) + 1;
+    btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️';
+  }
+  localStorage.setItem(LIKE_KEY, JSON.stringify(likes));
+  localStorage.setItem(MY_LIKE_KEY, JSON.stringify(myLikes));
+  countEl.textContent = likes[likeKey];
+}
+function loadLikes() {
+  var likes = getLikes();
+  var myLikes = getMyLikes();
+  document.querySelectorAll('.like-btn').forEach(function(btn) {
+    var id = btn.id.replace('like-', '');
+    var count = likes[id] || 0;
+    btn.querySelector('.like-count').textContent = count;
+    if (myLikes.indexOf(id) >= 0) { btn.classList.add('liked'); btn.querySelector('.like-icon').textContent = '❤️'; }
+  });
 }
 
-// 初始化
-try {
-  loadData();
-  applyLang();
-  populateFilters();
-  applyFilters();
-} catch(e) {
-  console.error('Init error:', e);
-}
+// ===== Init =====
+renderStats();
+renderCards('achievementsContainer', ACHIEVEMENTS);
+renderCards('progressContainer', IN_PROGRESS);
+document.getElementById('onlineCount').textContent = ACHIEVEMENTS.length;
+document.getElementById('progressCount').textContent = IN_PROGRESS.length;
+renderReqList();
+loadLikes();
 </script>
 </body>
 </html>
