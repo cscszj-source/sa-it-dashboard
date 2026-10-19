@@ -331,91 +331,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div class="bar"></div>
         <h2>📝 Submit Your IT Wish</h2>
       </div>
-      <p style="margin-bottom:20px;color:#666;font-size:14px;">Only <strong>Name</strong> and <strong>Wish Description</strong> are required. All other fields are optional. Submissions are automatically synced to Feishu. 🎉</p>
-
-      <div class="form-section">
-        <form id="reqForm" onsubmit="submitRequirement(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label><span class="label-icon">👤</span> Name <span class="req">*</span></label>
-              <input type="text" id="r_name" required placeholder="Your full name">
-            </div>
-            <div class="form-group">
-              <label><span class="label-icon">🚗</span> Brand <span class="opt">(optional)</span></label>
-              <select id="r_brand">
-                <option value="">— Select —</option>
-                <option value="SA Geely">SA Geely</option>
-                <option value="SA ZEEKR">SA ZEEKR</option>
-                <option value="SA Lynk & Co">SA Lynk & Co</option>
-                <option value="Multi-Brand">Multi-Brand</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label><span class="label-icon">📊</span> Business Domain <span class="opt">(optional)</span></label>
-              <select id="r_domain">
-                <option value="">— Select —</option>
-                <option value="User Domain">User Domain</option>
-                <option value="Sales Domain">Sales Domain</option>
-                <option value="After-Sales Domain">After-Sales Domain</option>
-                <option value="Logistics Domain">Logistics Domain</option>
-                <option value="Finance Domain">Finance Domain</option>
-                <option value="IT Operations">IT Operations</option>
-                <option value="BI Domain">BI Domain</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label><span class="label-icon">⚡</span> Priority <span class="opt">(optional)</span></label>
-              <select id="r_priority">
-                <option value="">— Select —</option>
-                <option value="P0">🔴 P0 - Critical</option>
-                <option value="P1">🟠 P1 - High</option>
-                <option value="P2">🟡 P2 - Medium</option>
-                <option value="P3">🟢 P3 - Low</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label><span class="label-icon">📅</span> Expected Deadline <span class="opt">(optional)</span></label>
-              <select id="r_deadline">
-                <option value="">— Select —</option>
-                <option value="2027-01">January 2027</option>
-                <option value="2027-02">February 2027</option>
-                <option value="2027-03">March 2027</option>
-                <option value="2027-04">April 2027</option>
-                <option value="2027-05">May 2027</option>
-                <option value="2027-06">June 2027</option>
-                <option value="2027-07">July 2027</option>
-                <option value="2027-08">August 2027</option>
-                <option value="2027-09">September 2027</option>
-                <option value="2027-10">October 2027</option>
-                <option value="2027-11">November 2027</option>
-                <option value="2027-12">December 2027</option>
-              </select>
-            </div>
-            <div class="form-group full">
-              <label><span class="label-icon">✨</span> Wish Description <span class="req">*</span></label>
-              <textarea id="r_desc" required placeholder="Describe your IT wish in detail: business scenario, expected functionality, current pain points, what would make your life easier..."></textarea>
-            </div>
-            <div class="form-group full">
-              <label><span class="label-icon">📧</span> Contact <span class="opt">(optional)</span></label>
-              <input type="text" id="r_contact" placeholder="Email or WeCom ID for follow-up">
-            </div>
-            <div class="form-group full">
-              <label><span class="label-icon">📸</span> Attach Images <span class="opt">(optional)</span></label>
-              <div class="image-upload-area" id="uploadArea" onclick="document.getElementById('r_images').click()">
-                <div class="icon">📎</div>
-                <p>Click to select images, or drag and drop images here</p>
-                <p style="font-size:11px;color:#aaa;margin-top:4px;">Supports: JPG, PNG, GIF, WEBP (max 5MB per image)</p>
-              </div>
-              <input type="file" id="r_images" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
-              <div class="image-preview-container" id="imagePreview"></div>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" id="submitBtn"><span>🚀</span> Submit Wish</button>
-            <button type="reset" class="btn btn-secondary" onclick="clearImagePreviews()">🗑️ Clear Form</button>
-          </div>
-          <div class="submit-status" id="submitStatus"></div>
-        </form>
+      <p style="margin-bottom:24px;color:#666;font-size:14px;">Click the button below to open our Feishu form and submit your IT wish. Your data will be saved directly to our system. 🎉</p>
+      <div style="text-align:center;padding:32px;">
+        <a href="https://geely.feishu.cn/share/base/form/shrcnNahBACYTrqeeJQcp8kA4uc" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);color:white;padding:16px 40px;border-radius:12px;font-size:16px;font-weight:700;text-decoration:none;transition:all 0.2s;box-shadow:0 4px 16px rgba(102,126,234,0.3);">🚀 Open Feishu Form</a>
+        <p style="margin-top:16px;font-size:13px;color:#999;">You will be redirected to Feishu to fill in your wish. No duplicate filling needed!</p>
       </div>
     </div>
 
@@ -423,9 +342,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
       <div class="section-title wish">
         <div class="bar"></div>
         <h2>📦 Submitted Wishes</h2>
-        <span class="count" id="submittedCount">0</span>
       </div>
-      <div class="req-list" id="reqList"></div>
+      <div style="text-align:center;padding:32px;background:white;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <p style="font-size:15px;color:#666;margin-bottom:16px;">All submitted wishes are stored in our Feishu Base.</p>
+        <a href="https://geely.feishu.cn/base/DaxQb8vBgaBs8wsAJgWcIq18nUb" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:#667eea;font-weight:600;text-decoration:none;font-size:14px;">📋 View all wishes in Feishu Base →</a>
+      </div>
     </div>
   </div>
 
