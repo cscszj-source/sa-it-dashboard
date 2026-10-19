@@ -587,7 +587,7 @@ function loadLikes() {
 }
 
 // ===== Init =====
-window.addEventListener('DOMContentLoaded', function() {
+function initPage() {
   try { renderStats(); } catch(e) { console.error('renderStats:', e); }
   try { renderCards('achievementsContainer', ACHIEVEMENTS); } catch(e) { console.error('renderCards achievements:', e); }
   try { renderCards('progressContainer', IN_PROGRESS); } catch(e) { console.error('renderCards progress:', e); }
@@ -595,7 +595,12 @@ window.addEventListener('DOMContentLoaded', function() {
   try { document.getElementById('progressCount').textContent = IN_PROGRESS.length; } catch(e) {}
   try { renderReqList(); } catch(e) { console.error('renderReqList:', e); }
   try { loadLikes(); } catch(e) { console.error('loadLikes:', e); }
-});
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPage);
+} else {
+  initPage();
+}
 </script>
 </body>
 </html>
